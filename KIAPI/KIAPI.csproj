@@ -141,6 +141,7 @@
     <Compile Include="Classes\MockDAL.cs" />
     <Compile Include="Classes\Position.cs" />
     <Compile Include="Classes\Resolution.cs" />
+    <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,7 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
