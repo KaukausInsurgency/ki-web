@@ -1,4 +1,4 @@
-.vs/
-KIAPI/bin/
-KIAPI/docs/
-KIAPI/obj/
+RESTAPI/.vs/
+RESTAPI/KIAPI/bin/
+RESTAPI/KIAPI/docs/
+RESTAPI/KIAPI/obj/
