@@ -22,21 +22,25 @@ namespace KIAPI.Classes
         private const string SP_SEARCH_PLAYERS = "websp_SearchPlayers";
         private const string SP_SEARCH_SERVERS = "websp_SearchServers";
         private const string SP_GET_SERVER_INFO = "websp_GetServerInfo";
-        private string _DBConnection;
+        private string _DBMySQLConnectionString;
+        private string _DBRedisConnectionString;
+        
        
         public DAL()
         {
-            _DBConnection = System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString;
+            _DBMySQLConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString;
+            _DBRedisConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString;
         }
 
-        public DAL(string connection)
+        public DAL(string mySQLConnect, string redisConnect)
         {
-            _DBConnection = connection;
+            _DBMySQLConnectionString = mySQLConnect;
+            _DBRedisConnectionString = redisConnect;
         }
 
         List<CapturePointModel> IDAL.GetCapturePoints(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -90,7 +94,7 @@ namespace KIAPI.Classes
 
         List<DepotModel> IDAL.GetDepots(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -143,7 +147,7 @@ namespace KIAPI.Classes
 
         GameModel IDAL.GetGame(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -201,7 +205,7 @@ namespace KIAPI.Classes
 
         GameMapModel IDAL.GetGameMap(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -248,7 +252,7 @@ namespace KIAPI.Classes
 
         List<MapLayerModel> IDAL.GetMapLayers(int mapID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -285,7 +289,7 @@ namespace KIAPI.Classes
 
         MarkerViewModel IDAL.GetMarkers(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -311,7 +315,7 @@ namespace KIAPI.Classes
 
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -370,7 +374,7 @@ namespace KIAPI.Classes
 
         List<ServerModel> IDAL.GetServers()
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -439,7 +443,7 @@ namespace KIAPI.Classes
 
         List<SideMissionModel> IDAL.GetSideMissions(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -499,7 +503,7 @@ namespace KIAPI.Classes
 
         SearchResultsModel IDAL.GetSearchResults(string query)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();
@@ -594,7 +598,7 @@ namespace KIAPI.Classes
 
         ServerViewModel IDAL.GetServerInfo(int serverID)
         {
-            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            MySqlConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
                 conn.Open();

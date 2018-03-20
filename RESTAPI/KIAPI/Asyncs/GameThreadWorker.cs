@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Threading;
+﻿using KIAPI.Classes;
 using Microsoft.AspNet.SignalR;
-using KIAPI.Classes;
 using MySql.Data.MySqlClient;
+using StackExchange.Redis;
+using System;
+using System.Threading;
 
 namespace KIAPI.Asyncs
 {
@@ -23,20 +21,23 @@ namespace KIAPI.Asyncs
         private const int UPDATE_MARKERS_PERIOD = 10000;
         private const int UPDATE_PLAYERS_PERIOD = 5000;
         private const int UPDATE_SERVER_PERIOD = 30000;
-        private MySqlConnection conn;
+        private MySqlConnection MySqlConnection;
+        private ConnectionMultiplexer RedisConnection;
         public int ServerID { get; private set; }
 
         public GameThreadWorker(int serverID)
         {
             logger.Info("Game Thread Worker Starting (ServerID: " + serverID + ")");
-            conn = new MySqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString);
-            conn.Open();
+            MySqlConnection = new MySqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString);
+            MySqlConnection.Open();
+            RedisConnection = ConnectionMultiplexer.Connect(System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString);
             hub = GlobalHost.ConnectionManager.GetHubContext<KIAPI.Hubs.GameHub>();
             dal = new DAL();
             this.ServerID = serverID;
             timer_update_markers = new System.Threading.Timer(this.UpdateMarkers, null, 0, UPDATE_MARKERS_PERIOD);
             timer_update_players = new System.Threading.Timer(this.UpdatePlayers, null, 0, UPDATE_PLAYERS_PERIOD);
             timer_update_server = new System.Threading.Timer(this.UpdateServer, null, 0, UPDATE_SERVER_PERIOD);
+            timer_update_server = new System.Threading.Timer(this.RedisTest, null, 0, 60000);
         }
 
         public void Pause()
@@ -59,7 +60,23 @@ namespace KIAPI.Asyncs
             timer_update_markers.Dispose();
             timer_update_players.Dispose();
             timer_update_server.Dispose();
-            conn.Close();
+            MySqlConnection.Close();
+        }
+
+        private void RedisTest(object state)
+        {
+            try
+            {
+                IDatabase db = RedisConnection.GetDatabase();
+                db.StringSet("Test", "Rest");
+                db.StringSet("Test", "Result");
+                string Result = db.StringGet("Test");
+                logger.Info("Redis Result: " + Result);
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Redis Exception: " + ex.Message);
+            }
         }
 
         private void UpdateMarkers(object state)
