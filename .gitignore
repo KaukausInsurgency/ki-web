@@ -2,3 +2,7 @@ RESTAPI/.vs/
 RESTAPI/KIAPI/bin/
 RESTAPI/KIAPI/docs/
 RESTAPI/KIAPI/obj/
+RESTAPI/Logs/
+TCPServer/TAWKI_TCPServer/obj
+TCPServer/.vs/
+TCPServer/TAWKI_TCPServer/bin/

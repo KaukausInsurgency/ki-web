@@ -11,26 +11,31 @@ namespace TAWKI_TCPServer
     class ConfigReader
     {
         private string _configPath;
-        private string _DBConnect;
+        private string _MySQLDBConnect;
+        private string _RedisDBConnect;
         private int _portNumber;
         private int _maxConnections;
         private bool _useUPnP;
         private bool _useWhiteList;
         private bool _configReadSuccess;
         private List<string> _whitelist;
+        private Dictionary<string, string> _redisActionKeyPair;
 
         public ConfigReader()
         {
             _configPath = Directory.GetCurrentDirectory() + "\\config.xml";
             XmlDocument xml = new XmlDocument();
+            _redisActionKeyPair = new Dictionary<string, string>();
             try
             {
                 xml.Load(_configPath);
                 XmlNodeList dbxml = xml.GetElementsByTagName("DBConnect");
+                XmlNodeList redisxml = xml.GetElementsByTagName("RedisDBConnect");
                 XmlNodeList portxml = xml.GetElementsByTagName("Port");
                 XmlNodeList maxConnxml = xml.GetElementsByTagName("MaxConnections");
                 XmlNodeList whitelistxml = xml.GetElementsByTagName("WhiteList");
                 XmlNodeList upnpxml = xml.GetElementsByTagName("UseUPnP");
+                XmlNodeList actionkeysxml = xml.SelectNodes("/Config/RedisActionKeys/Pair");
 
                 if (dbxml.Count == 0)
                     throw new Exception("Could not find <DBConnect> in config");
@@ -38,6 +43,8 @@ namespace TAWKI_TCPServer
                     throw new Exception("Could not find <Port> in config");
                 if (maxConnxml.Count == 0)
                     throw new Exception("Could not find <MaxConnections> in config");
+                if (redisxml.Count == 0)
+                    throw new Exception("Could not find <RedisDBConnect> in config");
                 if (whitelistxml.Count == 0)
                     _useWhiteList = false;
                 else
@@ -46,7 +53,8 @@ namespace TAWKI_TCPServer
                     _useUPnP = false;
          
 
-                _DBConnect = dbxml[0].InnerText;
+                _MySQLDBConnect = dbxml[0].InnerText;
+                _RedisDBConnect = redisxml[0].InnerText;
                 _portNumber = int.Parse(portxml[0].InnerText);
                 _maxConnections = int.Parse(maxConnxml[0].InnerText);
 
@@ -55,6 +63,21 @@ namespace TAWKI_TCPServer
 
                 if (upnpxml.Count != 0 && (upnpxml[0].InnerText.ToUpper() == "YES" || upnpxml[0].InnerText.ToUpper() == "TRUE"))
                     _useUPnP = true;
+
+                if (actionkeysxml.Count > 0)
+                {
+                    foreach (XmlNode x in actionkeysxml)
+                    {
+                        if (x.Attributes["Action"] != null && x.Attributes["RedisKey"] != null)
+                        {
+                            _redisActionKeyPair.Add(x.Attributes["Action"].Value, x.Attributes["RedisKey"].Value);
+                        }
+                        else
+                        {
+                            throw new Exception("<RedisActionKeys><Pair> - xml malformed (missing attribute 'Action' or 'RedisKey'");
+                        }
+                    }
+                }
 
                 _configReadSuccess = true;
             }
@@ -75,9 +98,14 @@ namespace TAWKI_TCPServer
             get { return _maxConnections; }
         }
 
-        public string DBConnect
+        public string MySQLDBConnect
         {
-            get { return _DBConnect; }
+            get { return _MySQLDBConnect; }
+        }
+
+        public string RedisDBConnect
+        {
+            get { return _RedisDBConnect; }
         }
 
         public bool ConfigReadSuccess
@@ -98,6 +126,11 @@ namespace TAWKI_TCPServer
         public List<string> WhiteList
         {
             get { return _whitelist; }
+        }
+
+        public Dictionary<string, string> RedisActionKeys
+        {
+            get { return _redisActionKeyPair; }
         }
     }
 }

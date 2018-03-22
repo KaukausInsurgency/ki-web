@@ -1,4 +1,5 @@
 ﻿using Open.Nat;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,18 +43,19 @@ namespace TAWKI_TCPServer
                 return;
             }
                 
-            KIDB.DBConnection = cr.DBConnect;
+            KIDB.DBConnection = cr.MySQLDBConnect;
+            KIDB.RedisDBConnection = cr.RedisDBConnect;
 
-            Console.WriteLine("Attempting To Connect to database...");
-            MySql.Data.MySqlClient.MySqlConnection test_connection = new MySql.Data.MySqlClient.MySqlConnection(cr.DBConnect);
+            Console.WriteLine("Attempting To Connect to MySQL database...");
+            MySql.Data.MySqlClient.MySqlConnection test_connection = new MySql.Data.MySqlClient.MySqlConnection(cr.MySQLDBConnect);
             try
             {
                 test_connection.Open();
-                Console.WriteLine("Successful Connection to Database " + test_connection.Database);
+                Console.WriteLine("Successful Connection to MySQL Database " + test_connection.Database);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed To Connect to Database - " + ex.Message);
+                Console.WriteLine("Failed To Connect to MySQL Database - " + ex.Message);
             }
             finally
             {
@@ -63,6 +65,24 @@ namespace TAWKI_TCPServer
                         test_connection.Close();
 
                 test_connection = null;
+            }
+
+            Console.WriteLine("Attempting to Connect to Redis database...");
+
+            try
+            {
+                KIDB.RedisConnection = ConnectionMultiplexer.Connect(cr.RedisDBConnect);
+                Console.WriteLine("Successful Connection to Redis Database");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed To Connect to Redis Database - " + ex.Message);
+                if (KIDB.RedisConnection != null)
+                    if (KIDB.RedisConnection.IsConnected)
+                        KIDB.RedisConnection.Close();
+
+                Console.ReadKey();
+                return;
             }
 
             string PublicIP = "";
@@ -75,7 +95,9 @@ namespace TAWKI_TCPServer
             if (cr.UseWhiteList)
                 Console.WriteLine("Using whitelist...");
 
-            SocketServer server;
+            KIDB.RedisActionKeyTable = cr.RedisActionKeys;
+
+            SocketServer server = null;
             try
             {
                 server = new SocketServer(cr.MaxConnections, cr.PortNumber, cr.WhiteList);
@@ -83,16 +105,16 @@ namespace TAWKI_TCPServer
                 if (!String.IsNullOrWhiteSpace(PublicIP))
                 {
                     Console.WriteLine("UPNP: Mapped Public {0} to Private {1} on Port {2}", PublicIP, server.Address(), cr.PortNumber);
-                }               
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error in creating Socket: " + ex.Message);
+                if (server != null)
+                    server.Close();
                 Console.ReadKey();
                 return;
             }
-
-
 
             Console.WriteLine("Server is now running on: " + server.Address() + " - use F2 to close server");
             while(true)
