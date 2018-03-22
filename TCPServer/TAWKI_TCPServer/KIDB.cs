@@ -110,7 +110,8 @@ namespace TAWKI_TCPServer
                 {
                     string action = j["Action"];
                     string destination = j["Destination"];
-                    bool isBulkQuery = j["BulkQuery"];   
+                    bool isBulkQuery = j["BulkQuery"];
+                    string jsonResp = "";
                     if (isBulkQuery)
                     {
                         ProtocolResponseMultiData resp = SendToDBMultiData(destination, ((SocketClient)(sender)).LogFile, action, ref j);
@@ -119,8 +120,7 @@ namespace TAWKI_TCPServer
                         else
                             resp.Result = true;
 
-                        string jsonResp = JsonConvert.SerializeObject(resp);
-                        ((SocketClient)(sender)).Write(jsonResp);
+                        jsonResp = JsonConvert.SerializeObject(resp);
                     }
                     else
                     {
@@ -130,9 +130,9 @@ namespace TAWKI_TCPServer
                         else
                             resp.Result = true;
 
-                        string jsonResp = JsonConvert.SerializeObject(resp);
-                        ((SocketClient)(sender)).Write(jsonResp);
-                    }
+                        jsonResp = JsonConvert.SerializeObject(resp);
+                    }            
+                    ((SocketClient)(sender)).Write(jsonResp);
                 }
                 else
                 {
