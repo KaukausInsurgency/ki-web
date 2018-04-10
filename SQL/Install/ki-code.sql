@@ -729,15 +729,16 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrAddServer`(
 		IN ServerName VARCHAR(128),
-        IN IP VARCHAR(30)
+        IN IP VARCHAR(30),
+        IN Description VARCHAR(900)
     )
 BEGIN
 	IF ((SELECT EXISTS (SELECT 1 FROM server WHERE server.ip_address = IP)) = 1) THEN
-		UPDATE server SET name = ServerName WHERE ip_address = IP;
+		UPDATE server SET server.name = ServerName, server.description = Description  WHERE ip_address = IP;
 		SELECT server_id FROM server WHERE ip_address = IP;
     ELSE
 		-- New Entry, Insert the new server into the database
-        INSERT INTO server (name, ip_address) VALUES (ServerName, IP);
+        INSERT INTO server (name, description, ip_address) VALUES (ServerName, Description, IP);
         SELECT LAST_INSERT_ID();
     END IF;
 END ;;
@@ -1333,4 +1334,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-25 11:17:58
+-- Dump completed on 2018-04-10  3:38:43

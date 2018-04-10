@@ -446,12 +446,13 @@ DROP TABLE IF EXISTS `server`;
 CREATE TABLE `server` (
   `server_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
+  `description` varchar(900) DEFAULT NULL COMMENT 'server description displayed on website',
   `ip_address` varchar(40) NOT NULL,
   `restart_time` int(11) DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
   `last_heartbeat` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,4 +580,4 @@ CREATE TABLE `xref_game_map_server` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-27 22:10:16
+-- Dump completed on 2018-04-10  3:40:07
