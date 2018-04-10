@@ -22,6 +22,7 @@ namespace TAWKI_TCPServer
         public static string RedisDBConnection = "";
         public static ConnectionMultiplexer RedisConnection = null;
         public static Dictionary<string, string> RedisActionKeyTable = null;
+        public static List<string> SupportedHTML = null;
 
         public static void Invoke(ISynchronizeInvoke sync, Action action)
         {
@@ -193,19 +194,34 @@ namespace TAWKI_TCPServer
             else
                 dataDictionary = new Dictionary<string, object>();
 
-            // special scenario - because we cant get the ip address of the game server from DCS, we'll get it from the socket sender object
-            // and specially insert it as a parameter into the data dictionary
-            if (action == ACTION_GET_SERVERID)
-            {
-                dataDictionary.Add("IP", ip_address);
-            }
-
             ProtocolResponseSingleData result = new ProtocolResponseSingleData
             {
                 Action = action,
                 Error = "",
                 Data = new List<object>()
             };
+
+            // special scenario - because we cant get the ip address of the game server from DCS, we'll get it from the socket sender object
+            // and specially insert it as a parameter into the data dictionary
+            if (action == ACTION_GET_SERVERID)
+            {
+                dataDictionary.Add("IP", ip_address);
+                if (dataDictionary.ContainsKey("Description"))
+                {
+                    try
+                    {
+                        string html = Convert.ToString(dataDictionary["Description"]);
+                        html = System.Web.HttpUtility.HtmlEncode(html);
+                        dataDictionary["Description"] = SanitizeHTML(html);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogToFile("Error sanitizing ServerDescription html string (Action: " + action + ") - " + ex.Message, log);
+                        result.Error = "Error sanitizing ServerDescription html string (Action: " + action + ") - " + ex.Message;
+                        return result;
+                    }
+                }
+            }    
 
             MySql.Data.MySqlClient.MySqlConnection _conn = null;
             MySql.Data.MySqlClient.MySqlDataReader rdr = null;
@@ -479,6 +495,30 @@ namespace TAWKI_TCPServer
             }
 
             return result;
+        }
+
+        private static string SanitizeHTML(string html)
+        {
+            string shtml = html;
+
+            foreach (string x in SupportedHTML)
+            {
+                // Opening tags
+                { 
+                    string encoded = "&lt;" + x + "&gt;";
+                    string decoded = "<" + x + ">";
+                    shtml = shtml.Replace(encoded, decoded);
+                }
+
+                // Closing tags
+                {
+                    string encoded = "&lt;/" + x + "&gt;";
+                    string decoded = "</" + x + ">";
+                    shtml = shtml.Replace(encoded, decoded);
+                }
+            }
+
+            return shtml;
         }
 
     }

@@ -96,6 +96,7 @@ namespace TAWKI_TCPServer
                 Console.WriteLine("Using whitelist...");
 
             KIDB.RedisActionKeyTable = cr.RedisActionKeys;
+            KIDB.SupportedHTML = cr.SupportedHTML;
 
             SocketServer server = null;
             try

@@ -19,6 +19,7 @@ namespace TAWKI_TCPServer
         private bool _useWhiteList;
         private bool _configReadSuccess;
         private List<string> _whitelist;
+        private List<string> _supportedHTML;
         private Dictionary<string, string> _redisActionKeyPair;
 
         public ConfigReader()
@@ -26,6 +27,7 @@ namespace TAWKI_TCPServer
             _configPath = Directory.GetCurrentDirectory() + "\\config.xml";
             XmlDocument xml = new XmlDocument();
             _redisActionKeyPair = new Dictionary<string, string>();
+            _supportedHTML = new List<string>();
             try
             {
                 xml.Load(_configPath);
@@ -36,6 +38,7 @@ namespace TAWKI_TCPServer
                 XmlNodeList whitelistxml = xml.GetElementsByTagName("WhiteList");
                 XmlNodeList upnpxml = xml.GetElementsByTagName("UseUPnP");
                 XmlNodeList actionkeysxml = xml.SelectNodes("/Config/RedisActionKeys/Pair");
+                XmlNodeList supportedHTMLxml = xml.GetElementsByTagName("SupportedHTML");
 
                 if (dbxml.Count == 0)
                     throw new Exception("Could not find <DBConnect> in config");
@@ -77,6 +80,11 @@ namespace TAWKI_TCPServer
                             throw new Exception("<RedisActionKeys><Pair> - xml malformed (missing attribute 'Action' or 'RedisKey'");
                         }
                     }
+                }
+
+                if (supportedHTMLxml.Count > 0)
+                {
+                    _supportedHTML = supportedHTMLxml[0].InnerText.Split(',').ToList<string>();
                 }
 
                 _configReadSuccess = true;
@@ -126,6 +134,11 @@ namespace TAWKI_TCPServer
         public List<string> WhiteList
         {
             get { return _whitelist; }
+        }
+
+        public List<string> SupportedHTML
+        {
+            get { return _supportedHTML; }
         }
 
         public Dictionary<string, string> RedisActionKeys

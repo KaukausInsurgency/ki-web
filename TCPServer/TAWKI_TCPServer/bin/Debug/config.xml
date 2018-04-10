@@ -1,5 +1,5 @@
 <Config>
-	<DBConnect>Server=127.0.0.1; Database=ki; Uid=KITestAcc; Pwd=test;</DBConnect>
+	<DBConnect>Server=127.0.0.1; Database=kaukasusinsurgency-api; Uid=KITestAcc; Pwd=test;</DBConnect>
 	<RedisDBConnect>localhost:16379</RedisDBConnect>
 	<RedisActionKeys>
 		<Pair Action="AddOrUpdateCapturePoint" RedisKey="CP" />
@@ -7,6 +7,7 @@
 		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" />
 		<Pair Action="AddOrUpdateChat" RedisKey="Chat" />
 	</RedisActionKeys>
+	<SupportedHTML>p,h1,h2,h3,h4,h5,h6,br,b,strong,i,em,mark,small,del,ins,sub,sup</SupportedHTML>
 	<Port>9983</Port>
 	<MaxConnections>4</MaxConnections>
 	<WhiteList>192.168.1.254;::ffff:127.0.0.1</WhiteList>
