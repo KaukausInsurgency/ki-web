@@ -95,6 +95,21 @@ BEGIN
     SET Version = "0bc9fc46-ea51-4fc4-9c52-d3793c9a4515";
   END IF;
   
+  -- VERSION 0.78
+  IF Version = "0bc9fc46-ea51-4fc4-9c52-d3793c9a4515" THEN
+	INSERT INTO ki_upgrade_log VALUES ("Database Version is 0.78 - Upgrading to 0.79");
+  
+	ALTER TABLE server
+	ADD COLUMN `description` VARCHAR(900) NULL COMMENT 'server description displayed on website' AFTER `name`;
+  
+	-- insert data
+    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
+    VALUES (1, "0.79", "5762581d943af07f9b4864e30e9070e3305b5b77", NULL);
+    
+    INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.79");
+	SET Version = "5762581d943af07f9b4864e30e9070e3305b5b77";
+  END IF;
+  
   SELECT * FROM ki_upgrade_log;
 
 END $$
