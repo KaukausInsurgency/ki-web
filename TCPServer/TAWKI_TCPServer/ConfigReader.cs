@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using TAWKI_TCPServer.Interfaces;
 
 namespace TAWKI_TCPServer
 {
-    class ConfigReader
+    public class ConfigReader : IConfigReader
     {
         private string _configPath;
         private string _MySQLDBConnect;
@@ -96,52 +97,52 @@ namespace TAWKI_TCPServer
             }
         }
 
-        public int PortNumber
+        int IConfigReader.PortNumber
         {
             get { return _portNumber; }
         }
 
-        public int MaxConnections
+        int IConfigReader.MaxConnections
         {
             get { return _maxConnections; }
         }
 
-        public string MySQLDBConnect
+        string IConfigReader.MySQLDBConnect
         {
             get { return _MySQLDBConnect; }
         }
 
-        public string RedisDBConnect
+        string IConfigReader.RedisDBConnect
         {
             get { return _RedisDBConnect; }
         }
 
-        public bool ConfigReadSuccess
+        bool IConfigReader.ConfigReadSuccess
         {
             get { return _configReadSuccess; }
         }
 
-        public bool UseUPnP
+        bool IConfigReader.UseUPnP
         {
             get { return _useUPnP; }
         }
 
-        public bool UseWhiteList
+        bool IConfigReader.UseWhiteList
         {
             get { return _useWhiteList; }
         }
 
-        public List<string> WhiteList
+        List<string> IConfigReader.WhiteList
         {
             get { return _whitelist; }
         }
 
-        public List<string> SupportedHTML
+        List<string> IConfigReader.SupportedHTML
         {
             get { return _supportedHTML; }
         }
 
-        public Dictionary<string, string> RedisActionKeys
+        Dictionary<string, string> IConfigReader.RedisActionKeys
         {
             get { return _redisActionKeyPair; }
         }

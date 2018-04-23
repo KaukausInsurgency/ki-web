@@ -6,3 +6,5 @@ RESTAPI/Logs/
 TCPServer/TAWKI_TCPServer/obj
 TCPServer/.vs/
 TCPServer/TAWKI_TCPServer/bin/
+TCPServer/Tests/bin/
+TCPServer/Tests/obj/

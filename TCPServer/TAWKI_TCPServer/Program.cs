@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAWKI_TCPServer.Interfaces;
 
 namespace TAWKI_TCPServer
 {
@@ -36,15 +37,14 @@ namespace TAWKI_TCPServer
         static void Main(string[] args)
         {
             Console.WriteLine("Reading Config...");
-            ConfigReader cr = new ConfigReader();
+            IConfigReader cr = new ConfigReader();
             if (!cr.ConfigReadSuccess)
             {
                 Console.ReadKey();
                 return;
             }
-                
-            KIDB.DBConnection = cr.MySQLDBConnect;
-            KIDB.RedisDBConnection = cr.RedisDBConnect;
+
+            GlobalConfig.SetConfig(cr);
 
             Console.WriteLine("Attempting To Connect to MySQL database...");
             MySql.Data.MySqlClient.MySqlConnection test_connection = new MySql.Data.MySqlClient.MySqlConnection(cr.MySQLDBConnect);
@@ -68,21 +68,23 @@ namespace TAWKI_TCPServer
             }
 
             Console.WriteLine("Attempting to Connect to Redis database...");
-
+            ConnectionMultiplexer test_redis_connection = null;
             try
             {
-                KIDB.RedisConnection = ConnectionMultiplexer.Connect(cr.RedisDBConnect);
+                test_redis_connection = ConnectionMultiplexer.Connect(cr.RedisDBConnect);
                 Console.WriteLine("Successful Connection to Redis Database");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Failed To Connect to Redis Database - " + ex.Message);
-                if (KIDB.RedisConnection != null)
-                    if (KIDB.RedisConnection.IsConnected)
-                        KIDB.RedisConnection.Close();
-
                 Console.ReadKey();
                 return;
+            }
+            finally
+            {
+                if (test_redis_connection != null)
+                    if (test_redis_connection.IsConnected)
+                        test_redis_connection.Close();
             }
 
             string PublicIP = "";
@@ -94,9 +96,6 @@ namespace TAWKI_TCPServer
 
             if (cr.UseWhiteList)
                 Console.WriteLine("Using whitelist...");
-
-            KIDB.RedisActionKeyTable = cr.RedisActionKeys;
-            KIDB.SupportedHTML = cr.SupportedHTML;
 
             SocketServer server = null;
             try
