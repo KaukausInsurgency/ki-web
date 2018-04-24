@@ -62,7 +62,7 @@ namespace TAWKI_TCPServer.Implementations
                 {
                     ProtocolRequest request = Utility.CreateRequest(ref j, ((SocketClient)(sender)).Address);
                     IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, ProcessMessageStrategyFactory.GetSource(request.Destination));
-                    ProtocolResponse resp = processor.Process(request, Logger);
+                    ProtocolResponse resp = processor.Process(request);
                     string jsonResp = JsonConvert.SerializeObject(resp);
                     ((SocketClient)(sender)).Write(jsonResp);
                 }

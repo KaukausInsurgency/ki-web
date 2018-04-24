@@ -15,22 +15,31 @@ namespace Tests.Mocks
         private int _timeout;
         private CommandType _type;
         private IDataParameterCollection _params = null;
-        private DataTable _dt;
+        private IExecuteReader _executeReader;
+
+        private class DefaultExecuteReader : IExecuteReader
+        {
+            IDataReader IExecuteReader.Execute()
+            {
+                DataTable dt = new DataTable("Mock");
+                dt.Columns.Add("MockCol", typeof(int));
+                dt.Rows.Add(1);
+                return dt.CreateDataReader();
+            }
+        }
 
         public MockDBCommand()
         {
             Type type = typeof(SqlParameterCollection);
             _params = (SqlParameterCollection)Activator.CreateInstance(type, true);
-            _dt = new DataTable("Mock");
-            _dt.Columns.Add("MockCol", typeof(int));
-            _dt.Rows.Add(1);
+            _executeReader = new DefaultExecuteReader();
         }
 
-        public MockDBCommand(DataTable dt)
+        public MockDBCommand(IExecuteReader executeReader)
         {
             Type type = typeof(SqlParameterCollection);
             _params = (SqlParameterCollection)Activator.CreateInstance(type, true);
-            _dt = dt;
+            _executeReader = executeReader;
         }
 
         IDbConnection IDbCommand.Connection { get => _conn; set => _conn = value; }
@@ -60,12 +69,12 @@ namespace Tests.Mocks
 
         IDataReader IDbCommand.ExecuteReader()
         {
-            return _dt.CreateDataReader();
+            return _executeReader.Execute();
         }
 
         IDataReader IDbCommand.ExecuteReader(CommandBehavior behavior)
         {
-            return _dt.CreateDataReader();
+            return _executeReader.Execute();
         }
 
         object IDbCommand.ExecuteScalar()

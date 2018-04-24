@@ -14,9 +14,8 @@ namespace TAWKI_TCPServer.Implementations
 
         }
 
-        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request, ILogger logger)
+        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request)
         {
-            logger.Log("Invalid Source was specified");
             ProtocolResponse response = new ProtocolResponse
             {
                 Action = request.Action,

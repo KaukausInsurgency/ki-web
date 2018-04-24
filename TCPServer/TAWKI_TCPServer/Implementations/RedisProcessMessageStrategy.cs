@@ -25,20 +25,20 @@ namespace TAWKI_TCPServer.Implementations
             Config = config;
         }
 
-        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request, ILogger logger)
+        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request)
         {
             ProtocolResponse response = new ProtocolResponse(request.Action);
 
             if (Connection == null || !Connection.IsConnected)
             {
-                logger.Log("Connection to Redis Closed - Attempting to reopen...");
+                Logger.Log("Connection to Redis Closed - Attempting to reopen...");
                 try
                 {
                     Connection = ConnectionMultiplexer.Connect(Config.RedisDBConnect);
                 }
                 catch (Exception ex)
                 {
-                    logger.Log("Error connecting to Redis - lost connection (" + ex.Message + ")");
+                    Logger.Log("Error connecting to Redis - lost connection (" + ex.Message + ")");
                     response.Error = "Error connecting to Redis - lost connection (" + ex.Message + ")";
                     return response;
                 }
@@ -94,7 +94,7 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchException(logger, ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);
                 }
             }
             else
@@ -139,7 +139,7 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchException(logger, ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);
                 }
 
             }
@@ -148,9 +148,9 @@ namespace TAWKI_TCPServer.Implementations
 
         }
 
-        private void CatchException(ILogger logger, ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)
+        private void CatchException(ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)
         {
-            logger.Log("Error executing query against Redis (Action: " + request.Action + ") - " + ex.Message);
+            Logger.Log("Error executing query against Redis (Action: " + request.Action + ") - " + ex.Message);
             response.Error = "Error executing query against Redis (Action: " + request.Action + ") - " + ex.Message;
         }
     }

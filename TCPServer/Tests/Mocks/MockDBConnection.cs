@@ -13,6 +13,17 @@ namespace Tests.Mocks
         private string _conn;
         private ConnectionState _state;
         string IDbConnection.ConnectionString { get => _conn; set => _conn = value; }
+        private IExecuteReader _executeReader;
+
+        public MockDBConnection()
+        {
+            _executeReader = null;
+        }
+
+        public MockDBConnection(IExecuteReader executeReader)
+        {
+            _executeReader = executeReader;
+        }
 
         int IDbConnection.ConnectionTimeout => 60;
 
@@ -42,7 +53,10 @@ namespace Tests.Mocks
 
         IDbCommand IDbConnection.CreateCommand()
         {
-            return new MockDBCommand();
+            if (_executeReader == null)
+                return new MockDBCommand();
+            else
+                return new MockDBCommand(_executeReader);
         }
 
         void IDbConnection.Open()

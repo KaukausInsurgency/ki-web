@@ -16,14 +16,14 @@ namespace TAWKI_TCPServer.Implementations
         private ILogger Logger;
         private IConfigReader Config;
 
-        public MySqlProcessMessageStrategy(IDbConnection connection, ILogger logger, IConfigReader config)
+        public MySqlProcessMessageStrategy(IDbConnection connection, ILogger Logger, IConfigReader config)
         {
             Connection = connection;
-            Logger = logger;
+            this.Logger = Logger;
             Config = config;
         }
 
-        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request, ILogger logger)
+        ProtocolResponse IProcessMessageStrategy.Process(ProtocolRequest request)
         {
             ProtocolResponse response = new ProtocolResponse(request.Action);
 
@@ -52,7 +52,7 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchExceptionMySQL(logger, ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);
                 }
                 finally
                 {
@@ -84,7 +84,7 @@ namespace TAWKI_TCPServer.Implementations
                         }
                         catch (Exception ex)
                         {
-                            logger.Log("Error sanitizing ServerDescription html string (Action: " + request.Action + ") - " + ex.Message);
+                            Logger.Log("Error sanitizing ServerDescription html string (Action: " + request.Action + ") - " + ex.Message);
                             response.Error = "Error sanitizing ServerDescription html string (Action: " + request.Action + ") - " + ex.Message;
                             response.Result = false;
                             return response;
@@ -110,7 +110,7 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchExceptionMySQL(logger, ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);
                 }
                 finally
                 {
@@ -123,9 +123,9 @@ namespace TAWKI_TCPServer.Implementations
 
         }
 
-        private void CatchExceptionMySQL(ILogger logger, ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)
+        private void CatchException(ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)
         {
-            logger.Log("Error executing query against MySQL (Action: " + request.Action + ") - " + ex.Message);
+            Logger.Log("Error executing query against MySQL (Action: " + request.Action + ") - " + ex.Message);
             response.Error = "Error executing query against MySQL (Action: " + request.Action + ") - " + ex.Message;
         }
 

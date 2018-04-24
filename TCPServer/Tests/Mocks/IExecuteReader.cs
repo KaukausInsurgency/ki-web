@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TAWKI_TCPServer.Interfaces
+namespace Tests.Mocks
 {
-    public interface IProcessMessageStrategy
+    interface IExecuteReader
     {
-        ProtocolResponse Process(ProtocolRequest request);
+        IDataReader Execute();
     }
 }

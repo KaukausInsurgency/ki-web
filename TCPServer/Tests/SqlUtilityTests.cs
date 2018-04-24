@@ -8,6 +8,7 @@ using TAWKI_TCPServer.Interfaces;
 using TAWKI_TCPServer.Implementations;
 using NUnit.Framework;
 using System.Data;
+using Tests.Mocks;
 
 namespace Tests
 {
@@ -70,11 +71,19 @@ namespace Tests
             Assert.That((int)GetParameterValue(cmd.Parameters["param5"]) == -100);
         }
 
+        private class EmptyExecuteReader : IExecuteReader
+        {
+            IDataReader IExecuteReader.Execute()
+            {
+                DataTable dt = new DataTable();
+                return dt.CreateDataReader();
+            }
+        }
+
         [Test]
         public void InvokeCommand_NoResults_Success()
         {
-            DataTable dt = new DataTable();
-            IDbCommand cmd = new Mocks.MockDBCommand(dt);
+            IDbCommand cmd = new Mocks.MockDBCommand(new EmptyExecuteReader());
             IDbDataParameter p = cmd.CreateParameter();
             p.ParameterName = "param1";
             p.Value = 1;
@@ -85,16 +94,24 @@ namespace Tests
             Assert.That(results == null);
         }
 
+        private class FourColumnExecuteReader : IExecuteReader
+        {
+            IDataReader IExecuteReader.Execute()
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Col1", typeof(int));
+                dt.Columns.Add("Col2", typeof(bool));
+                dt.Columns.Add("Col3", typeof(string));
+                dt.Columns.Add("Col4", typeof(double));
+                dt.Rows.Add(new object[] { 1, true, "string", 12.25 });
+                return dt.CreateDataReader();
+            }
+        }
+
         [Test]
         public void InvokeCommand_Results_Success()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Col1", typeof(int));
-            dt.Columns.Add("Col2", typeof(bool));
-            dt.Columns.Add("Col3", typeof(string));
-            dt.Columns.Add("Col4", typeof(double));
-            dt.Rows.Add(new object[] { 1, true, "string", 12.25 });
-            IDbCommand cmd = new Mocks.MockDBCommand(dt);
+        {      
+            IDbCommand cmd = new Mocks.MockDBCommand(new FourColumnExecuteReader());
             IDbDataParameter p = cmd.CreateParameter();
             p.ParameterName = "param1";
             p.Value = 1;

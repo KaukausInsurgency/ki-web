@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\IExecuteReader.cs" />
     <Compile Include="MySqlProcessMessageStrategyTests.cs" />
     <Compile Include="ProcessMessageStrategyFactoryTests.cs" />
     <Compile Include="SqlUtilityTests.cs" />
