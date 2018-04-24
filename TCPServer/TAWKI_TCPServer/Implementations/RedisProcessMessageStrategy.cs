@@ -14,11 +14,11 @@ namespace TAWKI_TCPServer.Implementations
     {
         public const Int64 LUANULL = -9999;        // THIS IS IMPORTANT - CHANGING THIS WILL BREAK IF THE LUA NIL PLACEHOLDER IS NOT THE SAME!!!
         public const string ACTION_GET_SERVERID = "GetOrAddServer";
-        private ConnectionMultiplexer Connection;
+        private IConnectionMultiplexer Connection;
         private ILogger Logger;
         private IConfigReader Config;
 
-        public RedisProcessMessageStrategy(ConnectionMultiplexer connection, ILogger logger, IConfigReader config)
+        public RedisProcessMessageStrategy(IConnectionMultiplexer connection, ILogger logger, IConfigReader config)
         {
             Connection = connection;
             Logger = logger;

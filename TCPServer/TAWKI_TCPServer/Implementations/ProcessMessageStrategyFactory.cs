@@ -40,7 +40,7 @@ namespace TAWKI_TCPServer.Implementations
                     }
                 case EDbSource.Redis:
                     {
-                        ConnectionMultiplexer connection = null;
+                        IConnectionMultiplexer connection = null;
                         return new RedisProcessMessageStrategy(connection, logger, config);
                     }
                 default:
