@@ -10,276 +10,268 @@ using NUnit.Framework;
 using System.Data;
 using Tests.Mocks;
 using System.Data.SqlClient;
+using StackExchange.Redis;
 
 namespace Tests
 {
     [TestFixture]
     class RedisProcessMessageStrategyTests
     {
-        // While this test does not exercise the real behaviour (ie a SQLException would be thrown when trying to call
-        // the stored procedure because the argument 'Description' was not found, we are just checking here that no
-        // exception is being thrown and that the system handles the call correctly
         [Test]
-        public void ProcessMessage_GetServerNoHTMLDescription_Success()
+        public void ProcessMessage_BulkRedisSet_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader(
+                new List<string>(),
+                new Dictionary<string, string>
+                {
+                    { "AddOrUpdateDepot", "Depot" },
+                });
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "GetOrAddServer",
-                Destination = "MYSQL",
-                IsBulkQuery = false,
+                Action = "AddOrUpdateDepot",
+                Destination = "REDIS",
+                IsBulkQuery = true,
                 IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'ServerName':'Dev Kaukasus Insurgency Server'}"
+                Type = Newtonsoft.Json.Linq.JTokenType.Array,
+                Data = "[{'Name':'DepotA','ServerID':1},{'Name':'DepotB','ServerID':2},{'Name':'DepotC','ServerID':3}]"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
+            // Assert that the response object is correct
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
-            Assert.That(response.Action == "GetOrAddServer");
-            Assert.That((int)response.Data[0][0] == 1);
+            Assert.That(response.Action == "AddOrUpdateDepot");
+            Assert.That(response.Data.Count == 3);
+            Assert.That((string)response.Data[0][0] == "Depot:1:1");
+            Assert.That((string)response.Data[1][0] == "Depot:2:2");
+            Assert.That((string)response.Data[2][0] == "Depot:3:3");
+
+            // Confirm that the data stored in the mock redis is correct
+            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
+            Assert.That(mockdb.MockDBStore["Depot:1:1"] != "{'Name':'DepotA','ServerID':1}");
+            Assert.That(mockdb.MockDBStore["Depot:2:2"] != "{'Name':'DepotB','ServerID':2}");
+            Assert.That(mockdb.MockDBStore["Depot:3:3"] != "{'Name':'DepotC','ServerID':3}");
         }
 
         [Test]
-        public void ProcessMessage_GetServerWithHTMLDescription_Success()
+        public void ProcessMessage_SingleRedisSet_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader(
+                new List<string>(),
+                new Dictionary<string, string>
+                {
+                    { "AddOrUpdateCapturePoint", "CP" },
+                });
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "GetOrAddServer",
-                Destination = "MYSQL",
+                Action = "AddOrUpdateCapturePoint",
+                Destination = "REDIS",
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'ServerName':'Dev Kaukasus Insurgency Server','Description':'Hello World <p></p>'}"
+                Data = "{'Name':'CapturePointA','ServerID':1}"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
-            Assert.That(response.Action == "GetOrAddServer");
-            Assert.That((int)response.Data[0][0] == 1);
+            Assert.That(response.Action == "AddOrUpdateCapturePoint");
+            Assert.That(response.Data.Count == 1);
+            Assert.That((string)response.Data[0][0] == "CP:1");
+
+            // Confirm that the data stored in the mock redis is correct
+            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
+            Assert.That(mockdb.MockDBStore["CP:1"] == "{'Name':'CapturePointA','ServerID':1}");
         }
 
         [Test]
         public void ProcessMessage_SampleCallException_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new ThrowExceptionExecuteReader()));
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisThrowExceptionBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader(
+                new List<string>(),
+                new Dictionary<string, string>
+                {
+                    { "AddOrUpdateCapturePoint", "CP" },
+                });
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "SampleCall",
-                Destination = "MYSQL",
+                Action = "AddOrUpdateCapturePoint",
+                Destination = "REDIS",
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Param1':'Test','Param2':'Hello World <p></p>'}"
+                Data = "{'Name':'CapturePointA','ServerID':1}"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
             Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Error executing query against MySQL (Action: " + request.Action + ") - A sample exception has occurred"));
-            Assert.That(response.Action == "SampleCall");
+            Assert.That(response.Error == ("Error executing query against Redis (Action: " + request.Action + ") - Mock Redis Exception"));
+            Assert.That(response.Action == "AddOrUpdateCapturePoint");
             Assert.That(response.Data.Count == 0);
         }
 
         [Test]
-        public void ProcessMessage_EmptyData_Success()
+        public void ProcessMessage_RedisSetFail_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisFailBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader(
+                new List<string>(),
+                new Dictionary<string, string>
+                {
+                    { "AddOrUpdateCapturePoint", "CP" },
+                });
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "SampleCall",
-                Destination = "MYSQL",
+                Action = "AddOrUpdateCapturePoint",
+                Destination = "REDIS",
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{}"
+                Data = "{'Name':'CapturePointA','ServerID':1}"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
-            Assert.That(response.Result == true);
-            Assert.That(response.Error == "");
-            Assert.That(response.Action == "SampleCall");
-            Assert.That((int)response.Data[0][0] == 1);
+            Assert.That(response.Result == false);
+            Assert.That(response.Error == ("Failed to Set Key in Redis (Key: 'CP:1')"));
+            Assert.That(response.Action == "AddOrUpdateCapturePoint");
+            Assert.That(response.Data.Count == 0);
         }
 
         [Test]
-        public void ProcessMessage_VariousDataTypes_Success()
+        public void ProcessMessage_NoServerIDError_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader(
+                new List<string>(),
+                new Dictionary<string, string>
+                {
+                    { "AddOrUpdateCapturePoint", "CP" },
+                });
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "SampleCall",
-                Destination = "MYSQL",
+                Action = "AddOrUpdateCapturePoint",
+                Destination = "REDIS",
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Param1':25,'Param2':true,'Param3':'string','Param4':2.25,'Param5':-9999}"
+                Data = "{'Name':'CapturePointA'}"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
-            Assert.That(response.Result == true);
-            Assert.That(response.Error == "");
-            Assert.That(response.Action == "SampleCall");
-            Assert.That((int)response.Data[0][0] == 1);
+            Assert.That(response.Result == false);
+            Assert.That(response.Error == ("Error executing query against Redis (Action: " + request.Action + ") - 'ServerID' not found in Data request"));
+            Assert.That(response.Action == "AddOrUpdateCapturePoint");
+            Assert.That(response.Data.Count == 0);
+        }
+
+        [Test]
+        public void ProcessMessage_InvalidRedisKeyError_Success()
+        {
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            IConfigReader config = new Mocks.MockConfigReader();
+
+            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
+
+            ProtocolRequest request = new ProtocolRequest
+            {
+                Action = "AddOrUpdateCapturePoint",
+                Destination = "REDIS",
+                IsBulkQuery = false,
+                IPAddress = "127.0.0.1",
+                Type = Newtonsoft.Json.Linq.JTokenType.Object,
+                Data = "{'Name':'CapturePointA','ServerID':1}"
+            };
+
+            ProtocolResponse response = strategy.Process(request);
+
+            Assert.That(response.Result == false);
+            Assert.That(response.Error == ("Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration."));
+            Assert.That(response.Action == "AddOrUpdateCapturePoint");
+            Assert.That(response.Data.Count == 0);
+
+        }
+
+
+        [Test]
+        public void ProcessMessage_EmptyDataError_Success()
+        {
         }
 
         [Test]
         public void ProcessMessage_SingleQueryReturnSingleRow_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryExecuteReader()));
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "SampleCall",
-                Destination = "MYSQL",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Param':25}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == true);
-            Assert.That(response.Error == "");
-            Assert.That(response.Action == "SampleCall");
-
-            Assert.That(response.Data.Count == 1, "SingleQuery should only return a single row of data", null);
-            Assert.That((int)response.Data[0][0] == 1);
-            Assert.That((bool)response.Data[0][1] == true);
-            Assert.That((string)response.Data[0][2] == "string1");
-            Assert.That((double)response.Data[0][3] == 12.25);
         }
 
         [Test]
         public void ProcessMessage_BulkQueryMultipleReturn_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryExecuteReader()));
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "SampleCall",
-                Destination = "MYSQL",
-                IsBulkQuery = true,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "[{'Param1':1},{'Param2':2}]"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == true);
-            Assert.That(response.Error == "");
-            Assert.That(response.Action == "SampleCall");
-
-            Assert.That(response.Data.Count == 2, "BulkQuery should return multiple rows of data", null);
-            Assert.That((int)response.Data[0][0] == 1);
-            Assert.That((bool)response.Data[0][1] == true);
-            Assert.That((string)response.Data[0][2] == "string1");
-            Assert.That((double)response.Data[0][3] == 12.25);
-            Assert.That((int)response.Data[1][0] == 1);
         }
 
         [Test]
         public void ProcessMessage_BulkQueryException_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryException()));
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "SampleCall",
-                Destination = "MYSQL",
-                IsBulkQuery = true,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "[{'Param1':1},{'Param2':2}]"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == false);
-            Assert.That(response.Error == "Error executing query against MySQL (Action: " + request.Action + ") - A sample bulk query exception has occurred");
-            Assert.That(response.Action == "SampleCall");
-            Assert.That(response.Data.Count == 1);
         }
 
-        private IProcessMessageStrategy CreateMySqlProcessStrategyWithMocks(IDbConnection conn)
+        private class MockRedisSuccessBehaviour : IRedisExecuteBehaviour
         {
-            return new MySqlProcessMessageStrategy(conn, new Mocks.MockLogger(), new Mocks.MockConfigReader());
-        }
-
-        private class ThrowExceptionExecuteReader : IExecuteReader
-        {
-            IDataReader IExecuteReader.Execute()
+            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
             {
-                throw new Exception("A sample exception has occurred");
+                return true;
+            }
+
+            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
+            {
+                return true;
             }
         }
 
-        private class BulkQueryExecuteReader : IExecuteReader
+        private class MockRedisFailBehaviour : IRedisExecuteBehaviour
         {
-            IDataReader IExecuteReader.Execute()
+            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
             {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Col1", typeof(int));
-                dt.Columns.Add("Col2", typeof(bool));
-                dt.Columns.Add("Col3", typeof(string));
-                dt.Columns.Add("Col4", typeof(double));
-                dt.Rows.Add(new object[] { 1, true, "string1", 12.25 });
-                return dt.CreateDataReader();
+                return false;
+            }
+
+            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
+            {
+                return false;
             }
         }
 
-        private class BulkQueryException : IExecuteReader
+        private class MockRedisThrowExceptionBehaviour : IRedisExecuteBehaviour
         {
-            private static int TimesConstructed = 0;
-
-            IDataReader IExecuteReader.Execute()
+            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
             {
-                TimesConstructed += 1;
-                if (TimesConstructed < 2)
-                {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Col1", typeof(int));
-                    dt.Columns.Add("Col2", typeof(bool));
-                    dt.Columns.Add("Col3", typeof(string));
-                    dt.Columns.Add("Col4", typeof(double));
-                    dt.Rows.Add(new object[] { 1, true, "string1", 12.25 });
-                    return dt.CreateDataReader();
-                }
-                else
-                {
-                    throw new Exception("A sample bulk query exception has occurred");
-                }
+                throw new Exception("Mock Redis Exception");
             }
-        }
 
-        [Test]
-        public void Stub()
-        {
-            IDbConnection connection = new Mocks.MockDBConnection();
-            ILogger logger = new Mocks.MockLogger();
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string> { "b", "p" },
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                    { "AddOrUpdateDepot", "Depot" },
-                    { "AddOrUpdateSideMission", "SM" }
-                });
-
-            IProcessMessageStrategy strategy = new MySqlProcessMessageStrategy(connection, logger, config);
+            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
+            {
+                throw new Exception("Mock Redis Exception");
+            }
         }
     }
 }

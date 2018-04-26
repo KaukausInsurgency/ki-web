@@ -10,9 +10,39 @@ namespace Tests.Mocks
 {
     class MockRedisDatabase : IDatabase
     {
+        public Dictionary<RedisKey, RedisValue> MockDBStore;
+        public Dictionary<RedisKey, TimeSpan?> MockDBStoreLife;
         int IDatabase.Database => 1;
+        private IRedisExecuteBehaviour _redisBehaviour;
 
-#region UnimplementedMockMethods
+        bool IDatabase.StringSet(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
+        {
+            
+            MockDBStore[key] = value;
+            MockDBStoreLife[key] = expiry;
+            return _redisBehaviour.Execute(key, value, expiry, when, flags); 
+        }
+
+        bool IDatabase.StringSet(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
+        {
+            
+            foreach (KeyValuePair<RedisKey,RedisValue> pair in values)
+            {              
+                MockDBStore[pair.Key] = pair.Value;
+                MockDBStoreLife[pair.Key] = null;
+            }
+            return _redisBehaviour.Execute(values, when, flags);
+        }
+
+        public MockRedisDatabase(IRedisExecuteBehaviour behaviour)
+        {
+            _redisBehaviour = behaviour;
+            MockDBStore = new Dictionary<RedisKey, RedisValue>();
+            MockDBStoreLife = new Dictionary<RedisKey, TimeSpan?>();
+        }
+
+
+        #region UnimplementedMockMethods
 
         ConnectionMultiplexer IRedisAsync.Multiplexer => throw new NotImplementedException();
 
@@ -1357,16 +1387,6 @@ namespace Tests.Mocks
         }
 
         Task<long> IDatabaseAsync.StringLengthAsync(RedisKey key, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IDatabase.StringSet(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IDatabase.StringSet(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
         {
             throw new NotImplementedException();
         }

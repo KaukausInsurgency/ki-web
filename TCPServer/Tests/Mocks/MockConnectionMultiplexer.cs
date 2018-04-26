@@ -11,6 +11,9 @@ namespace Tests.Mocks
 {
     class MockConnectionMultiplexer : IConnectionMultiplexer
     {
+        private IRedisExecuteBehaviour _redisBehaviour;
+        private IDatabase _db;
+
         private bool _isConnected = true;
 
         string IConnectionMultiplexer.ClientName => "MockRedis";
@@ -23,10 +26,16 @@ namespace Tests.Mocks
 
         bool IConnectionMultiplexer.IsConnected => _isConnected;
 
+        public MockConnectionMultiplexer(IRedisExecuteBehaviour behaviour)
+        {
+            _redisBehaviour = behaviour;
+            _db = new MockRedisDatabase(_redisBehaviour);
+        }
+
 
         IDatabase IConnectionMultiplexer.GetDatabase(int db, object asyncState)
         {
-            return new MockRedisDatabase();
+            return _db;
         }
 
         void IConnectionMultiplexer.Close(bool allowCommandsToComplete)

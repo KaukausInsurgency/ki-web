@@ -56,20 +56,21 @@ namespace TAWKI_TCPServer.Implementations
                     foreach (Dictionary<string, object> x in DataDictionary)
                     {
                         id += 1;
-                        string serverid = Convert.ToString(x["ServerID"]);
-                        string rediskey = Config.RedisActionKeys[request.Action];
 
-                        if (serverid == null)
+                        if (!Config.RedisActionKeys.ContainsKey(request.Action))
+                        {
+                            response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
+                            return response;
+                        }
+
+                        if (!x.ContainsKey("ServerID"))
                         {
                             response.Error = "Error executing query against Redis (Action: " + request.Action + ") - " + "'ServerID' not found in Data request";
                             return response;
                         }
 
-                        if (rediskey == null)
-                        {
-                            response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
-                            return response;
-                        }
+                        string rediskey = Config.RedisActionKeys[request.Action];
+                        string serverid = Convert.ToString(x["ServerID"]);
 
                         IDatabase db = Connection.GetDatabase();
                         string k = rediskey + ":" + serverid + ":" + id;
@@ -109,20 +110,20 @@ namespace TAWKI_TCPServer.Implementations
 
                 try
                 {
-                    string serverid = Convert.ToString(DataDictionary["ServerID"]);
-                    string rediskey = Config.RedisActionKeys[request.Action];
+                    if (!Config.RedisActionKeys.ContainsKey(request.Action))
+                    {
+                        response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
+                        return response;
+                    }
 
-                    if (serverid == null)
+                    if (!DataDictionary.ContainsKey("ServerID"))
                     {
                         response.Error = "Error executing query against Redis (Action: " + request.Action + ") - " + "'ServerID' not found in Data request";
                         return response;
                     }
 
-                    if (rediskey == null)
-                    {
-                        response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
-                        return response;
-                    }
+                    string rediskey = Config.RedisActionKeys[request.Action];
+                    string serverid = Convert.ToString(DataDictionary["ServerID"]);                
 
                     IDatabase db = Connection.GetDatabase();
                     string k = rediskey + ":" + serverid;
@@ -133,7 +134,7 @@ namespace TAWKI_TCPServer.Implementations
                     }
                     else
                     {
-                        response.Data.Add(new List<object> { 1 });
+                        response.Data.Add(new List<object> { k });
                         response.Result = true;
                     }
                 }

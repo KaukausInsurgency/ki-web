@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="InvalidProcessMessageStrategyTests.cs" />
     <Compile Include="Mocks\IExecuteReader.cs" />
+    <Compile Include="Mocks\IRedisExecuteBehaviour.cs" />
     <Compile Include="Mocks\MockConnectionMultiplexer.cs" />
     <Compile Include="Mocks\MockRedisDatabase.cs" />
     <Compile Include="MySqlProcessMessageStrategyTests.cs" />
