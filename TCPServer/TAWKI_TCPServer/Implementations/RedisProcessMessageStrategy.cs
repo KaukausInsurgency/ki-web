@@ -52,41 +52,19 @@ namespace TAWKI_TCPServer.Implementations
 
                 try
                 {
-                    int id = 0;
                     foreach (Dictionary<string, object> x in DataDictionary)
                     {
-                        id += 1;
+                        string error;
+                        List<object> results = TrySetData(ref request, x.First(), out error);
 
-                        if (!Config.RedisActionKeys.ContainsKey(request.Action))
+                        if (results == null)
                         {
-                            response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
-                            return response;
-                        }
-
-                        if (!x.ContainsKey("ServerID"))
-                        {
-                            response.Error = "Error executing query against Redis (Action: " + request.Action + ") - " + "'ServerID' not found in Data request";
-                            return response;
-                        }
-
-                        string rediskey = Config.RedisActionKeys[request.Action];
-                        string serverid = Convert.ToString(x["ServerID"]);
-
-                        IDatabase db = Connection.GetDatabase();
-                        string k = rediskey + ":" + serverid + ":" + id;
-                        string jdatastring = Newtonsoft.Json.JsonConvert.SerializeObject(x);
-                        if (!db.StringSet(k, jdatastring))
-                        {
-                            response.Error = "Failed to Set Key in Redis (Key: '" + k + "')";
+                            response.Error = error;
                             response.Result = false;
                         }
                         else
                         {
-                            List<object> res = new List<object>
-                            {
-                                k
-                            };
-                            response.Data.Add(res);
+                            response.Data.Add(results);
                             response.Result = true;
                         }
                     }
@@ -106,35 +84,25 @@ namespace TAWKI_TCPServer.Implementations
                 if (request.Type == JTokenType.Object)
                     DataDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(request.Data);
                 else
-                    DataDictionary = new Dictionary<string, object>();
+                {
+                    response.Error = "Error executing query against Redis - Action: '" + request.Action + "' - No data sent";
+                    response.Result = false;
+                    return response;
+                }
 
                 try
                 {
-                    if (!Config.RedisActionKeys.ContainsKey(request.Action))
-                    {
-                        response.Error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
-                        return response;
-                    }
+                    string error;
+                    List<object> results = TrySetData(ref request, DataDictionary.First(), out error);
 
-                    if (!DataDictionary.ContainsKey("ServerID"))
+                    if (results == null)
                     {
-                        response.Error = "Error executing query against Redis (Action: " + request.Action + ") - " + "'ServerID' not found in Data request";
-                        return response;
-                    }
-
-                    string rediskey = Config.RedisActionKeys[request.Action];
-                    string serverid = Convert.ToString(DataDictionary["ServerID"]);                
-
-                    IDatabase db = Connection.GetDatabase();
-                    string k = rediskey + ":" + serverid;
-                    if (!db.StringSet(k, request.Data))
-                    {
-                        response.Error = "Failed to Set Key in Redis (Key: '" + k + "')";
+                        response.Error = error;
                         response.Result = false;
                     }
                     else
                     {
-                        response.Data.Add(new List<object> { k });
+                        response.Data.Add(results);
                         response.Result = true;
                     }
                 }
@@ -146,6 +114,34 @@ namespace TAWKI_TCPServer.Implementations
             }
 
             return response;
+
+        }
+
+        private List<object> TrySetData(ref ProtocolRequest request, KeyValuePair<string, object> pair, out string error)
+        {
+            error = "";
+
+            if (!Config.RedisActionKeys.ContainsKey(request.Action))
+            {
+                error = "Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration.";
+                return null;
+            }
+
+            string rediskey = Config.RedisActionKeys[request.Action];
+            string k = rediskey + ':' + pair.Key;
+            string jdatastring = Newtonsoft.Json.JsonConvert.SerializeObject(pair.Value);
+            IDatabase db = Connection.GetDatabase();
+            
+            if (!db.StringSet(k, jdatastring))
+            {
+                error = "Failed to Set Key in Redis (Key: '" + k + "')";
+                return null;
+            }
+            else
+            {
+                List<object> res = new List<object>{ k };
+                return res;
+            }
 
         }
 

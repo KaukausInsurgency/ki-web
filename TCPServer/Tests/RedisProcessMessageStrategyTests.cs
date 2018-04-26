@@ -37,7 +37,7 @@ namespace Tests
                 IsBulkQuery = true,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Array,
-                Data = "[{'Name':'DepotA','ServerID':1},{'Name':'DepotB','ServerID':2},{'Name':'DepotC','ServerID':3}]"
+                Data = "[{'1:1':{'Name':'DepotA'}},{'2:2':{'Name':'DepotB'}},{'3:3':{'Name':'DepotC'}}]"
             };
 
             ProtocolResponse response = strategy.Process(request);
@@ -53,9 +53,9 @@ namespace Tests
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockDBStore["Depot:1:1"] != "{'Name':'DepotA','ServerID':1}");
-            Assert.That(mockdb.MockDBStore["Depot:2:2"] != "{'Name':'DepotB','ServerID':2}");
-            Assert.That(mockdb.MockDBStore["Depot:3:3"] != "{'Name':'DepotC','ServerID':3}");
+            Assert.That(mockdb.MockDBStore["Depot:1:1"] != "{'Name':'DepotA'}");
+            Assert.That(mockdb.MockDBStore["Depot:2:2"] != "{'Name':'DepotB'}");
+            Assert.That(mockdb.MockDBStore["Depot:3:3"] != "{'Name':'DepotC'}");
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Tests
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Name':'CapturePointA','ServerID':1}"
+                Data = "{'1:1':{'Name':'CapturePointA','ServerID':1}}"
             };
 
             ProtocolResponse response = strategy.Process(request);
@@ -87,11 +87,11 @@ namespace Tests
             Assert.That(response.Error == "");
             Assert.That(response.Action == "AddOrUpdateCapturePoint");
             Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "CP:1");
+            Assert.That((string)response.Data[0][0] == "CP:1:1");
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockDBStore["CP:1"] == "{'Name':'CapturePointA','ServerID':1}");
+            Assert.That(mockdb.MockDBStore["CP:1:1"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
         }
 
         [Test]
@@ -145,44 +145,13 @@ namespace Tests
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Name':'CapturePointA','ServerID':1}"
+                Data = "{'1:1':{'Name':'CapturePointA','ServerID':1}}"
             };
 
             ProtocolResponse response = strategy.Process(request);
 
             Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Failed to Set Key in Redis (Key: 'CP:1')"));
-            Assert.That(response.Action == "AddOrUpdateCapturePoint");
-            Assert.That(response.Data.Count == 0);
-        }
-
-        [Test]
-        public void ProcessMessage_NoServerIDError_Success()
-        {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string>(),
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                });
-
-            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "AddOrUpdateCapturePoint",
-                Destination = "REDIS",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Name':'CapturePointA'}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Error executing query against Redis (Action: " + request.Action + ") - 'ServerID' not found in Data request"));
+            Assert.That(response.Error == ("Failed to Set Key in Redis (Key: 'CP:1:1')"));
             Assert.That(response.Action == "AddOrUpdateCapturePoint");
             Assert.That(response.Data.Count == 0);
         }
@@ -202,7 +171,7 @@ namespace Tests
                 IsBulkQuery = false,
                 IPAddress = "127.0.0.1",
                 Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Name':'CapturePointA','ServerID':1}"
+                Data = "{'1:1':{'Name':'CapturePointA','ServerID':1}}"
             };
 
             ProtocolResponse response = strategy.Process(request);
@@ -217,21 +186,6 @@ namespace Tests
 
         [Test]
         public void ProcessMessage_EmptyDataError_Success()
-        {
-        }
-
-        [Test]
-        public void ProcessMessage_SingleQueryReturnSingleRow_Success()
-        {
-        }
-
-        [Test]
-        public void ProcessMessage_BulkQueryMultipleReturn_Success()
-        {
-        }
-
-        [Test]
-        public void ProcessMessage_BulkQueryException_Success()
         {
         }
 
