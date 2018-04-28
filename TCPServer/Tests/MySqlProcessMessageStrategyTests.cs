@@ -68,7 +68,7 @@ namespace Tests
         [Test]
         public void ProcessMessage_SampleCallException_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new ThrowExceptionExecuteReader()));
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new MockMySqlThrowExceptionBehaviour()));
 
             ProtocolRequest request = new ProtocolRequest
             {
@@ -137,7 +137,7 @@ namespace Tests
         [Test]
         public void ProcessMessage_SingleQueryReturnSingleRow_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryExecuteReader()));
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new MockMySqlSuccessBehaviour()));
 
             ProtocolRequest request = new ProtocolRequest
             {
@@ -165,7 +165,7 @@ namespace Tests
         [Test]
         public void ProcessMessage_BulkQueryMultipleReturn_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryExecuteReader()));
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new MockMySqlSuccessBehaviour()));
 
             ProtocolRequest request = new ProtocolRequest
             {
@@ -194,7 +194,7 @@ namespace Tests
         [Test]
         public void ProcessMessage_BulkQueryException_Success()
         {
-            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new BulkQueryException()));
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new MockMySqlBulkQueryExceptionBehaviour()));
 
             ProtocolRequest request = new ProtocolRequest
             {
@@ -217,69 +217,6 @@ namespace Tests
         private IProcessMessageStrategy CreateMySqlProcessStrategyWithMocks(IDbConnection conn)
         {
             return new MySqlProcessMessageStrategy(conn, new Mocks.MockLogger(), new Mocks.MockConfigReader());
-        }
-
-        private class ThrowExceptionExecuteReader : IExecuteReader
-        {
-            IDataReader IExecuteReader.Execute()
-            {
-                throw new Exception("A sample exception has occurred");
-            }
-        }
-
-        private class BulkQueryExecuteReader : IExecuteReader
-        {
-            IDataReader IExecuteReader.Execute()
-            {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Col1", typeof(int));
-                dt.Columns.Add("Col2", typeof(bool));
-                dt.Columns.Add("Col3", typeof(string));
-                dt.Columns.Add("Col4", typeof(double));
-                dt.Rows.Add(new object[] { 1, true, "string1", 12.25 });
-                return dt.CreateDataReader();
-            }
-        }
-
-        private class BulkQueryException : IExecuteReader
-        {
-            private static int TimesConstructed = 0;
-
-            IDataReader IExecuteReader.Execute()
-            {
-                TimesConstructed += 1;
-                if (TimesConstructed < 2)
-                {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Col1", typeof(int));
-                    dt.Columns.Add("Col2", typeof(bool));
-                    dt.Columns.Add("Col3", typeof(string));
-                    dt.Columns.Add("Col4", typeof(double));
-                    dt.Rows.Add(new object[] { 1, true, "string1", 12.25 });
-                    return dt.CreateDataReader();
-                }
-                else
-                {
-                    throw new Exception("A sample bulk query exception has occurred");
-                }
-            }
-        }
-
-        [Test]
-        public void Stub()
-        {
-            IDbConnection connection = new Mocks.MockDBConnection();
-            ILogger logger = new Mocks.MockLogger();
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string> { "b", "p" },
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                    { "AddOrUpdateDepot", "Depot" },
-                    { "AddOrUpdateSideMission", "SM" }
-                });
-
-            IProcessMessageStrategy strategy = new MySqlProcessMessageStrategy(connection, logger, config);
         }
     }
 }

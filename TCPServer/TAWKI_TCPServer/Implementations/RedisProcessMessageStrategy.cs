@@ -55,7 +55,7 @@ namespace TAWKI_TCPServer.Implementations
                     foreach (Dictionary<string, object> x in DataDictionary)
                     {
                         string error;
-                        List<object> results = TrySetData(ref request, x.First(), out error);
+                        List<object> results = PublishData(ref request, x.First(), out error);
 
                         if (results == null)
                         {
@@ -93,7 +93,7 @@ namespace TAWKI_TCPServer.Implementations
                 try
                 {
                     string error;
-                    List<object> results = TrySetData(ref request, DataDictionary.First(), out error);
+                    List<object> results = PublishData(ref request, DataDictionary.First(), out error);
 
                     if (results == null)
                     {
@@ -117,7 +117,7 @@ namespace TAWKI_TCPServer.Implementations
 
         }
 
-        private List<object> TrySetData(ref ProtocolRequest request, KeyValuePair<string, object> pair, out string error)
+        private List<object> PublishData(ref ProtocolRequest request, KeyValuePair<string, object> pair, out string error)
         {
             error = "";
 
@@ -132,16 +132,9 @@ namespace TAWKI_TCPServer.Implementations
             string jdatastring = Newtonsoft.Json.JsonConvert.SerializeObject(pair.Value);
             IDatabase db = Connection.GetDatabase();
             
-            if (!db.StringSet(k, jdatastring))
-            {
-                error = "Failed to Set Key in Redis (Key: '" + k + "')";
-                return null;
-            }
-            else
-            {
-                List<object> res = new List<object>{ k };
-                return res;
-            }
+            long subs = db.Publish(k, jdatastring, CommandFlags.None);
+            Logger.Log("Published data to channel: '" + k + "' - Subscribers listening: " + subs);
+            return new List<object> { k };
 
         }
 

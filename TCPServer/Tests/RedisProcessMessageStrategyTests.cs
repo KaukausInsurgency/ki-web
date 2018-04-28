@@ -11,155 +11,110 @@ using System.Data;
 using Tests.Mocks;
 using System.Data.SqlClient;
 using StackExchange.Redis;
+using Newtonsoft.Json.Linq;
 
 namespace Tests
 {
     [TestFixture]
     class RedisProcessMessageStrategyTests
     {
-        [Test]
-        public void ProcessMessage_BulkRedisSet_Success()
+        private ProtocolResponse GenerateMockStrategyResponse(out IConnectionMultiplexer conn, IRedisPublishBehaviour behaviour, JTokenType jtype, string data, bool bulkquery)
         {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour(), behaviour);
             IConfigReader config = new Mocks.MockConfigReader(
                 new List<string>(),
                 new Dictionary<string, string>
                 {
-                    { "AddOrUpdateDepot", "Depot" },
+                    { "SampleCall", "Sample" },
                 });
 
             IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
 
             ProtocolRequest request = new ProtocolRequest
             {
-                Action = "AddOrUpdateDepot",
+                Action = "SampleCall",
                 Destination = "REDIS",
-                IsBulkQuery = true,
+                IsBulkQuery = bulkquery,
                 IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Array,
-                Data = "[{'1:1':{'Name':'DepotA'}},{'2:2':{'Name':'DepotB'}},{'3:3':{'Name':'DepotC'}}]"
+                Type = jtype,
+                Data = data
             };
 
-            ProtocolResponse response = strategy.Process(request);
+            return strategy.Process(request);
+        }
+
+        [Test]
+        public void ProcessMessage_RedisPublishBulk_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(), 
+                JTokenType.Array, "[{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}]", true);
+
+            // Confirm that the data stored in the mock redis is correct
+            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
+            Assert.That(mockdb.MockChannel["Sample:1"] == "[{\"Name\":\"DepotA\"},{\"Name\":\"DepotB\"},{\"Name\":\"DepotC\"}]");
+        }
+
+
+        [Test]
+        public void ProcessMessage_BulkPublishResponse_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Array, "[{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}]", true);
 
             // Assert that the response object is correct
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
-            Assert.That(response.Action == "AddOrUpdateDepot");
-            Assert.That(response.Data.Count == 3);
-            Assert.That((string)response.Data[0][0] == "Depot:1:1");
-            Assert.That((string)response.Data[1][0] == "Depot:2:2");
-            Assert.That((string)response.Data[2][0] == "Depot:3:3");
-
-            // Confirm that the data stored in the mock redis is correct
-            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockDBStore["Depot:1:1"] != "{'Name':'DepotA'}");
-            Assert.That(mockdb.MockDBStore["Depot:2:2"] != "{'Name':'DepotB'}");
-            Assert.That(mockdb.MockDBStore["Depot:3:3"] != "{'Name':'DepotC'}");
+            Assert.That(response.Action == "SampleCall");
+            Assert.That(response.Data.Count == 1);
+            Assert.That((string)response.Data[0][0] == "Sample:1");
         }
 
         [Test]
-        public void ProcessMessage_SingleRedisSet_Success()
+        public void ProcessMessage_RedisPublishSingle_Success()
         {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string>(),
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                });
-
-            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "AddOrUpdateCapturePoint",
-                Destination = "REDIS",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'1:1':{'Name':'CapturePointA','ServerID':1}}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == true);
-            Assert.That(response.Error == "");
-            Assert.That(response.Action == "AddOrUpdateCapturePoint");
-            Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "CP:1:1");
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockDBStore["CP:1:1"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
+            Assert.That(mockdb.MockChannel["Sample:1"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
+        }
+
+
+        [Test]
+        public void ProcessMessage_SinglePublishResponse_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
+
+            Assert.That(response.Result == true);
+            Assert.That(response.Error == "");
+            Assert.That(response.Action == "SampleCall");
+            Assert.That(response.Data.Count == 1);
+            Assert.That((string)response.Data[0][0] == "Sample:1");
         }
 
         [Test]
         public void ProcessMessage_SampleCallException_Success()
         {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisThrowExceptionBehaviour());
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string>(),
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                });
-
-            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "AddOrUpdateCapturePoint",
-                Destination = "REDIS",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Name':'CapturePointA','ServerID':1}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishThrowExceptionBehaviour(),
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
 
             Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Error executing query against Redis (Action: " + request.Action + ") - Mock Redis Exception"));
-            Assert.That(response.Action == "AddOrUpdateCapturePoint");
-            Assert.That(response.Data.Count == 0);
-        }
-
-        [Test]
-        public void ProcessMessage_RedisSetFail_Success()
-        {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisFailBehaviour());
-            IConfigReader config = new Mocks.MockConfigReader(
-                new List<string>(),
-                new Dictionary<string, string>
-                {
-                    { "AddOrUpdateCapturePoint", "CP" },
-                });
-
-            IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "AddOrUpdateCapturePoint",
-                Destination = "REDIS",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'1:1':{'Name':'CapturePointA','ServerID':1}}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
-
-            Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Failed to Set Key in Redis (Key: 'CP:1:1')"));
-            Assert.That(response.Action == "AddOrUpdateCapturePoint");
+            Assert.That(!String.IsNullOrWhiteSpace(response.Error));
+            Assert.That(response.Action == "SampleCall");
             Assert.That(response.Data.Count == 0);
         }
 
         [Test]
         public void ProcessMessage_InvalidRedisKeyError_Success()
         {
-            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour());
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour(), new MockRedisPublishSuccessBehaviour());
             IConfigReader config = new Mocks.MockConfigReader();
 
             IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
@@ -177,7 +132,7 @@ namespace Tests
             ProtocolResponse response = strategy.Process(request);
 
             Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Error executing query against Redis - Action: '" + request.Action + "' not found in server configuration - please check action message or server configuration."));
+            Assert.That(!String.IsNullOrWhiteSpace(response.Error));
             Assert.That(response.Action == "AddOrUpdateCapturePoint");
             Assert.That(response.Data.Count == 0);
 
@@ -185,47 +140,17 @@ namespace Tests
 
 
         [Test]
-        public void ProcessMessage_EmptyDataError_Success()
+        public void ProcessMessage_EmptyData_Success()
         {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Object, "{}", false);
+
+            Assert.That(response.Result == false);
+            Assert.That(!String.IsNullOrWhiteSpace(response.Error));
+            Assert.That(response.Action == "SampleCall");
+            Assert.That(response.Data.Count == 0);
         }
 
-        private class MockRedisSuccessBehaviour : IRedisExecuteBehaviour
-        {
-            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
-            {
-                return true;
-            }
-
-            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
-            {
-                return true;
-            }
-        }
-
-        private class MockRedisFailBehaviour : IRedisExecuteBehaviour
-        {
-            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
-            {
-                return false;
-            }
-
-            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
-            {
-                return false;
-            }
-        }
-
-        private class MockRedisThrowExceptionBehaviour : IRedisExecuteBehaviour
-        {
-            bool IRedisExecuteBehaviour.Execute(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
-            {
-                throw new Exception("Mock Redis Exception");
-            }
-
-            bool IRedisExecuteBehaviour.Execute(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
-            {
-                throw new Exception("Mock Redis Exception");
-            }
-        }
     }
 }

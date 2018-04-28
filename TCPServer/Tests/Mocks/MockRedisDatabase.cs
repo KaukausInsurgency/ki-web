@@ -12,8 +12,19 @@ namespace Tests.Mocks
     {
         public Dictionary<RedisKey, RedisValue> MockDBStore;
         public Dictionary<RedisKey, TimeSpan?> MockDBStoreLife;
+        public Dictionary<RedisChannel, RedisValue> MockChannel;
         int IDatabase.Database => 1;
         private IRedisExecuteBehaviour _redisBehaviour;
+        private IRedisPublishBehaviour _redisPublishBehaviour;
+
+        public MockRedisDatabase(IRedisExecuteBehaviour behaviour, IRedisPublishBehaviour publish)
+        {
+            _redisBehaviour = behaviour;
+            _redisPublishBehaviour = publish;
+            MockDBStore = new Dictionary<RedisKey, RedisValue>();
+            MockDBStoreLife = new Dictionary<RedisKey, TimeSpan?>();
+            MockChannel = new Dictionary<RedisChannel, RedisValue>();
+        }
 
         bool IDatabase.StringSet(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
         {
@@ -34,13 +45,19 @@ namespace Tests.Mocks
             return _redisBehaviour.Execute(values, when, flags);
         }
 
-        public MockRedisDatabase(IRedisExecuteBehaviour behaviour)
+        long IDatabase.Publish(RedisChannel channel, RedisValue message, CommandFlags flags)
         {
-            _redisBehaviour = behaviour;
-            MockDBStore = new Dictionary<RedisKey, RedisValue>();
-            MockDBStoreLife = new Dictionary<RedisKey, TimeSpan?>();
+            MockChannel[channel] = message;
+            MockChannel[channel] = message;
+            return _redisPublishBehaviour.Execute(channel, message, flags);
         }
 
+        Task<long> IDatabaseAsync.PublishAsync(RedisChannel channel, RedisValue message, CommandFlags flags)
+        {
+            MockChannel[channel] = message;
+            MockChannel[channel] = message;
+            return new Task<long>(() => _redisPublishBehaviour.Execute(channel, message, flags));
+        }
 
         #region UnimplementedMockMethods
 
@@ -767,16 +784,6 @@ namespace Tests.Mocks
         }
 
         Task<TimeSpan> IRedisAsync.PingAsync(CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        long IDatabase.Publish(RedisChannel channel, RedisValue message, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<long> IDatabaseAsync.PublishAsync(RedisChannel channel, RedisValue message, CommandFlags flags)
         {
             throw new NotImplementedException();
         }

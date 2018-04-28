@@ -57,10 +57,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InvalidProcessMessageStrategyTests.cs" />
-    <Compile Include="Mocks\IExecuteReader.cs" />
-    <Compile Include="Mocks\IRedisExecuteBehaviour.cs" />
+    <Compile Include="Interfaces\IExecuteReader.cs" />
+    <Compile Include="Interfaces\IRedisExecuteBehaviour.cs" />
+    <Compile Include="Interfaces\IRedisPublishBehaviour.cs" />
     <Compile Include="Mocks\MockConnectionMultiplexer.cs" />
+    <Compile Include="Mocks\MockMySqlBulkQueryExceptionBehaviour.cs" />
+    <Compile Include="Mocks\MockMySqlSuccessBehaviour.cs" />
+    <Compile Include="Mocks\MockMySqlThrowExceptionBehaviour.cs" />
     <Compile Include="Mocks\MockRedisDatabase.cs" />
+    <Compile Include="Mocks\MockRedisFailBehaviour.cs" />
+    <Compile Include="Mocks\MockRedisPublishSuccessBehaviour.cs" />
+    <Compile Include="Mocks\MockRedisPublishThrowExceptionBehaviour.cs" />
+    <Compile Include="Mocks\MockRedisSuccessBehaviour.cs" />
+    <Compile Include="Mocks\MockRedisThrowExceptionBehaviour.cs" />
     <Compile Include="MySqlProcessMessageStrategyTests.cs" />
     <Compile Include="ProcessMessageStrategyFactoryTests.cs" />
     <Compile Include="RedisProcessMessageStrategyTests.cs" />
