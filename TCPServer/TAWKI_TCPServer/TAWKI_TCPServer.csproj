@@ -68,6 +68,7 @@
     <Compile Include="ConfigReader.cs" />
     <Compile Include="EDBSource.cs" />
     <Compile Include="GlobalConfig.cs" />
+    <Compile Include="Implementations\CurrentTime.cs" />
     <Compile Include="Implementations\FileLogger.cs" />
     <Compile Include="Implementations\InvalidProcessMessageStrategy.cs" />
     <Compile Include="Implementations\KICallback.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IProcessMessageStrategy.cs" />
     <Compile Include="Implementations\ProcessMessageStrategyFactory.cs" />
+    <Compile Include="Interfaces\ITimer.cs" />
     <Compile Include="IPCConnectedEventArgs.cs" />
     <Compile Include="IPCReceivedEventArgs.cs" />
     <Compile Include="IPCSendEventArgs.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="SockBuffer.cs" />
     <Compile Include="SocketClient.cs" />
     <Compile Include="SqlUtility.cs" />
+    <Compile Include="ThrottleMapper.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -70,6 +70,7 @@
     <Compile Include="Mocks\MockRedisPublishThrowExceptionBehaviour.cs" />
     <Compile Include="Mocks\MockRedisSuccessBehaviour.cs" />
     <Compile Include="Mocks\MockRedisThrowExceptionBehaviour.cs" />
+    <Compile Include="Mocks\MockTimer.cs" />
     <Compile Include="MySqlProcessMessageStrategyTests.cs" />
     <Compile Include="ProcessMessageStrategyFactoryTests.cs" />
     <Compile Include="RedisProcessMessageStrategyTests.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Mocks\MockDBConnection.cs" />
     <Compile Include="Mocks\MockLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThrottleMapperTests.cs" />
     <Compile Include="UtilityTests.cs" />
   </ItemGroup>
   <ItemGroup>

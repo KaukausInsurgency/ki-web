@@ -16,10 +16,12 @@ namespace TAWKI_TCPServer.Implementations
     class KICallback : IIPCCallback
     {
         private ILogger Logger;
+        private ThrottleMapper Throttler;
 
         public KICallback(ILogger Logger)
         {
             this.Logger = Logger;
+            Throttler = new ThrottleMapper(new CurrentTime(), 5);
         }
 
         public void Invoke(ISynchronizeInvoke sync, Action action)
@@ -51,7 +53,6 @@ namespace TAWKI_TCPServer.Implementations
         {
             try
             {
-
                 Logger.Log("Client Sent: " + e.data);
                 Console.WriteLine("Received data from client (" + ((SocketClient)(sender)).Address + ")");
 
@@ -60,11 +61,15 @@ namespace TAWKI_TCPServer.Implementations
                 // Verify the request format is valid
                 if (j["Action"] != null && j["BulkQuery"] != null && j["Data"] != null && j["Destination"] != null)
                 {
-                    ProtocolRequest request = Utility.CreateRequest(ref j, ((SocketClient)(sender)).Address);
-                    IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, ProcessMessageStrategyFactory.GetSource(request.Destination));
-                    ProtocolResponse resp = processor.Process(request);
-                    string jsonResp = JsonConvert.SerializeObject(resp);
-                    ((SocketClient)(sender)).Write(jsonResp);
+                    // Simply ignore/drop the request if we need to throttle the connection
+                    if (!Throttler.ShouldThrottle(j["Action"]))
+                    {
+                        ProtocolRequest request = Utility.CreateRequest(ref j, ((SocketClient)(sender)).Address);
+                        IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, ProcessMessageStrategyFactory.GetSource(request.Destination));
+                        ProtocolResponse resp = processor.Process(request);
+                        string jsonResp = JsonConvert.SerializeObject(resp);
+                        ((SocketClient)(sender)).Write(jsonResp);
+                    }          
                 }
                 else
                 {
