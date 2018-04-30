@@ -18,6 +18,8 @@ namespace KIAPI.Asyncs
         private System.Threading.Timer timer_update_server;
         private IHubContext hub;
         private IDAL dal;
+        private ISubscriber sub;
+        IDatabase redisDB;
         private const int UPDATE_MARKERS_PERIOD = 10000;
         private const int UPDATE_PLAYERS_PERIOD = 5000;
         private const int UPDATE_SERVER_PERIOD = 30000;
@@ -31,13 +33,16 @@ namespace KIAPI.Asyncs
             MySqlConnection = new MySqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString);
             MySqlConnection.Open();
             RedisConnection = ConnectionMultiplexer.Connect(System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString);
+            redisDB = RedisConnection.GetDatabase();
             hub = GlobalHost.ConnectionManager.GetHubContext<KIAPI.Hubs.GameHub>();
             dal = new DAL();
             this.ServerID = serverID;
+            sub = RedisConnection.GetSubscriber();
+            sub.Subscribe(new RedisChannel(this.ServerID.ToString(), RedisChannel.PatternMode.Literal), this.OnRedisSubscription);
+
             timer_update_markers = new System.Threading.Timer(this.UpdateMarkers, null, 0, UPDATE_MARKERS_PERIOD);
             timer_update_players = new System.Threading.Timer(this.UpdatePlayers, null, 0, UPDATE_PLAYERS_PERIOD);
             timer_update_server = new System.Threading.Timer(this.UpdateServer, null, 0, UPDATE_SERVER_PERIOD);
-            timer_update_server = new System.Threading.Timer(this.RedisTest, null, 0, 60000);
         }
 
         public void Pause()
@@ -60,23 +65,49 @@ namespace KIAPI.Asyncs
             timer_update_markers.Dispose();
             timer_update_players.Dispose();
             timer_update_server.Dispose();
+            sub.UnsubscribeAll(CommandFlags.None);
             MySqlConnection.Close();
+            RedisConnection.Close();
         }
 
-        private void RedisTest(object state)
+        private void OnRedisSubscription(RedisChannel channel, RedisValue message)
         {
-            try
+            if (channel == this.ServerID.ToString())
             {
-                IDatabase db = RedisConnection.GetDatabase();
-                db.StringSet("Test", "Rest");
-                db.StringSet("Test", "Result");
-                string Result = db.StringGet("Test");
-                logger.Info("Redis Result: " + Result);
+                if (!RedisConnection.IsConnected)
+                {
+                    logger.Warn("Redis Connection was lost - attempting to reopen...");
+                    try
+                    {
+                        RedisConnection = ConnectionMultiplexer.Connect(System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString);
+                        logger.Warn("Redis Connection re-established");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn("Error creating Redis Connection - " + ex.Message);
+                        hub.Clients.Group(ServerID.ToString()).LostRedisConnection();
+                        return;
+                    }
+                }
+
+                string jsonstring = redisDB.StringGet(message.ToString());
+                dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonstring);
+                switch (message.ToString())
+                {
+                    case "CapturePoints":
+                        { hub.Clients.Group(ServerID.ToString()).UpdateCapturePoints(json);  break; }
+                    case "Depots":
+                        { hub.Clients.Group(ServerID.ToString()).UpdateDepots(json); break; }
+                    case "Missions":
+                        { hub.Clients.Group(ServerID.ToString()).UpdateMissions(json); break; }
+                    case "Chat":
+                        { hub.Clients.Group(ServerID.ToString()).UpdateChat(json); break; }
+                    case "Server":
+                        { hub.Clients.Group(ServerID.ToString()).UpdateServer(json); break; }
+                }
+                
             }
-            catch (Exception ex)
-            {
-                logger.Error("Redis Exception: " + ex.Message);
-            }
+            
         }
 
         private void UpdateMarkers(object state)

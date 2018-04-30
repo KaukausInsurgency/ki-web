@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KIAPI.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,12 +11,20 @@ namespace KIAPI.Controllers
 {
     public class ServersController : ApiController
     {
+        private IDAL dal;
+        private IDAL_Rpt rpt_dal;
+        public ServersController()
+        {
+            dal = new DAL();
+            rpt_dal = new DAL_Rpt();
+        }
+
         // GET api/<controller>
         [Route("api/servers")]
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            return Ok(new { JsonProperty = "SomeVal" });
+            return Ok(dal.GetServers());
         }
 
         [Route("api/servers/serverid")]
@@ -23,21 +32,6 @@ namespace KIAPI.Controllers
         public IHttpActionResult GetSingle(int serverid)
         {
             return Ok(new { Result = "value" });
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
         }
     }
 }
