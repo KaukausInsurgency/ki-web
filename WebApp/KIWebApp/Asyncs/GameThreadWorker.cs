@@ -22,7 +22,7 @@ namespace KIWebApp.Asyncs
         private IHubContext hub;
         private IDAL dal;
         private ISubscriber sub;
-        IDatabase redisDB;
+        private IDatabase redisDB;
         private const int UPDATE_MARKERS_PERIOD = 10000;
         private const int UPDATE_PLAYERS_PERIOD = 5000;
         private const int UPDATE_SERVER_PERIOD = 30000;
