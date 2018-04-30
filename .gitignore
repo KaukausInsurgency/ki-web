@@ -10,7 +10,7 @@ TCPServer/Tests/bin/
 TCPServer/Tests/obj/
 WebApp/.vs/
 WebApp/bin
-WebApp/KIWebApp.Tests/bin
-WebApp/KIWebApp.Tests/obj
+WebApp/Tests/bin
+WebApp/Tests/obj
 WebApp/KIWebApp/bin
 WebApp/KIWebApp/obj

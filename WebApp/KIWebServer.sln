@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KIWebApp", "KIWebApp\KIWebApp.csproj", "{9B556BEA-F3FD-4642-B9CB-C759C9DA6596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KIWebApp.Tests", "KIWebApp.Tests\KIWebApp.Tests.csproj", "{E96A8DD3-D53E-42AA-8191-8C33D4986280}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{104E3B4C-E0CC-4D9E-94A4-71AFEACD2FCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,13 +17,16 @@ Global
 		{9B556BEA-F3FD-4642-B9CB-C759C9DA6596}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B556BEA-F3FD-4642-B9CB-C759C9DA6596}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B556BEA-F3FD-4642-B9CB-C759C9DA6596}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E96A8DD3-D53E-42AA-8191-8C33D4986280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E96A8DD3-D53E-42AA-8191-8C33D4986280}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E96A8DD3-D53E-42AA-8191-8C33D4986280}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E96A8DD3-D53E-42AA-8191-8C33D4986280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104E3B4C-E0CC-4D9E-94A4-71AFEACD2FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104E3B4C-E0CC-4D9E-94A4-71AFEACD2FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104E3B4C-E0CC-4D9E-94A4-71AFEACD2FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104E3B4C-E0CC-4D9E-94A4-71AFEACD2FCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C46B088-292E-4A5E-8ADB-091D6914FBB5}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

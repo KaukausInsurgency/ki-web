@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using KIWebApp.Classes;
+using System.Data;
 
 namespace KIWebApp.Models
 {
@@ -21,5 +22,28 @@ namespace KIWebApp.Models
         public int MaxCapacity { get; set; }
         public Position Pos { get; set; }
         public string Image { get; set; }
+
+        public CapturePointModel() { }
+
+        public CapturePointModel(DataRow dr)
+        {
+            ID = dr.Field<int>("CapturePointID");
+            Type = dr.Field<string>("Type");
+            Name = dr.Field<string>("Name");
+            LatLong = dr.Field<string>("LatLong");
+            MGRS = dr.Field<string>("MGRS");
+            MaxCapacity = dr.Field<int>("MaxCapacity");
+            Status = dr.Field<string>("Status");
+            StatusChanged = dr.Field<ulong>("StatusChanged") == 1;  // for some reason MySql treats BIT(1) as ulong
+            BlueUnits = dr.Field<int>("BlueUnits");
+            RedUnits = dr.Field<int>("RedUnits");
+            Image = dr.Field<string>("ImagePath");
+
+            Text = "";
+            if (dr["Text"] != DBNull.Value && dr["Text"] != null)
+                Text = dr.Field<string>("Text");
+
+            Pos = new Position(dr.Field<double>("X"), dr.Field<double>("Y"));
+        }
     }
 }
