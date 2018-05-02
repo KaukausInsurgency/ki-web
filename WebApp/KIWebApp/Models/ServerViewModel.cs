@@ -19,7 +19,7 @@ namespace KIWebApp.Models
             else
                 RestartTime = new TimeSpan(TimeSpan.TicksPerSecond * dr.Field<int>("RestartTime")).ToString();
 
-            string Status = "Offline";
+            Status = "Offline";
             if (dr["Status"] != DBNull.Value && dr["Status"] != null)
                 Status = dr.Field<string>("Status");
 
