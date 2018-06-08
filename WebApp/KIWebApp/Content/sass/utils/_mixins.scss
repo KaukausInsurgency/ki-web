@@ -1,0 +1,55 @@
+@mixin linear-gradient($property, $direction, $color-stops...) {
+	// Direction has been omitted and happens to be a color-stop
+	@if is-direction($direction) == false {
+	  $color-stops: $direction, $color-stops;
+	  $direction: 180deg;
+	}
+  
+	#{$property}: nth(nth($color-stops, 1), 1);
+	#{$property}: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+	#{$property}: -moz-linear-gradient($direction, $color-stops);
+	#{$property}: linear-gradient($direction, $color-stops);
+}
+
+@mixin property-regular-hover($property, $color-reg, $color-hover) {
+    #{$property}: $color-reg;
+    &:hover {
+		#{$property}: $color-hover;
+	}
+}
+
+@mixin color-regular-hover($primary-font-color-reg, $primary-font-color-hover, $background-color-reg, $background-color-hover) {
+  color: $primary-font-color-reg;
+	background-color: $background-color-reg;
+
+	&:hover {
+		color: $primary-font-color-hover;
+		background-color: $background-color-hover;
+	}
+}
+
+@mixin calc($property, $default, $expression) { 
+    #{$property}: $default;
+    #{$property}: -webkit-calc(#{$expression}); 
+    #{$property}: -moz-calc(#{$expression}); 
+    #{$property}: calc(#{$expression}); 
+}
+
+@mixin box-align($value) {
+		-webkit-box-align: $value;
+    box-align: $value;
+    -ms-flex-align: $value;
+    align-items: $value;
+}
+
+@mixin box-pack($value) {
+		-webkit-box-pack: center;
+    box-pack: center;
+    -ms-flex-pack: center;
+}
+
+@mixin box-shadow($expression) {
+		-webkit-box-shadow: $expression;
+    -moz-box-shadow: $expression;
+    box-shadow: $expression;
+}

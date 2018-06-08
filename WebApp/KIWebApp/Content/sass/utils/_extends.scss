@@ -1,0 +1,20 @@
+%block-float {
+	display:block; 
+	float:left;
+}
+
+%display-flex {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+%clear-float {
+	&::after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+

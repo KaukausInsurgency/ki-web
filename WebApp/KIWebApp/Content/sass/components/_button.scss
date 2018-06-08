@@ -1,0 +1,30 @@
+.button {
+    // ignore double tap events, and make tap events more faster
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+
+    border: 1px solid transparent;
+    padding: 5px 15px;
+    border-radius: 10px;
+
+    vertical-align: middle;
+    text-align: center;
+    color: $primary-font-color;
+
+    &:hover {
+        background-color: #333;
+        @include box-shadow(0px 0px 21px 6px rgba(138,138,138,0.75));
+        transition: 0.5s;
+    }
+
+    &:active {
+        background-color: #111;
+        @include box-shadow(1px 1px 3px 3px rgba(109, 109, 109, 0.55));
+        transition: 0.2s;
+    }
+
+    &:focus{
+        outline: none;
+    }
+}

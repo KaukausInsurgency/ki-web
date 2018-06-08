@@ -14,3 +14,8 @@ WebApp/Tests/bin
 WebApp/Tests/obj
 WebApp/KIWebApp/bin
 WebApp/KIWebApp/obj
+WebApp/KIWebApp/Content/css/shared/style.css
+*.map
+WebApp/KIWebApp/Content/css/views/home/home.css
+*.mp4
+*.log

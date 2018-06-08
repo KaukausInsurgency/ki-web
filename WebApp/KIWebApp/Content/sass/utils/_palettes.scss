@@ -1,0 +1,44 @@
+// color names given from http://chir.ag/projects/name-that-color
+$palettes: (
+    dark: ( 
+        'black': #000000,
+        'cod-gray': #111,
+        'mine-shaft': #272727,
+        'light-mine-shaft': #393939,
+        'dark': #333, 
+        'dark-tundora': #444,  
+        'tundora': #474747,  
+        'light-tundora': #494949,  
+        'white': #fff,
+    ),
+    dark-font: (
+        'gray-nickel': #CACAC4,
+        'gallery': #ebebeb,   // 2 ref - chat text and title font colors
+        'seashell': #f1f1f1,  // 3 ref - font hovers
+        'alto': #dadada,      // 1 ref - table font color
+    ),
+    dark-gradients: (
+        smooth-tundora: (rgb(78, 78, 78), rgb(55,55,55)),
+        smooth-danube: (rgb(42,159,214) 37%,rgb(107, 177, 209) 69%),
+        smooth-dark: (rgb(10, 10, 10),rgb(34, 34, 34))
+    ),
+    game-font: (
+        'neutral': #9b9b9b,
+        'redfor': #e85a5a,
+        'blufor': #5a8be8
+    ),
+    game: (
+        'neutral': #4e4e4e,
+        'redfor': #DF1E1E,
+        'blufor': #1e4bdf
+    )
+);
+
+/*
+* Better function for color palettes using Sass maps
+* Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
+* Usage: color: palette(brand,tan);
+*/
+@function palette($palette, $tone: 'base') {
+    @return map-get( map-get($palettes, #{$palette}), $tone );
+}

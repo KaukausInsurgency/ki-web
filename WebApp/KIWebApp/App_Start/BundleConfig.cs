@@ -8,42 +8,38 @@ namespace KIWebApp
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            // Scripts
 
-            // Tooltips bundle
+            bundles.Add(new StyleBundle("~/bundles/shared").Include(
+                        "~/Scripts/shared/navigation.js",
+                        "~/Content/shared/shared.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/tooltipster").Include(
                 "~/Scripts/tooltipster/tooltipster.bundle.js"));
 
-            // dynatable bundle
             bundles.Add(new ScriptBundle("~/bundles/dynatable").Include(
                 "~/Scripts/dynatable/jquery.dynatable.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
                 "~/Scripts/jquery.signalR-2.2.2.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/app/registertable.js"));
-
-            // Game Map bundle
-            bundles.Add(new ScriptBundle("~/bundles/gamemap").Include("~/Scripts/app/gamemap.js"));
 
 
-            bundles.Add(new ScriptBundle("~/bundles/statistics").Include(
-                        "~/Scripts/app/dashboard-overall.js"));
 
+
+            // Styles
+
+            bundles.Add(new StyleBundle("~/bundles/Content/shared").Include(
+                        "~/Content/css/shared/reset.css",
+                        "~/Content/css/shared/style.css"));
 
             bundles.Add(new StyleBundle("~/bundles/Content/tooltipster").Include(
-                        "~/Content/tooltipster/tooltipster.bundle.min.css"));
+                        "~/Content/css/vendor/tooltipster/tooltipster.bundle.min.css",
+                        "~/Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css"));
 
             bundles.Add(new StyleBundle("~/bundles/Content/dynatable").Include(
-                "~/Content/dynatable/jquery.dynatable.css"));
+                "~/Content/css/vendor/dynatable/jquery.dynatable.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/Content/app").Include(
-                "~/Content/app/app.css"));
-
-            bundles.Add(new StyleBundle("~/bundles/Content/statistics").Include(
-                "~/Content/app/dashboard-overall.css"));
         }
     }
 }

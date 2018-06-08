@@ -1,0 +1,23 @@
+$nav-width-expanded: 160px;
+$nav-width-collapsed: 50px;
+
+$primary-font-stack: 'Roboto',sans-serif;
+$seconday-font-stack: Raleway,sans-serif;
+
+// the way the primary font should look
+$primary-font-color: palette(dark-font, 'gray-nickel');
+$primary-font-color-hover: palette(dark-font, 'seashell');
+
+$secondary-font-color: palette(dark-font, 'gallery');
+$secondary-font-color-hover: palette(dark-font, 'seashell');
+
+// primary background color
+$primary-background-color: #292929; //#212121; //palette(dark, 'mine-shaft');
+$secondary-background-color: palette(dark, 'light-tundora');
+
+// navigation background color
+$nav-background-color: #202020; //palette(dark, 'cod-gray');
+$nav-background-color-hover: palette(dark, 'dark-tundora');
+
+// footer background color
+$footer-background-color: #202020;

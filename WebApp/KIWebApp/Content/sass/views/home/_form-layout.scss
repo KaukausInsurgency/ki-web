@@ -1,0 +1,28 @@
+.form-layout {
+    position: absolute;
+    top: 5%;
+    left: 70%;
+    width: 60%;
+
+    @media screen and (max-width: 1120px) {
+        left: 65%;
+    }
+
+    @media screen and (max-width: 940px) {
+        left: 58%;
+    }
+
+    @media screen and (max-width: 800px) {
+        left: 51%;
+    }
+
+    @media screen and (max-width: 700px) {
+        left: 44%;
+    }
+
+    // position to the far left beside the nav bar
+    @media screen and (max-width: 600px) {
+        left: 2%;
+        width: 100%;
+    }
+}

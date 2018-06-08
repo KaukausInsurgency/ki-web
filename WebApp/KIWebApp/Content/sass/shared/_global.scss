@@ -1,0 +1,26 @@
+html {
+    background-color: $primary-background-color;
+}
+
+.main {
+	overflow: hidden;		/* this makes the containers size expand to match the total size of all it's child elements */
+	// margin-bottom: 30px;	/* this somehow prevents the bottom of the layout from going underneath the fixed footer ribbon */
+    // padding-bottom: 30px;
+    padding-left: 4em;
+    padding-right: 4em;
+    //height: 100%;
+    min-height: 75vh;
+    color: $primary-font-color;
+    font-family: $primary-font-stack;
+    background-color: $primary-background-color;
+    
+    @media screen and (max-width: 1070px) {
+		padding-left: 2em;
+        padding-right: 2em;
+	}
+
+	@media screen and (max-width: 520px) {
+		padding-left: 1em;
+        padding-right: 1em;
+	}	
+}
