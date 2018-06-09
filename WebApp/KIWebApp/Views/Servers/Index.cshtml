@@ -1,27 +1,64 @@
-﻿<div id="main-content">
+﻿@section styles {
+    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+}
+
+<section class="header">
+    <div class="header-image header-image-server-browser"></div>
+    <div class="header-color"></div>
+    <div class="header-info">
+        <h1>Kaukasus Insurgency</h1>
+    </div>
+    <div class="header-form">
+        <form class="form-search" action="/Home/Search" method="post">
+            <input id="Query" class="input" name="Query" type="text" value="">
+            <input type="submit" class="button glass-black" value="Search" id="btnSearchSubmit">
+        </form>
+    </div>
+</section>
+
+<div class="main">
     <p class="error" data-bind="text: error"></p>
-    <div class="container">
-        <h2>Game Servers</h2>
-        <p>This lists the status of all KI Game Servers</p>
-        <table id="servers-table" class="table table-bordered" >
-            <thead >
+    <div data-url-game="@Url.Action("Game", "Servers")"></div>
+    <div class="sr-layout">
+        <h2 class="sr-title">Game Servers</h2>
+        <p class="sr-subtitle">This lists the status of all KI Game Servers</p>
+        <table id="servers-table" class="table">
+            <thead>
                 <tr>
                     <th>Server Name</th>
                     <th>IP Address</th>
                     <th>Status</th>
-                    <th>Restarts In</th>
-                    <th>Online Players</th>
+                    <th>Restart</th>
+                    <th>Online</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in @Model)
                 {
-                    string imgurl = "~/" + item.StatusImage;
-
-                    <tr class="clickable-row">
-                        <td><div class="ServerID" style="display:none;">@item.ServerID</div><b>@item.ServerName</b><div style="float:right;" align="right"><img class="clickable-img" title="View Server Statistics" src="@Url.Content("~/Images/icon-stats-256x256.png")" height="16" width="16" /></div></td>
+                    <tr class="js-clickable">
+                        <td>
+                            <div class="ServerID" style="display:none;">@item.ServerID</div>
+                            <b>@item.ServerName</b>
+                            <div class="sr-graph-icon js-clickable-img" title="View Server Statistics">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                        </td>
                         <td>@item.IPAddress</td>
-                        <td><img src="@Url.Content(imgurl)" width="16" height="16" /> @item.Status</td>
+                        <td>
+                            @{
+                                string statusIcon = "sr-status-restart-icon";
+                                if (item.Status == "Online")
+                                {
+                                    statusIcon = "sr-status-online-icon";
+                                }
+                                else if (item.Status == "Offline")
+                                {
+                                    statusIcon = "sr-status-offline-icon";
+                                }
+                            }
+                            <i class="fas fa-circle @statusIcon"></i>@item.Status
+                        </td>
                         <td>@item.RestartTime</td>
                         <td>@item.OnlinePlayers</td>
                     </tr>
@@ -32,41 +69,8 @@
 </div>
 
 
-
 @section scripts {
-    @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/dynatable")
     @Scripts.Render("~/bundles/tooltipster")
-    @Scripts.Render("~/bundles/app")
+    <script src="~/scripts/views/server/init.js"></script>
 }
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        RegisterTable('#servers-table', function () {
-            var serverIDDiv = $(this).closest('tr').find('.ServerID');
-            var id = parseInt(serverIDDiv.text());
-            var url = '@Url.Action("Game", "Servers")' + "?serverID=" + id;
-            window.location.href = url;
-            return false;
-        });
-    
-        $('.clickable-img').hover(function () {
-            $(this).css('cursor', 'pointer');
-            $(this).css('background-color', '#B5B5B5');
-        }, function () {
-            $(this).css('background-color', '');
-        });
-
-        $('.clickable-img').click(function () {
-            var serverIDDiv = $(this).closest('tr').find('.ServerID');
-            var id = parseInt(serverIDDiv.text());
-            var url = '@Url.Action("ServerStats", "Statistics")' + "?serverID=" + id;
-            window.location.href = url;
-            return false;
-        });
-
-        $('.clickable-img').tooltipster({
-            theme: 'tooltipster-noir'
-        });   
-    });
-</script>

@@ -24,13 +24,24 @@ namespace KIWebApp.Controllers
 
         public ActionResult Index(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         public ActionResult Search(SearchModel model)
         {
             return View(dal.GetSearchResults(model.Query));
+        }
+
+        public ActionResult LearnMore()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NavigationExpanded(bool state)
+        {
+            Session["NavExpanded"] = state;
+            return new EmptyResult();
         }
     }
 }

@@ -12,6 +12,9 @@
     text-align: center;
     color: $primary-font-color;
 
+    font-size: 0.76em;
+    text-decoration: none;
+
     &:hover {
         background-color: #333;
         @include box-shadow(0px 0px 21px 6px rgba(138,138,138,0.75));

@@ -12,7 +12,7 @@ namespace KIWebApp
 
             bundles.Add(new StyleBundle("~/bundles/shared").Include(
                         "~/Scripts/shared/navigation.js",
-                        "~/Content/shared/shared.js"));
+                        "~/Scripts/shared/shared.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/tooltipster").Include(
                 "~/Scripts/tooltipster/tooltipster.bundle.js"));

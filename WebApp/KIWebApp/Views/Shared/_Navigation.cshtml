@@ -1,14 +1,16 @@
 ﻿<div class="prop-vnav prop-icons">
 </div>
 <div class="vnav">
-    <div class="vnav-btn-expander">
+    <div class="vnav-btn-expander" 
+         data-url-nav-ajax="@Url.Action("NavigationExpanded", "Home")" 
+         data-should-expand="@Session["NavExpanded"]">
         <i class="vnav-icon"></i>
     </div>
-    <a href="#">
+    <a href="@Url.Action("Index", "Home")">
         <i class="fas fa-home fa-fw vnav-icon"></i>
         <span class="js-nav-text">KI</span>
     </a>
-    <a href="#">
+    <a href="@Url.Action("Index", "Servers")">
         <i class="fas fa-server fa-fw vnav-icon"></i>
         <span class="js-nav-text">Servers</span>
     </a>
@@ -36,7 +38,7 @@
         <i class="fas fa-donate fa-fw vnav-icon"></i>
         <span class="js-nav-text">Donate</span>
     </a>
-    <a href="#">
+    <a href="https://github.com/KaukausInsurgency">
         <i class="fab fa-github fa-fw vnav-icon"></i>
         <span class="js-nav-text">GitHub</span>
     </a>

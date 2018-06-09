@@ -1,0 +1,147 @@
+.thumbnail-layout-3 {
+    width: 33.3333333333%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @media screen and (max-width: 755px) {
+        width: 100%;
+        float: none;
+    }
+}
+
+.thumbnail-layout-2 {
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @media screen and (max-width: 755px) {
+        width: 100%;
+        float: none;
+    }
+}
+
+.thumbnail {
+    background-color: #292929;
+    border-radius: 0;
+    border: none;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.428571429;
+    transition: border .2s ease-in-out;
+    @include box-shadow(0 4px 8px 0 rgba(0,0,0,0.2));
+    transition: 0.3s;
+}
+
+.thumbnail-short {
+    height: 360px;
+}
+
+.thumbnail-tall {
+    height: 500px;
+}
+
+.thumbnail-img-crop {
+    height: 190px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.thumbnail-img-bg {
+    background: url("/Content/static/learn-more/code.jpg");
+    background-position: center;
+    background-repeat:   no-repeat;
+    background-size:     cover;
+}
+
+.thumbnail-img-crop>img {
+    width: inherit;
+    display: block;
+    border: 0;
+}
+
+.thumbnail .caption {
+    color: rgb(169, 170, 157);
+    min-height: 180px;
+    padding: 9px;
+    font-size: 1em;
+
+    @media screen and (max-width: 1089px) {
+        font-size: 0.9em;
+    }
+
+    @media screen and (max-width: 855px) {
+        font-size: 0.8em;
+    }
+
+    // make the font big again as the cards are now being stacked vertically
+    @media screen and (max-width: 755px) {
+        font-size: 1em;
+    }
+
+    // now reduce them again as we are getting closer to mobile
+    @media screen and (max-width: 655px) {
+        font-size: 0.9em;
+    }
+
+    @media screen and (max-width: 555px) {
+        font-size: 0.7em;
+    }
+
+    h3 {
+        color: $primary-font-color; //#C7C8B8;
+        font-size: 1.5em;
+
+        @media screen and (max-width: 1089px) {
+            font-size: 1.4em;
+        }
+
+        @media screen and (max-width: 855px) {
+            font-size: 1.3em;
+        }
+
+        // make the font big again as the cards are now being stacked vertically
+        @media screen and (max-width: 755px) {
+            font-size: 1.5em;
+        }
+
+        // now reduce them again as we are getting closer to mobile
+        @media screen and (max-width: 655px) {
+            font-size: 1.4em;
+        }
+
+        @media screen and (max-width: 555px) {
+            font-size: 1.2em;
+        }
+    }
+
+    a {
+        color: #c48214;
+        outline: 0;
+        transition: all .5s;
+    }
+}
+
+
+// reduce the height of images in 3 column layout
+@media screen and (max-width: 855px) {
+    .thumbnail-layout-3 > .thumbnail > .thumbnail-img-crop {
+        height: 125px;
+    } 
+
+    .thumbnail-layout-3 > .thumbnail-short {
+        height: 300px;
+    }
+}
+
+// restore sizes as all thumbnails have been stacked vertically
+@media screen and (max-width: 755px) {
+    .thumbnail-layout-3 > .thumbnail > .thumbnail-img-crop {
+        height: 190px;
+    }
+
+    .thumbnail-layout-3 > .thumbnail-short {
+        height: auto;
+    }
+}

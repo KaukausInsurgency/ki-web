@@ -1,0 +1,6 @@
+﻿// hide the 'show results per page control on mobile 
+.dynatable-per-page {
+    @media screen and (max-width: 400px) {
+        display: none;
+    }
+}

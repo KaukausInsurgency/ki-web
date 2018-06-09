@@ -259,11 +259,29 @@
     <Content Include="Content\app\dashboard-overall.css" />
     <Content Include="Content\css\shared\reset.css" />
     <Content Include="Content\css\shared\style.css" />
+    <Content Include="Content\css\vendor-extensions\vendor-extensions.css" />
     <Content Include="Content\css\vendor\dynatable\jquery.dynatable.css" />
     <Content Include="Content\css\views\home\home.css" />
+    <Content Include="Content\css\views\learn-more\learn-more.css" />
+    <Content Include="Content\css\views\servers\servers.css" />
+    <Content Include="Content\sass\vendor-extensions\_dynatable.scss" />
+    <Content Include="Content\css\views\servers\servers.css.map" />
+    <Content Include="Content\sass\vendor-extensions\vendor-extensions.scss" />
+    <Content Include="Content\css\vendor-extensions\vendor-extensions.css.map" />
+    <Content Include="Content\sass\views\learn-more\_common.scss" />
+    <Content Include="Content\sass\views\learn-more\_community.scss" />
+    <Content Include="Content\sass\views\learn-more\_description.scss" />
+    <Content Include="Content\sass\views\learn-more\_features.scss" />
+    <Content Include="Content\sass\views\learn-more\_thumbnail.scss" />
+    <Content Include="Content\sass\views\learn-more\learn-more.scss" />
+    <Content Include="Content\css\views\learn-more\learn-more.css.map" />
+    <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
     <Content Include="Content\static\dcs_world.mp4" />
+    <Content Include="Content\static\learn-more\a.jpg" />
+    <Content Include="Content\static\learn-more\b.jpg" />
+    <Content Include="Content\static\learn-more\code.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\markers\airport-blue-200x200.png" />
@@ -328,6 +346,7 @@
     <Content Include="Content\sass\views\home\_video.scss" />
     <Content Include="Content\sass\views\home\home.scss" />
     <Content Include="Content\sass\style.scss" />
+    <Content Include="Content\sass\components\_table.scss" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
@@ -354,6 +373,7 @@
     <Content Include="Scripts\tooltipster\tooltipster.bundle.min.js" />
     <Content Include="Scripts\tooltipster\tooltipster.main.js" />
     <Content Include="Scripts\tooltipster\tooltipster.main.min.js" />
+    <Content Include="Scripts\views\server\init.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -375,9 +395,11 @@
     <Content Include="Views\Statistics\PlayerStats.cshtml" />
     <Content Include="Views\Statistics\ServerStats.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
+    <Content Include="Views\Home\LearnMore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\css\views\search-results\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

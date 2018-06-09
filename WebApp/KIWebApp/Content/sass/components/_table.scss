@@ -1,0 +1,133 @@
+﻿$table-body-bg-even-color: palette(dark, 'dark');
+$table-body-bg-odd-color: palette(dark, 'light-mine-shaft');
+$table-body-bg-hover-color: #4d4d4d;
+$table-head-bg-grad1-color: rgb(56, 56, 56);
+$table-head-bg-grad2-color: rgb(78, 78, 78);
+$table-head-font-color: $primary-font-color;
+$table-body-font-color: $secondary-font-color;
+$table-border: 1px solid rgb(73, 73, 73);
+
+
+
+%table-column-padding-media {
+    padding: 10px;
+
+    @media screen and (max-width: 800px) {
+        padding: 8px;
+    }
+
+    @media screen and (max-width: 380px) {
+        padding: 4px;
+    }
+}
+
+%table-th-font-media {
+    font-size: 1em;
+
+    @media screen and (max-width: 800px) {
+        font-size: 0.85em;
+    }
+
+    @media screen and (max-width: 380px) {
+        font-size: 0.75em;
+    }
+}
+
+%table-td-font-media {
+    font-size: 0.95em;
+
+    @media screen and (max-width: 800px) {
+        font-size: 0.8em;
+    }
+
+    @media screen and (max-width: 380px) {
+        font-size: 0.7em;
+    }
+}
+
+
+
+
+
+
+
+
+
+.table {
+    display: table;
+    width: 100%; // expand to full width of parent layout
+    border: $table-border;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 10px;
+}
+
+table.table > thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+table.table > tbody {
+    display: table-row-group;
+    vertical-align: middle;
+}
+
+// add a nice gradient on the title columns of the table
+table.table > thead > tr {
+    display: table-row;
+    vertical-align: inherit;
+    @include linear-gradient(background, #{$table-head-bg-grad2-color}, #{$table-head-bg-grad1-color});
+}
+
+// the order here is important - the tr hover needs to be after the nth-child in order for the hover highlight to work
+table.table > tbody > tr:nth-child(odd) {
+    background-color: $table-body-bg-odd-color;
+}
+
+table.table > tbody > tr:nth-child(even) {
+    background-color: $table-body-bg-even-color;
+}
+
+table.table > tbody > tr {
+    display: table-row;
+    vertical-align: inherit;
+
+    &:hover {
+        background-color: $table-body-bg-hover-color;
+        cursor: pointer;
+    }
+}
+
+table.table > thead > tr > th {
+    display: table-cell;
+    text-align: left;
+    font-weight: 600;
+    color: $table-head-font-color;
+
+    @extend %table-th-font-media;
+    @extend %table-column-padding-media;
+
+    & > a {
+        text-decoration: none;
+        color: $table-head-font-color;
+    }
+}
+
+table.table > tbody > tr > td {
+    display: table-cell;
+    vertical-align: baseline;
+    border: $table-border;
+    text-align: left;
+    color: $table-body-font-color;
+
+    @extend %table-column-padding-media;
+    @extend %table-td-font-media;
+
+    & > b {
+        @extend %table-td-font-media;
+        font-weight: 600;
+        color: $table-body-font-color;
+    }
+}
+

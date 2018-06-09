@@ -19,3 +19,8 @@ WebApp/KIWebApp/Content/css/shared/style.css
 WebApp/KIWebApp/Content/css/views/home/home.css
 *.mp4
 *.log
+WebApp/KIWebApp/Content/css/shared/reset.min.css
+WebApp/KIWebApp/Content/css/shared/style.min.css
+WebApp/KIWebApp/Content/css/views/home/home.min.css
+WebApp/KIWebApp/Content/css/views/servers.min.css
+WebApp/KIWebApp/Content/css/views/servers/servers.min.css

@@ -36,26 +36,32 @@ body {
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
-	background-color: $nav-background-color;
-	
-	box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
-    -o-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
-	
-	a {
-		padding: $nav-item-padding;
-		text-decoration: none;
-		cursor: context-menu;
-		font-size: $nav-font-size;
-		display: block;
-		color: $nav-font-color;
+    background-color: $nav-background-color;
 
-		&:hover {
-			color: $nav-font-hover;
-			@include linear-gradient(background, rgb(48, 48, 48),rgb(65, 65, 65));		
-		}
-	}
+    @include box-shadow(3px 3px 8px rgba(0, 0, 0, 0.5));
+
+    a {
+        padding: $nav-item-padding;
+        text-decoration: none;
+        cursor: context-menu;
+        font-size: $nav-font-size;
+        display: block;
+        color: $nav-font-color;
+
+        &:hover {
+            color: $nav-font-hover;
+            @include linear-gradient(background, rgb(48, 48, 48),rgb(65, 65, 65));
+        }
+
+        &:active {
+            color: $nav-font-color;
+            @include linear-gradient(background, rgb(1, 1, 1),rgb(45, 45, 45));
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
 }
 
 .vnav-icon {
@@ -67,36 +73,41 @@ body {
     position: relative;
 }
 
-/* .vnav-dropdown:hover .vnav-dropdown-content {
-    display: block; 
-} */
-
 /* Dropdown Content (Hidden by Default) */
 .vnav-dropdown-content {
     display: none;
-    position: absolute;		/* make the positioning absolute relative to the parent */
-	top: 0px;	/* be at the same height as the parent element */	
-	background-color: $nav-background-color; 
-	width: 0px;
+    position: absolute; /* make the positioning absolute relative to the parent */
+    top: 0px; /* be at the same height as the parent element */
+    background-color: $nav-background-color;
+    width: 0px;
     //min-width: $nav-width-expanded;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    @include box-shadow(0px 8px 16px 0px rgba(0,0,0,0.2));
     z-index: 1;
-	
-	a {
-		padding: $nav-item-padding;
-		text-decoration: none;
-		display: block;
-		overflow: visible;
-		font-size: $nav-font-size;
-		cursor: context-menu;
-		@include color-regular-hover($nav-font-color, $nav-font-hover, $nav-background-color, $nav-background-color-hover);
-	}
-	
-	&.vnav-expanded {
-		left: $nav-width-expanded;	/* add a left offset that is outside of the nav-bar width */
-	}
-	
-	&.vnav-collapsed {
-		left: $nav-width-collapsed;	/* add a left offset that is outside of the nav-bar width */
-	}
+
+    a {
+        padding: $nav-item-padding;
+        text-decoration: none;
+        display: block;
+        overflow: visible;
+        font-size: $nav-font-size;
+        cursor: context-menu;
+        @include color-regular-hover($nav-font-color, $nav-font-hover, $nav-background-color, $nav-background-color-hover);
+
+        &:active {
+            color: $nav-font-color;
+            background-color: palette(dark, 'cod-gray');
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &.vnav-expanded {
+        left: $nav-width-expanded; /* add a left offset that is outside of the nav-bar width */
+    }
+
+    &.vnav-collapsed {
+        left: $nav-width-collapsed; /* add a left offset that is outside of the nav-bar width */
+    }
 }

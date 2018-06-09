@@ -27,24 +27,43 @@ $(function () {
 			$vnav.removeClass('vnav-expanded');
 			$vnav.addClass('vnav-collapsed');
 		}
-	}
+    }
 
-	if (width > 450) {
-		$vnavDropdownContent.addClass('vnav-expanded');	// by default the ribbon is expanded
-		$('.vnav-btn-expander').children('i').addClass($collapseClass);
-		$vnav.addClass('vnav-expanded');
-		$vnav.css('width', vnavMaxWidth);
-	}
-	else {
-		$vnavDropdownContent.addClass('vnav-collapsed');	// by default the ribbon is collapsed
-		$('.vnav-btn-expander').children('i').addClass($expandClass);
-		$('.js-nav-text').hide();
-		$vnav.addClass('vnav-collapsed');
-		
-	}
+    var initNavState = function (state) {
+        if (state) {
+            $vnavDropdownContent.addClass('vnav-expanded');	// by default the ribbon is expanded
+            $('.vnav-btn-expander').children('i').addClass($collapseClass);
+            $vnav.addClass('vnav-expanded');
+            $vnav.css('width', vnavMaxWidth);
+        }
+        else {
+            $vnavDropdownContent.addClass('vnav-collapsed');	// by default the ribbon is collapsed
+            $('.vnav-btn-expander').children('i').addClass($expandClass);
+            $('.js-nav-text').hide();
+            $vnav.addClass('vnav-collapsed');
+        } 
+    }
+
+    var sessionNavExpand = $('[data-should-expand]').data('should-expand');
+
+    // in session - apply the state of nav based on session state
+    if (sessionNavExpand != null && sessionNavExpand.length !== 0) {
+        initNavState(sessionNavExpand.toLowerCase() == "true");
+    }
+    else {
+        // first time visiting the site and nothing in session - use browser width to determine initial state
+        if (width > 450)
+            initNavState(true);
+	    else {
+            initNavState(false);
+        }
+    }
+
+   
 
 	$('.vnav-btn-expander').click(function () {
-		var expander_icon = $(this).children('i');
+        var expander_icon = $(this).children('i');
+        var shouldExpand = false;
 		if (expander_icon.hasClass($expandClass))	// expand the nav ribbon
 		{
 			expander_icon.removeClass($expandClass);
@@ -53,7 +72,8 @@ $(function () {
 				function() {
 					$('.js-nav-text').show();
 				});
-				toggleNavExpand(true);
+            toggleNavExpand(true);
+            shouldExpand = true;
 		}
 		else  // collapse the nav ribbon
 		{
@@ -61,8 +81,17 @@ $(function () {
 			expander_icon.addClass($expandClass);
 			$('.js-nav-text').hide();
 			fncAnimate($vnav, vnavMinWidth);
-			toggleNavExpand(false);
-		}
+            toggleNavExpand(false);
+            shouldExpand = false;
+        }
+
+        $.ajax({
+            url: $('[data-url-nav-ajax]').data('url-nav-ajax'),
+            type: "POST",
+            data: {
+                state: shouldExpand
+            }  
+        });
 	});
 
 	// when hovering over a elements on the vnav, animate the widths to look smooth, but only if the nav is collapsed

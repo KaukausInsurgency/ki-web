@@ -26,12 +26,8 @@
                 </p>
             </div>
             <div class="video-overlay-button">
-                <a>
-                    <input type="submit" class="button glass-red" value="Learn More" id="btnSearchSubmit">
-                </a>
-                <a>
-                    <input type="submit" class="button glass-green" value="Find Servers" id="btnSearchSubmit">
-                </a>
+                <a href="@Url.Action("LearnMore", "Home")" class="button glass-red">Learn More</a>
+                <a href="@Url.Action("Index", "Servers")" class="button glass-green">Find Servers</a>
             </div>
         </div>
         <div class="ribbon-bg">
@@ -84,12 +80,8 @@
     </p>
 </div>
 <div class="video-overlay-button overlay-mobile">
-    <a>
-        <input type="submit" class="button glass-red" value="Learn More" id="btnSearchSubmit">
-    </a>
-    <a>
-        <input type="submit" class="button glass-green" value="Find Servers" id="btnSearchSubmit">
-    </a>
+    <a href="@Url.Action("LearnMore", "Home")" class="button glass-red">Learn More</a>
+    <a href="@Url.Action("Index", "Servers")" class="button glass-green">Find Servers</a>
 </div>
 <div class="ribbon-bg ribbon-mobile">
     <div class="ribbon-layout">
