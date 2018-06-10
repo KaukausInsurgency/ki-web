@@ -16,7 +16,7 @@
     <AssemblyName>KIWebApp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -234,6 +234,7 @@
     </Compile>
     <Compile Include="Hubs\GameHub.cs" />
     <Compile Include="Models\CapturePointModel.cs" />
+    <Compile Include="Models\HtmlHeaderModel.cs" />
     <Compile Include="Models\RptSessionEventsDataModel.cs" />
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />
@@ -269,15 +270,12 @@
     <Content Include="Content\css\views\servers\servers.css.map" />
     <Content Include="Content\sass\vendor-extensions\vendor-extensions.scss" />
     <Content Include="Content\css\vendor-extensions\vendor-extensions.css.map" />
-    <Content Include="Content\sass\views\learn-more\_common.scss" />
-    <Content Include="Content\sass\views\learn-more\_community.scss" />
-    <Content Include="Content\sass\views\learn-more\_description.scss" />
-    <Content Include="Content\sass\views\learn-more\_features.scss" />
     <Content Include="Content\sass\views\learn-more\_thumbnail.scss" />
     <Content Include="Content\sass\views\learn-more\learn-more.scss" />
     <Content Include="Content\css\views\learn-more\learn-more.css.map" />
     <Content Include="Content\sass\views\search\search.scss" />
     <Content Include="Content\sass\components\_loader.scss" />
+    <Content Include="Content\sass\views\learn-more\_common.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
@@ -403,6 +401,7 @@
     <Content Include="Views\Home\_PlayerSearchResults.cshtml" />
     <Content Include="Views\Home\_ServerSearchResults.cshtml" />
     <Content Include="Views\Home\PlayerLeaderboards.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -432,7 +431,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51046/</IISUrl>
+          <IISUrl>http://localhost/KIWebApp</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

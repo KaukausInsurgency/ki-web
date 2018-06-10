@@ -7,6 +7,8 @@
     @media screen and (max-width: 755px) {
         width: 100%;
         float: none;
+        padding-left: 0px;
+        padding-right: 0px;
     }
 }
 
@@ -19,6 +21,8 @@
     @media screen and (max-width: 755px) {
         width: 100%;
         float: none;
+        padding-left: 0px;
+        padding-right: 0px;
     }
 }
 
@@ -67,53 +71,8 @@
     padding: 9px;
     font-size: 1em;
 
-    @media screen and (max-width: 1089px) {
-        font-size: 0.9em;
-    }
-
-    @media screen and (max-width: 855px) {
-        font-size: 0.8em;
-    }
-
-    // make the font big again as the cards are now being stacked vertically
-    @media screen and (max-width: 755px) {
-        font-size: 1em;
-    }
-
-    // now reduce them again as we are getting closer to mobile
-    @media screen and (max-width: 655px) {
-        font-size: 0.9em;
-    }
-
-    @media screen and (max-width: 555px) {
-        font-size: 0.7em;
-    }
-
     h3 {
         color: $primary-font-color; //#C7C8B8;
-        font-size: 1.5em;
-
-        @media screen and (max-width: 1089px) {
-            font-size: 1.4em;
-        }
-
-        @media screen and (max-width: 855px) {
-            font-size: 1.3em;
-        }
-
-        // make the font big again as the cards are now being stacked vertically
-        @media screen and (max-width: 755px) {
-            font-size: 1.5em;
-        }
-
-        // now reduce them again as we are getting closer to mobile
-        @media screen and (max-width: 655px) {
-            font-size: 1.4em;
-        }
-
-        @media screen and (max-width: 555px) {
-            font-size: 1.2em;
-        }
     }
 
     a {

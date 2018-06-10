@@ -12,6 +12,12 @@ div.main {
     padding-top: 10px;
     padding-bottom: 30px;
     text-align: center; }
+    @media screen and (max-width: 1000px) {
+      div.main h1 {
+        font-size: 1.8em; } }
+    @media screen and (max-width: 750px) {
+      div.main h1 {
+        font-size: 1.5em; } }
   div.main h2 {
     font-size: 1.8em;
     font-weight: 800;
@@ -22,6 +28,21 @@ div.main {
     font-weight: 700;
     padding-top: 10px;
     padding-bottom: 10px; }
+    @media screen and (max-width: 1089px) {
+      div.main h3 {
+        font-size: 1.4em; } }
+    @media screen and (max-width: 855px) {
+      div.main h3 {
+        font-size: 1.3em; } }
+    @media screen and (max-width: 755px) {
+      div.main h3 {
+        font-size: 1.3em; } }
+    @media screen and (max-width: 655px) {
+      div.main h3 {
+        font-size: 1.3em; } }
+    @media screen and (max-width: 555px) {
+      div.main h3 {
+        font-size: 1.2em; } }
   div.main h4 {
     font-size: 1.4em;
     font-weight: 700; }
@@ -32,8 +53,15 @@ div.main {
     font-size: 1em;
     font-weight: 600; }
   div.main p {
+    font-size: 1em;
     line-height: 1.5em;
     padding-bottom: 10px; }
+    @media screen and (max-width: 1000px) {
+      div.main p {
+        font-size: 0.9em; } }
+    @media screen and (max-width: 750px) {
+      div.main p {
+        font-size: 0.8em; } }
   div.main ul {
     list-style-type: disc;
     list-style-position: inside;
@@ -43,11 +71,42 @@ div.main {
   div.main ul > li {
     padding-top: 5px;
     padding-bottom: 5px; }
+    @media screen and (max-width: 1000px) {
+      div.main ul > li {
+        font-size: 0.9em; } }
+    @media screen and (max-width: 750px) {
+      div.main ul > li {
+        font-size: 0.8em; } }
+    @media screen and (max-width: 390px) {
+      div.main ul > li {
+        font-size: 0.7em; } }
   div.main b {
     font-weight: 700; }
   div.main section {
     padding-top: 20px;
     padding-bottom: 20px; }
+
+#description, #features, #community {
+  padding-left: 4em;
+  padding-right: 4em;
+  overflow: hidden; }
+  @media screen and (max-width: 1070px) {
+    #description, #features, #community {
+      padding-left: 2em;
+      padding-right: 2em; } }
+  @media screen and (max-width: 520px) {
+    #description, #features, #community {
+      padding-left: 1em;
+      padding-right: 1em; } }
+
+#description {
+  background-color: #292929; }
+
+#features {
+  background-color: #494949; }
+
+#community {
+  background-color: #292929; }
 
 .thumbnail-layout-3 {
   width: 33.3333333333%;
@@ -57,7 +116,9 @@ div.main {
   @media screen and (max-width: 755px) {
     .thumbnail-layout-3 {
       width: 100%;
-      float: none; } }
+      float: none;
+      padding-left: 0px;
+      padding-right: 0px; } }
 
 .thumbnail-layout-2 {
   width: 50%;
@@ -67,7 +128,9 @@ div.main {
   @media screen and (max-width: 755px) {
     .thumbnail-layout-2 {
       width: 100%;
-      float: none; } }
+      float: none;
+      padding-left: 0px;
+      padding-right: 0px; } }
 
 .thumbnail {
   background-color: #292929;
@@ -109,39 +172,8 @@ div.main {
   min-height: 180px;
   padding: 9px;
   font-size: 1em; }
-  @media screen and (max-width: 1089px) {
-    .thumbnail .caption {
-      font-size: 0.9em; } }
-  @media screen and (max-width: 855px) {
-    .thumbnail .caption {
-      font-size: 0.8em; } }
-  @media screen and (max-width: 755px) {
-    .thumbnail .caption {
-      font-size: 1em; } }
-  @media screen and (max-width: 655px) {
-    .thumbnail .caption {
-      font-size: 0.9em; } }
-  @media screen and (max-width: 555px) {
-    .thumbnail .caption {
-      font-size: 0.7em; } }
   .thumbnail .caption h3 {
-    color: #CACAC4;
-    font-size: 1.5em; }
-    @media screen and (max-width: 1089px) {
-      .thumbnail .caption h3 {
-        font-size: 1.4em; } }
-    @media screen and (max-width: 855px) {
-      .thumbnail .caption h3 {
-        font-size: 1.3em; } }
-    @media screen and (max-width: 755px) {
-      .thumbnail .caption h3 {
-        font-size: 1.5em; } }
-    @media screen and (max-width: 655px) {
-      .thumbnail .caption h3 {
-        font-size: 1.4em; } }
-    @media screen and (max-width: 555px) {
-      .thumbnail .caption h3 {
-        font-size: 1.2em; } }
+    color: #CACAC4; }
   .thumbnail .caption a {
     color: #c48214;
     outline: 0;
@@ -159,20 +191,5 @@ div.main {
 
   .thumbnail-layout-3 > .thumbnail-short {
     height: auto; } }
-#description {
-  background-color: #292929;
-  padding-left: 4em;
-  padding-right: 4em; }
-
-#features {
-  background-color: #494949;
-  padding-left: 4em;
-  padding-right: 4em;
-  overflow: hidden; }
-
-#community {
-  background-color: #292929;
-  padding-left: 4em;
-  padding-right: 4em; }
 
 /*# sourceMappingURL=learn-more.css.map */

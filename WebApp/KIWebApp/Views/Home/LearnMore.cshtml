@@ -2,6 +2,13 @@
     <link href="~/Content/css/views/learn-more/learn-more.css" rel="stylesheet" type="text/css" />
 }
 
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-browser",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
 <div class="main">
     <section id="description">
         <h1>Cloud Based Dynamic Campaign Framework</h1>
