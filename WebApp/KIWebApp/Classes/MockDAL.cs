@@ -554,5 +554,25 @@ APC|8
         {
             throw new NotImplementedException();
         }
+
+        public List<ServerModel> GetServerSearchResults(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ServerModel> GetServerSearchResults(string query, ref IDbConnection conn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<PlayerModel> GetPlayerSearchResults(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<PlayerModel> GetPlayerSearchResults(string query, ref IDbConnection conn)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

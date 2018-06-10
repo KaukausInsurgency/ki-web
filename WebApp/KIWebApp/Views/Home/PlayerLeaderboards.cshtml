@@ -1,5 +1,4 @@
-﻿@model KIWebApp.Models.SearchResultsModel
-@section styles {
+﻿@section styles {
     <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/views/search/search.css" rel="stylesheet" type="text/css" />
@@ -13,7 +12,7 @@
     </div>
     <div class="header-form">
         <form class="form-search" action="/Home/Search" method="post">
-            <input id="Query" class="input" name="Query" type="text" value="@Model.Query">
+            <input id="Query" class="input" name="Query" type="text" value="">
             <input type="submit" class="button glass-black" value="Search" id="btnSearchSubmit">
         </form>
     </div>
@@ -27,14 +26,24 @@
 
     <div class="search-menu">
         <nav class="menu">
-            <a id="js-server-search" href="javascript:;" class="menu-item @(Model.ServerResults > 0? "" : "disabled")" >
-                Servers
-                <span class="search-count">@Model.ServerResults</span>
+            <a id="js-overall-search" href="javascript:;" class="menu-item">
+                Overall
             </a>
             <hr class="menu-line">
-            <a id="js-player-search" href="javascript:;" class="menu-item @(Model.PlayerResults > 0? "" : "disabled")">
-                Players
-                <span class="search-count">@Model.PlayerResults</span>
+            <a id="js-sorties-search" href="javascript:;" class="menu-item">
+                Sorties
+            </a>
+            <hr class="menu-line">
+            <a id="js-kills-search" href="javascript:;" class="menu-item">
+                Kills
+            </a>
+            <hr class="menu-line">
+            <a id="js-slingloads-search" href="javascript:;" class="menu-item">
+                Slingloads
+            </a>
+            <hr class="menu-line">
+            <a id="js-resupplies-search" href="javascript:;" class="menu-item">
+                Resupplies
             </a>
         </nav>
     </div>
@@ -49,11 +58,7 @@
 </div>
 
 @section scripts {
-    <script type="text/javascript">
-        var MODEL = @Html.Raw(Json.Encode(Model));
-    </script>
 
     @Scripts.Render("~/bundles/dynatable")
     @Scripts.Render("~/bundles/tooltipster")
-    <script src="~/scripts/views/search/init.js"></script>
 }

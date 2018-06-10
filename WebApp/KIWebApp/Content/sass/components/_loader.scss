@@ -1,0 +1,24 @@
+.loader {
+    border: 14px solid #CACAC4;
+    border-top: 14px solid #e36209;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+    display: none;
+    z-index: 1;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader.loading {
+    display: block;
+}

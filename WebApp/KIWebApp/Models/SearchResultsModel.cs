@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -9,10 +10,17 @@ namespace KIWebApp.Models
     {
         public SearchResultsModel()
         {
-            PlayerResults = new List<PlayerModel>();
-            ServerResults = new List<ServerModel>();
+            PlayerResults = 0;
+            ServerResults = 0;
         }
-        public List<PlayerModel> PlayerResults;
-        public List<ServerModel> ServerResults;
+
+        public SearchResultsModel(DataRow dr)
+        {
+            PlayerResults = Convert.ToInt32(dr.Field<long>("PlayerResults"));
+            ServerResults = Convert.ToInt32(dr.Field<long>("ServerResults"));
+        }
+        public int PlayerResults;
+        public int ServerResults;
+        public string Query;
     }
 }

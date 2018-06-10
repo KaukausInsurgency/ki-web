@@ -19,6 +19,7 @@ namespace KIWebApp.Classes
         private const string SP_GET_CAPTUREPOINTS = "websp_GetCapturePoints";
         private const string SP_GET_GAME = "websp_GetGame";
         private const string SP_GET_SIDEMISSIONS = "websp_GetSideMissions";
+        private const string SP_SEARCH_TOTALS = "websp_SearchTotals";
         private const string SP_SEARCH_PLAYERS = "websp_SearchPlayers";
         private const string SP_SEARCH_SERVERS = "websp_SearchServers";
         private const string SP_GET_SERVER_INFO = "websp_GetServerInfo";
@@ -390,29 +391,85 @@ namespace KIWebApp.Classes
             if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
                 conn.Open();
             SearchResultsModel results = new SearchResultsModel();
-
-            {
-                IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_SEARCH_PLAYERS,
+            
+            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_SEARCH_TOTALS,
                          new Dictionary<string, object>() { { "Criteria", query } });
-                DataTable dt = SqlUtility.Execute(cmd);
+            DataTable dt = SqlUtility.Execute(cmd);
 
-                if (dt != null)
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
                 {
-                    foreach (DataRow dr in dt.Rows)
-                        results.PlayerResults.Add(new PlayerModel(dr));
+                    results = new SearchResultsModel(dr);
+                    break;
                 }
             }
+            results.Query = query;
 
+            return results;
+        }
+
+        List<PlayerModel> IDAL.GetPlayerSearchResults(string query)
+        {
+            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            try
             {
-                IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_SEARCH_SERVERS,
-                        new Dictionary<string, object>() { { "Criteria", query } });
-                DataTable dt = SqlUtility.Execute(cmd);
+                conn.Open();
+                return ((IDAL)this).GetPlayerSearchResults(query, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
 
-                if (dt != null)
-                {
-                    foreach (DataRow dr in dt.Rows)
-                        results.ServerResults.Add(new ServerModel(dr));
-                }
+        List<PlayerModel> IDAL.GetPlayerSearchResults(string query, ref IDbConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+            List<PlayerModel> results = new List<PlayerModel>();
+
+            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_SEARCH_PLAYERS,
+                         new Dictionary<string, object>() { { "Criteria", query } });
+            DataTable dt = SqlUtility.Execute(cmd);
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                    results.Add(new PlayerModel(dr));
+            }
+
+            return results;
+        }
+
+        List<ServerModel> IDAL.GetServerSearchResults(string query)
+        {
+            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            try
+            {
+                conn.Open();
+                return ((IDAL)this).GetServerSearchResults(query, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        List<ServerModel> IDAL.GetServerSearchResults(string query, ref IDbConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+            List<ServerModel> results = new List<ServerModel>();
+ 
+            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_SEARCH_SERVERS,
+                        new Dictionary<string, object>() { { "Criteria", query } });
+            DataTable dt = SqlUtility.Execute(cmd);
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                    results.Add(new ServerModel(dr));
             }
 
             return results;

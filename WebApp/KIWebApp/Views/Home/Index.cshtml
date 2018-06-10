@@ -8,7 +8,7 @@
     </video>
     <div class="video-overlay-container">
         <div class="form-layout">
-            <form class="form-search" action="/Home/Search" method="post">
+            <form class="form-search" action="@Url.Action("Search", "Home")" method="post">
                 <input id="Query" class="input" name="Query" type="text" value="">
                 <input type="submit" class="button glass-black" value="Search" id="btnSearchSubmit">
             </form>

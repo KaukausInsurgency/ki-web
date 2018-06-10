@@ -1,0 +1,104 @@
+﻿@import '../../utils/module';
+
+.search-menu {
+    margin-top: 30px;
+    padding-right: 20px;
+    float: left;
+    width: 25%;
+}
+
+.search-results {
+    float: left;
+    width: 75%;
+    padding-top: 20px;
+}
+
+.menu {
+    list-style: none;
+    background-color: palette(dark, 'tundora');
+    border-radius: 15px;
+    border: 1px solid palette(dark, 'dark');
+}
+
+.menu-item {
+    position: relative; // needed for the ::before line to draw properly
+    display: block;
+    padding: 15px 30px;
+    color: $primary-font-color;
+    text-decoration: none;
+
+    &:first-child {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    &:hover {
+        background-color: palette(dark, 'dark');
+    }
+}
+
+// when disabled do not animate any effects
+.menu-item.disabled {
+    cursor: default;
+
+    &:hover {
+        background-color: transparent;
+    }
+}
+
+.menu-item.selected {
+    font-weight: 600;
+    color: $primary-font-color-hover;
+    cursor: default;
+    // dont have a background color when the item is selected
+    &:hover {
+        background-color: transparent;
+    }
+}
+
+.menu-item.selected::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;
+    width: 20px;
+    content: "";
+    background-color: #e36209;
+}
+
+// curve the top left for the first item
+.menu-item.selected:first-child:before {
+    border-top-left-radius: 15px;
+}
+
+// curve the bottom left for the last item
+.menu-item.selected:last-child:before {
+    border-bottom-left-radius: 15px;
+}
+
+.menu-line {
+    display: block;
+    border: 1px solid palette(dark, 'dark');
+    margin: 0px;
+}
+
+.search-count {
+    padding: 2px 15px;
+    border-radius: 10px;
+    color: #e36209;
+    background-color: palette(dark-font, 'gray-nickel');
+    font-size: 12px;
+    font-weight: bold;
+    float: right;
+}
+
+.search-loader-layout {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+}

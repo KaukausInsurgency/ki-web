@@ -53,3 +53,11 @@
     -moz-box-shadow: $expression;
     box-shadow: $expression;
 }
+
+@mixin fade-in($expression) {
+    -webkit-animation: $expression; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: $expression; /* Firefox < 16 */
+    -ms-animation: $expression; /* Internet Explorer */
+    -o-animation: $expression; /* Opera < 12.1 */
+    animation: $expression;
+}

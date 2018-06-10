@@ -35,6 +35,8 @@ else
 <body>
     @Html.Partial("_Navigation")
 
+    <div data-url-base="@(Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~"))"></div>
+
     <div id="body">
         @RenderBody()
     </div>

@@ -31,5 +31,9 @@ namespace KIWebApp.Classes
         ServerViewModel GetServerInfo(int serverID, ref IDbConnection conn);
         SearchResultsModel GetSearchResults(string query);
         SearchResultsModel GetSearchResults(string query, ref IDbConnection conn);
+        List<ServerModel> GetServerSearchResults(string query);
+        List<ServerModel> GetServerSearchResults(string query, ref IDbConnection conn);
+        List<PlayerModel> GetPlayerSearchResults(string query);
+        List<PlayerModel> GetPlayerSearchResults(string query, ref IDbConnection conn);
     }
 }

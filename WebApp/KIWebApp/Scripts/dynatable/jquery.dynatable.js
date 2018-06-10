@@ -1209,18 +1209,16 @@
           $searchSpan = $('<span></span>', {
             id: 'dynatable-search-' + obj.element.id,
             'class': 'dynatable-search',
-            text: 'Search: '
+            text: 'Filter: '
           }).append($search);
 
       $search
         .bind(settings.inputs.queryEvent, function() {
           obj.queries.runSearch($(this).val());
         })
-        .bind('keypress', function(e) {
-          if (e.which == 13) {
-            obj.queries.runSearch($(this).val());
-            e.preventDefault();
-          }
+        .bind('keyup', function(e) {
+          obj.queries.runSearch($(this).val());
+          e.preventDefault();
         });
       return $searchSpan;
     };

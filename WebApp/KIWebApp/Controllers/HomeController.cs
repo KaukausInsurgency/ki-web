@@ -3,6 +3,7 @@ using KIWebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,11 +38,28 @@ namespace KIWebApp.Controllers
             return View();
         }
 
+        public ActionResult PlayerLeaderboards()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult NavigationExpanded(bool state)
         {
             Session["NavExpanded"] = state;
             return new EmptyResult();
+        }
+
+        [HttpGet]
+        public ActionResult SearchServers(SearchModel model)
+        {
+            return PartialView("_ServerSearchResults", dal.GetServerSearchResults(model.Query));
+        }
+
+        [HttpGet]
+        public ActionResult SearchPlayers(SearchModel model)
+        {
+            return PartialView("_PlayerSearchResults", dal.GetPlayerSearchResults(model.Query));
         }
     }
 }

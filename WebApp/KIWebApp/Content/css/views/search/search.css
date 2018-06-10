@@ -1,0 +1,84 @@
+/*
+* Better function for color palettes using Sass maps
+* Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
+* Usage: color: palette(brand,tan);
+*/
+.search-menu {
+  margin-top: 30px;
+  padding-right: 20px;
+  float: left;
+  width: 25%; }
+
+.search-results {
+  float: left;
+  width: 75%;
+  padding-top: 20px; }
+
+.menu {
+  list-style: none;
+  background-color: #474747;
+  border-radius: 15px;
+  border: 1px solid #333; }
+
+.menu-item {
+  position: relative;
+  display: block;
+  padding: 15px 30px;
+  color: #CACAC4;
+  text-decoration: none; }
+  .menu-item:first-child {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px; }
+  .menu-item:last-child {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px; }
+  .menu-item:hover {
+    background-color: #333; }
+
+.menu-item.disabled {
+  cursor: default; }
+  .menu-item.disabled:hover {
+    background-color: transparent; }
+
+.menu-item.selected {
+  font-weight: 600;
+  color: #f1f1f1;
+  cursor: default; }
+  .menu-item.selected:hover {
+    background-color: transparent; }
+
+.menu-item.selected::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0px;
+  width: 20px;
+  content: "";
+  background-color: #e36209; }
+
+.menu-item.selected:first-child:before {
+  border-top-left-radius: 15px; }
+
+.menu-item.selected:last-child:before {
+  border-bottom-left-radius: 15px; }
+
+.menu-line {
+  display: block;
+  border: 1px solid #333;
+  margin: 0px; }
+
+.search-count {
+  padding: 2px 15px;
+  border-radius: 10px;
+  color: #e36209;
+  background-color: #CACAC4;
+  font-size: 12px;
+  font-weight: bold;
+  float: right; }
+
+.search-loader-layout {
+  position: absolute;
+  left: 50%;
+  top: 35%; }
+
+/*# sourceMappingURL=search.css.map */
