@@ -10,7 +10,7 @@
     var urlServerInitScript = urlBase + 'scripts/views/server/init.js';
 
     var initiateAjax = function (url, onComplete) {
-        $('.search-results').html('');
+        $('.js-search-content').html('');
         KI.loader(true, '');
 
         $.ajax({
@@ -21,7 +21,7 @@
                 Query: MODEL.Query
             },
             success: function (data) {
-                $('.search-results').html(data);
+                $('.js-search-content').html(data);
                 onComplete(data);
             }
         });

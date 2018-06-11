@@ -276,6 +276,8 @@
     <Content Include="Content\sass\views\search\search.scss" />
     <Content Include="Content\sass\components\_loader.scss" />
     <Content Include="Content\sass\views\learn-more\_common.scss" />
+    <Content Include="Content\sass\views\search\_responsive.scss" />
+    <Content Include="Content\sass\components\_menu.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
@@ -348,6 +350,8 @@
     <Content Include="Content\sass\views\home\home.scss" />
     <Content Include="Content\sass\style.scss" />
     <Content Include="Content\sass\components\_table.scss" />
+    <Content Include="Content\sass\views\shared\search-results.scss" />
+    <Content Include="Content\sass\views\shared\menu-responsive.scss" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />

@@ -9,50 +9,6 @@ $table-border: 1px solid rgb(73, 73, 73);
 
 
 
-%table-column-padding-media {
-    padding: 10px;
-
-    @media screen and (max-width: 800px) {
-        padding: 8px;
-    }
-
-    @media screen and (max-width: 380px) {
-        padding: 4px;
-    }
-}
-
-%table-th-font-media {
-    font-size: 1em;
-
-    @media screen and (max-width: 800px) {
-        font-size: 0.85em;
-    }
-
-    @media screen and (max-width: 380px) {
-        font-size: 0.75em;
-    }
-}
-
-%table-td-font-media {
-    font-size: 0.95em;
-
-    @media screen and (max-width: 800px) {
-        font-size: 0.8em;
-    }
-
-    @media screen and (max-width: 380px) {
-        font-size: 0.7em;
-    }
-}
-
-
-
-
-
-
-
-
-
 .table {
     display: table;
     width: 100%; // expand to full width of parent layout
@@ -105,9 +61,6 @@ table.table > thead > tr > th {
     font-weight: 600;
     color: $table-head-font-color;
 
-    @extend %table-th-font-media;
-    @extend %table-column-padding-media;
-
     & > a {
         text-decoration: none;
         color: $table-head-font-color;
@@ -121,11 +74,7 @@ table.table > tbody > tr > td {
     text-align: left;
     color: $table-body-font-color;
 
-    @extend %table-column-padding-media;
-    @extend %table-td-font-media;
-
     & > b {
-        @extend %table-td-font-media;
         font-weight: 600;
         color: $table-body-font-color;
     }

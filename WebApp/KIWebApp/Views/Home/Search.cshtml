@@ -1,6 +1,7 @@
 ﻿@model KIWebApp.Models.SearchResultsModel
 @section styles {
-    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/shared/search-results.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/shared/menu-responsive.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/views/search/search.css" rel="stylesheet" type="text/css" />
 }
@@ -32,12 +33,12 @@
         </nav>
     </div>
 
-    <div class="search-loader-layout">
-        <div class="loader"></div>
-    </div>
-
     <div class="search-results">
-        <!--Handled in Ajax Calls-->
+        <div class="search-loader-layout loader"></div>
+        <div class="js-search-content">
+            <!--Handled in Ajax Calls-->
+        </div>
+        
     </div>
 </div>
 

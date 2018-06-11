@@ -1,6 +1,6 @@
 .video-section {
     position: relative;
-    max-height: 90vh;
+    //max-height: 90vh;
     overflow: hidden;
     font-family: $primary-font-stack;
 }
@@ -10,7 +10,7 @@
     z-index: -1;
     -o-object-fit: cover;
     object-fit: cover;
-    max-height: 90vh;
+    //max-height: 90vh;
     width: 100vw;
     max-width: 100%;
     -webkit-filter: brightness(.65) contrast(1.2);

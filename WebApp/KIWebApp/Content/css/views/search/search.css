@@ -3,6 +3,50 @@
 * Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
 * Usage: color: palette(brand,tan);
 */
+table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
+  padding: 10px; }
+  @media screen and (max-width: 800px) {
+    table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
+      padding: 8px; } }
+  @media screen and (max-width: 380px) {
+    table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
+      padding: 4px; } }
+
+table.table.servers > thead > tr > th {
+  font-size: 1em; }
+  @media screen and (max-width: 1000px) {
+    table.table.servers > thead > tr > th {
+      font-size: 0.85em; } }
+  @media screen and (max-width: 850px) {
+    table.table.servers > thead > tr > th {
+      font-size: 0.75em; } }
+
+table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
+  font-size: 0.95em; }
+  @media screen and (max-width: 1000px) {
+    table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
+      font-size: 0.8em; } }
+  @media screen and (max-width: 850px) {
+    table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
+      font-size: 0.7em; } }
+
+@media screen and (max-width: 1000px) {
+  .sr-layout > span, .sr-layout > ul {
+    font-size: 0.8em; } }
+@media screen and (max-width: 850px) {
+  .sr-layout > span, .sr-layout > ul {
+    font-size: 0.65em; } }
+
+@media screen and (max-width: 788px) {
+  table.table.servers > tbody > tr > td:nth-child(4), table.table.servers > thead > tr > th:nth-child(4) {
+    display: none; } }
+@media screen and (max-width: 600px) {
+  table.table.servers > tbody > tr > td:nth-child(3), table.table.servers > thead > tr > th:nth-child(3) {
+    display: none; } }
+@media screen and (max-width: 450px) {
+  table.table.servers > tbody > tr > td:nth-child(2), table.table.servers > thead > tr > th:nth-child(2) {
+    display: none; } }
+
 .search-menu {
   margin-top: 30px;
   padding-right: 20px;
@@ -14,71 +58,22 @@
   width: 75%;
   padding-top: 20px; }
 
-.menu {
-  list-style: none;
-  background-color: #474747;
-  border-radius: 15px;
-  border: 1px solid #333; }
-
-.menu-item {
-  position: relative;
-  display: block;
-  padding: 15px 30px;
-  color: #CACAC4;
-  text-decoration: none; }
-  .menu-item:first-child {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px; }
-  .menu-item:last-child {
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px; }
-  .menu-item:hover {
-    background-color: #333; }
-
-.menu-item.disabled {
-  cursor: default; }
-  .menu-item.disabled:hover {
-    background-color: transparent; }
-
-.menu-item.selected {
-  font-weight: 600;
-  color: #f1f1f1;
-  cursor: default; }
-  .menu-item.selected:hover {
-    background-color: transparent; }
-
-.menu-item.selected::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0px;
-  width: 20px;
-  content: "";
-  background-color: #e36209; }
-
-.menu-item.selected:first-child:before {
-  border-top-left-radius: 15px; }
-
-.menu-item.selected:last-child:before {
-  border-bottom-left-radius: 15px; }
-
-.menu-line {
-  display: block;
-  border: 1px solid #333;
-  margin: 0px; }
-
-.search-count {
-  padding: 2px 15px;
-  border-radius: 10px;
-  color: #e36209;
-  background-color: #CACAC4;
-  font-size: 12px;
-  font-weight: bold;
-  float: right; }
-
 .search-loader-layout {
   position: absolute;
-  left: 50%;
-  top: 35%; }
+  left: 42%;
+  left: -webkit-calc(50% - 40px);
+  left: -moz-calc(50% - 40px);
+  left: calc(50% - 40px);
+  top: 50%; }
+
+@media screen and (max-width: 720px) {
+  .search-menu {
+    float: none;
+    width: 100%;
+    padding-right: 0px; }
+
+  .search-results {
+    float: none;
+    width: 100%; } }
 
 /*# sourceMappingURL=search.css.map */
