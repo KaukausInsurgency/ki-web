@@ -39,5 +39,51 @@ namespace KIWebApp.Classes
                 return null;
             }
         }
+
+        public static string ConvertTimeTicksToStringInt(ref DataRow dr, string field)
+        {
+            TimeSpan ts;
+            
+            if (dr[field] == DBNull.Value || dr[field] == null)
+                ts = new TimeSpan(0, 0, 0);
+            else
+                ts = new TimeSpan(TimeSpan.TicksPerSecond * dr.Field<int>(field));
+
+            return ((int)(ts.TotalHours)).ToString("D2") + ":" + ts.ToString(@"mm\:ss");
+        }
+
+
+        // In the future these will be condensed down to a single function once we get off MySql
+        public static string ConvertTimeTicksToStringLong(ref DataRow dr, string field)
+        {
+            TimeSpan ts;
+
+            if (dr[field] == DBNull.Value || dr[field] == null)
+                ts = new TimeSpan(0, 0, 0);
+            else
+                ts = new TimeSpan(TimeSpan.TicksPerSecond * dr.Field<long>(field));
+
+            return ((long)(ts.TotalHours)).ToString("D2") + ":" + ts.ToString(@"mm\:ss");
+        }
+
+        public static string ConvertTimeTicksToStringDouble(ref DataRow dr, string field)
+        {
+            TimeSpan ts;
+
+            if (dr[field] == DBNull.Value || dr[field] == null)
+                ts = new TimeSpan(0, 0, 0);
+            else
+                ts = new TimeSpan(TimeSpan.TicksPerSecond * Convert.ToInt32(dr.Field<double>(field)));
+
+            return ((long)(ts.TotalHours)).ToString("D2") + ":" + ts.ToString(@"mm\:ss");
+        }
+
+        public static T GetValueOrDefault<T>(ref DataRow dr, string field, T defaultValue)
+        {
+            if (dr[field] == DBNull.Value || dr[field] == null)
+                return defaultValue;
+            else
+                return dr.Field<T>(field);
+        }
     }
 }

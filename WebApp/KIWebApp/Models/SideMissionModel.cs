@@ -31,10 +31,7 @@ namespace KIWebApp.Models
             LatLong = dr.Field<string>("LatLong");
             MGRS = dr.Field<string>("MGRS");
 
-            if (dr["TimeRemaining"] == DBNull.Value || dr["TimeRemaining"] == null)
-                TimeRemaining = new TimeSpan(0, 0, 0).ToString();
-            else
-                TimeRemaining = new TimeSpan(TimeSpan.TicksPerSecond * Convert.ToInt32(dr.Field<double>("TimeRemaining"))).ToString();
+            TimeRemaining = SqlUtility.ConvertTimeTicksToStringDouble(ref dr, "TimeRemaining");
 
             if (dr["TimeInactive"] != DBNull.Value && dr["TimeInactive"] != null)
                 TimeInactive = ((TimeSpan)(DateTime.Now - dr.Field<DateTime>("TimeInactive"))).TotalSeconds;

@@ -55,6 +55,7 @@
     <Compile Include="DALTests.cs" />
     <Compile Include="DepotModelTests.cs" />
     <Compile Include="Interfaces\IExecuteReader.cs" />
+    <Compile Include="Mocks\ExecuteReaderNoAction.cs" />
     <Compile Include="Mocks\MockDBCommand.cs" />
     <Compile Include="Mocks\MockDBConnection.cs" />
     <Compile Include="OnlinePlayerModelTests.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="ServerModelTests.cs" />
     <Compile Include="ServerViewModelTests.cs" />
     <Compile Include="SideMissionModelTests.cs" />
+    <Compile Include="SqlUtilityTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

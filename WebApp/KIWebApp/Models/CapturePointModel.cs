@@ -37,10 +37,7 @@ namespace KIWebApp.Models
             BlueUnits = dr.Field<int>("BlueUnits");
             RedUnits = dr.Field<int>("RedUnits");
             Image = dr.Field<string>("ImagePath");
-
-            Text = "";
-            if (dr["Text"] != DBNull.Value && dr["Text"] != null)
-                Text = dr.Field<string>("Text");
+            Text = SqlUtility.GetValueOrDefault(ref dr, "Text", "");
         }
     }
 }

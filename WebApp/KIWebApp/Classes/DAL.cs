@@ -13,8 +13,6 @@ namespace KIWebApp.Classes
     {
         private const string SP_GET_SERVERS = "websp_GetServersList";
         private const string SP_GET_ONLINEPLAYERS = "websp_GetOnlinePlayers";
-        private const string SP_GET_GAMEMAP = "websp_GetGameMap";
-        private const string SP_GET_LAYERS = "websp_GetGameMapLayers";
         private const string SP_GET_DEPOTS= "websp_GetDepots";
         private const string SP_GET_CAPTUREPOINTS = "websp_GetCapturePoints";
         private const string SP_GET_GAME = "websp_GetGame";
@@ -133,34 +131,21 @@ namespace KIWebApp.Classes
             if (dt == null)
                 return null;
 
-            GameModel g = new GameModel();
+            GameModel g = null;
 
             foreach (DataRow dr in dt.Rows)
             {
-                TimeSpan rt;
-                if (dr["RestartTime"] == DBNull.Value || dr["RestartTime"] == null)
-                    rt = new TimeSpan(0, 0, 0);
-                else
-                    rt = new TimeSpan(TimeSpan.TicksPerSecond * dr.Field<int>("RestartTime"));
-
-                string status = "Offline";
-                if (dr["Status"] != DBNull.Value && dr["Status"] != null)
-                    status = dr.Field<string>("Status");
-
-                g.ServerID = serverID;
-                g.ServerName = dr.Field<string>("ServerName");
-                g.IPAddress = dr.Field<string>("IPAddress");
-                g.OnlinePlayersCount = Convert.ToInt32(dr.Field<long>("OnlinePlayerCount"));
-                g.RestartTime = rt.ToString();
-                g.Status = status;
-                g.Depots = ((IDAL)this).GetDepots(serverID, ref conn);
-                g.CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref conn);
-                g.Missions = ((IDAL)this).GetSideMissions(serverID, ref conn);
-                g.OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref conn);
+                g = new GameModel(serverID, dr)
+                {
+                    Depots = ((IDAL)this).GetDepots(serverID, ref conn),
+                    CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref conn),
+                    Missions = ((IDAL)this).GetSideMissions(serverID, ref conn),
+                    OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref conn),
 
 
-                // Temporary mocked code
-                g.CustomMenuItems = new List<CustomMenuItemModel>();
+                    // Temporary mocked code
+                    CustomMenuItems = new List<CustomMenuItemModel>()
+                };
                 g.CustomMenuItems.Add(new CustomMenuItemModel()
                 {
                     MenuName = "Discord",

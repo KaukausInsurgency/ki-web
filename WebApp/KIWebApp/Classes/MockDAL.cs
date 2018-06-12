@@ -12,14 +12,15 @@ namespace KIWebApp.Classes
     {
 
         GameModel IDAL.GetGame(int serverID)
-        {
-            GameModel g = new GameModel()
+        { 
+            DataRow row = new DataTable("FakeTable").NewRow();
+            GameModel g = new GameModel(serverID, row)
             {
                 ServerID = serverID,
                 ServerName = "Dev Server",
                 IPAddress = "127.0.0.1",
                 OnlinePlayersCount = 5,
-                RestartTime = new TimeSpan(3, 30, 0).ToString(),
+                RestartTimeString = new TimeSpan(3, 30, 0).ToString(),
                 Status = "Online",
                 Depots = ((IDAL)this).GetDepots(serverID),
                 CapturePoints = ((IDAL)this).GetCapturePoints(serverID),
