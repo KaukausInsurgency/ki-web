@@ -23,8 +23,6 @@ namespace Tests
             Assert.That(model.Status == "Online");
             Assert.That(model.StatusChanged == false);
             Assert.That(model.Resources == "Resources");
-            Assert.That(model.Pos.X == 1.25);
-            Assert.That(model.Pos.Y == 0.25);
             Assert.That(model.Image == "Image");
         }
 
@@ -66,13 +64,11 @@ namespace Tests
             table.Columns.Add("Status");
             table.Columns.Add("StatusChanged", typeof(ulong));  // for some reason mySql casts BIT(1) as ulong
             table.Columns.Add("Resources");
-            table.Columns.Add("X", typeof(double));
-            table.Columns.Add("Y", typeof(double));
             table.Columns.Add("ImagePath");
             table.Columns.Add("CurrentCapacity", typeof(int));
             table.Columns.Add("Capacity", typeof(int));
             DataRow row = table.NewRow();
-            row.ItemArray = new object[] { 1, "Mock", "LatLong", "MGRS", "Online", false, "Resources", 1.25, 0.25, "Image", 0, 0 };
+            row.ItemArray = new object[] { 1, "Mock", "LatLong", "MGRS", "Online", false, "Resources", "Image", 0, 0 };
 
             return row;
         }

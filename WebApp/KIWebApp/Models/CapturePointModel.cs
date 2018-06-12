@@ -20,7 +20,6 @@ namespace KIWebApp.Models
         public int BlueUnits { get; set; }
         public int RedUnits { get; set; }
         public int MaxCapacity { get; set; }
-        public Position Pos { get; set; }
         public string Image { get; set; }
 
         public CapturePointModel() { }
@@ -42,8 +41,6 @@ namespace KIWebApp.Models
             Text = "";
             if (dr["Text"] != DBNull.Value && dr["Text"] != null)
                 Text = dr.Field<string>("Text");
-
-            Pos = new Position(dr.Field<double>("X"), dr.Field<double>("Y"));
         }
     }
 }

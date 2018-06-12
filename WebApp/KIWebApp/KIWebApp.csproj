@@ -222,8 +222,6 @@
     <Compile Include="Classes\DAL_Rpt.cs" />
     <Compile Include="Classes\IDAL_Rpt.cs" />
     <Compile Include="Classes\MockDAL.cs" />
-    <Compile Include="Classes\Position.cs" />
-    <Compile Include="Classes\Resolution.cs" />
     <Compile Include="Classes\SqlUtility.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServersController.cs" />
@@ -243,7 +241,6 @@
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />
     <Compile Include="Models\GameModel.cs" />
-    <Compile Include="Models\MapModels.cs" />
     <Compile Include="Models\MarkerViewModel.cs" />
     <Compile Include="Models\OnlinePlayerModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />

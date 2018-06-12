@@ -27,9 +27,7 @@ namespace Tests
             Assert.That(model.BlueUnits == 0);
             Assert.That(model.RedUnits == 20);
             Assert.That(model.Image == "Image");
-            Assert.That(model.Text == "Text");
-            Assert.That(model.Pos.X == 1.25);
-            Assert.That(model.Pos.Y == 0.25);       
+            Assert.That(model.Text == "Text"); 
         }
 
         [Test]
@@ -56,10 +54,8 @@ namespace Tests
             table.Columns.Add("RedUnits", typeof(int));
             table.Columns.Add("ImagePath");
             table.Columns.Add("Text");
-            table.Columns.Add("X", typeof(double));
-            table.Columns.Add("Y", typeof(double));
             DataRow row = table.NewRow();
-            row.ItemArray = new object[] { 1, "AIRPORT", "Mock", "LatLong", "MGRS", 30, "Red", false, 0, 20, "Image", "Text", 1.25, 0.25 };
+            row.ItemArray = new object[] { 1, "AIRPORT", "Mock", "LatLong", "MGRS", 30, "Red", false, 0, 20, "Image", "Text" };
 
             return row;
         }

@@ -19,7 +19,6 @@ namespace KIWebApp.Models
         public double TimeInactive { get; set; }
         public string LatLong { get; set; }
         public string MGRS { get; set; }
-        public Position Pos { get; set; }     
 
         public SideMissionModel(DataRow dr)
         {
@@ -31,7 +30,6 @@ namespace KIWebApp.Models
             StatusChanged = dr.Field<ulong>("StatusChanged") == 1;  // for some reason MySQL treats BIT(1) as ulong
             LatLong = dr.Field<string>("LatLong");
             MGRS = dr.Field<string>("MGRS");
-            Pos = new Position(dr.Field<double>("X"), dr.Field<double>("Y"));
 
             if (dr["TimeRemaining"] == DBNull.Value || dr["TimeRemaining"] == null)
                 TimeRemaining = new TimeSpan(0, 0, 0).ToString();

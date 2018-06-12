@@ -17,7 +17,6 @@ namespace KIWebApp.Models
         public string Status { get; set; }
         public bool StatusChanged { get; set; }
         public string Resources { get; set; }
-        public Position Pos { get; set; }
         public string Image { get; set; }
 
         public DepotModel() { }
@@ -31,7 +30,6 @@ namespace KIWebApp.Models
             Status = dr.Field<string>("Status");
             StatusChanged = dr.Field<ulong>("StatusChanged") == 1;  // for some reason MySQL treats BIT(1) as ulong
             Resources = dr.Field<string>("Resources");
-            Pos = new Position(dr.Field<double>("X"), dr.Field<double>("Y"));
             Image = dr.Field<string>("ImagePath");
 
             int currentcap = dr.Field<int>("CurrentCapacity");

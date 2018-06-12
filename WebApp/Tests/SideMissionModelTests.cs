@@ -24,8 +24,6 @@ namespace Tests
             Assert.That(model.StatusChanged == false);
             Assert.That(model.LatLong == "LatLong");
             Assert.That(model.MGRS == "MGRS");
-            Assert.That(model.Pos.X == 1.25);
-            Assert.That(model.Pos.Y == 0.25);
             Assert.That(model.TimeRemaining == "00:01:40");
             Assert.That(model.TimeInactive > 0);
         }
@@ -59,12 +57,10 @@ namespace Tests
             table.Columns.Add("StatusChanged", typeof(ulong));
             table.Columns.Add("LatLong");
             table.Columns.Add("MGRS");
-            table.Columns.Add("X", typeof(double));
-            table.Columns.Add("Y", typeof(double));
             table.Columns.Add("TimeRemaining", typeof(double));
             table.Columns.Add("TimeInactive", typeof(DateTime));
             DataRow row = table.NewRow();
-            row.ItemArray = new object[] { 1, "Server", "Description", "Image", "Active", false, "LatLong", "MGRS", 1.25, 0.25, 100.5, new DateTime(2018, 1, 1) };
+            row.ItemArray = new object[] { 1, "Server", "Description", "Image", "Active", false, "LatLong", "MGRS", 100.5, new DateTime(2018, 1, 1) };
 
             return row;
         }

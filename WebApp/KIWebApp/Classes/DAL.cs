@@ -157,91 +157,26 @@ namespace KIWebApp.Classes
                 g.CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref conn);
                 g.Missions = ((IDAL)this).GetSideMissions(serverID, ref conn);
                 g.OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref conn);
-                g.Map = ((IDAL)this).GetGameMap(serverID, ref conn);
+
+
+                // Temporary mocked code
+                g.CustomMenuItems = new List<CustomMenuItemModel>();
+                g.CustomMenuItems.Add(new CustomMenuItemModel()
+                {
+                    MenuName = "Discord",
+                    IconClass = "fab fa-discord",
+                    Content = new HtmlContentIFrameModel(500, 300, "https://discordapp.com/widget?id=410076123242954753&theme=dark",
+                                                        "allowtransparency = \"true\" frameborder = \"0\"")
+                });
+                g.CustomMenuItems.Add(new CustomMenuItemModel()
+                {
+                    MenuName = "Custom Menu",
+                    IconClass = "fas fa-archive",
+                    Content = new HtmlContentSimpleModel("<h3>Rules</h3><ul><li>No Spitting</li><li>No Lying</li><li>Be Respectful</li></ul><p>These are our rules and they will be followed!</p>")
+                });
                 break;
             }
             return g;
-        }
-
-        GameMapModel IDAL.GetGameMap(int serverID)
-        {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
-            try
-            {
-                conn.Open();
-                return ((IDAL)this).GetGameMap(serverID, ref conn);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
-        GameMapModel IDAL.GetGameMap(int serverID, ref IDbConnection conn)
-        {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-        
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_GAMEMAP,
-                new Dictionary<string, object>() { { "ServerID", serverID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            GameMapModel map = new GameMapModel
-            {
-                MapExists = false,
-                Layers = new List<MapLayerModel>()
-            };
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                map.ImagePath = dr.Field<string>("ImagePath");
-                map.DCSOriginPosition = new Position(dr.Field<double>("X"), dr.Field<double>("Y"));
-                map.Resolution = new Resolution(dr.Field<double>("Width"), dr.Field<double>("Height"));
-                map.Ratio = dr.Field<double>("Ratio");
-                map.Layers = ((IDAL)this).GetMapLayers(dr.Field<int>("GameMapID"), ref conn);
-                map.MapExists = true;
-                break;
-            }
-            return map;
-        }
-
-        List<MapLayerModel> IDAL.GetMapLayers(int mapID)
-        {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
-            try
-            {
-                conn.Open();
-                return ((IDAL)this).GetMapLayers(mapID, ref conn);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
-        List<MapLayerModel> IDAL.GetMapLayers(int mapID, ref IDbConnection conn)
-        {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-            
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_LAYERS,
-                new Dictionary<string, object>() { { "MapID", mapID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            List<MapLayerModel> layers = new List<MapLayerModel>();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                MapLayerModel layer = new MapLayerModel(new Resolution(dr.Field<double>("Width"), dr.Field<double>("Height")), dr.Field<string>("ImagePath"));
-                layers.Add(layer);
-            }
-            return layers;
         }
 
         MarkerViewModel IDAL.GetMarkers(int serverID)

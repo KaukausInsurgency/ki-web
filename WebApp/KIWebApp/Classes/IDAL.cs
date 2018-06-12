@@ -17,12 +17,8 @@ namespace KIWebApp.Classes
         List<CapturePointModel> GetCapturePoints(int serverID, ref IDbConnection conn);
         List<SideMissionModel> GetSideMissions(int serverID);
         List<SideMissionModel> GetSideMissions(int serverID, ref IDbConnection conn);
-        List<MapLayerModel> GetMapLayers(int mapID);
-        List<MapLayerModel> GetMapLayers(int mapID, ref IDbConnection conn);
         List<OnlinePlayerModel> GetOnlinePlayers(int serverID);
         List<OnlinePlayerModel> GetOnlinePlayers(int serverID, ref IDbConnection conn);
-        GameMapModel GetGameMap(int serverID);
-        GameMapModel GetGameMap(int serverID, ref IDbConnection conn);
         GameModel GetGame(int serverID);
         GameModel GetGame(int serverID, ref IDbConnection conn);
         MarkerViewModel GetMarkers(int serverID);

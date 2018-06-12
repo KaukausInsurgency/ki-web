@@ -23,8 +23,7 @@ namespace KIWebApp.Classes
                 Status = "Online",
                 Depots = ((IDAL)this).GetDepots(serverID),
                 CapturePoints = ((IDAL)this).GetCapturePoints(serverID),
-                OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID),
-                Map = ((IDAL)this).GetGameMap(serverID)
+                OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID)
             };
             return g;
         }
@@ -42,7 +41,6 @@ namespace KIWebApp.Classes
                     Status = "Red",
                     BlueUnits = 0,
                     RedUnits = 10,
-                    Pos = new Position(751123.5, -125446.28125),
                     Image = "Images/markers/flag-red-256x256.png",
                     MaxCapacity = 30
                 },
@@ -56,7 +54,6 @@ namespace KIWebApp.Classes
                     Status = "Blue",
                     BlueUnits = 9,
                     RedUnits = 0,
-                    Pos = new Position(801123.5, -150446.28125),
                     Image = "Images/markers/flag-blue-256x256.png",
                     MaxCapacity = 30
                 },
@@ -70,7 +67,6 @@ namespace KIWebApp.Classes
                     Status = "Contested",
                     BlueUnits = 9,
                     RedUnits = 5,
-                    Pos = new Position(767123.5, -140426.28125),
                     Image = "Images/markers/flag-contested-256x256.png",
                     MaxCapacity = 30
                 },
@@ -84,7 +80,6 @@ namespace KIWebApp.Classes
                     Status = "Neutral",
                     BlueUnits = 0,
                     RedUnits = 0,
-                    Pos = new Position(807123.5, -220426.28125),
                     Image = "Images/markers/flag-neutral-256x256.png",
                     MaxCapacity = 30
                 },
@@ -98,7 +93,6 @@ namespace KIWebApp.Classes
                     Status = "Neutral",
                     BlueUnits = 0,
                     RedUnits = 0,
-                    Pos = new Position(823123.5, -140426.28125),
                     Image = "Images/markers/flag-neutral-256x256.png",
                     MaxCapacity = 30
                 },
@@ -112,7 +106,6 @@ namespace KIWebApp.Classes
                     Status = "Neutral",
                     BlueUnits = 0,
                     RedUnits = 0,
-                    Pos = new Position(817123.5, -190426.28125),
                     Image = "Images/markers/flag-neutral-256x256.png",
                     MaxCapacity = 30
                 },
@@ -126,7 +119,6 @@ namespace KIWebApp.Classes
                     Status = "Neutral",
                     BlueUnits = 0,
                     RedUnits = 0,
-                    Pos = new Position(857123.5, -220426.28125),
                     Image = "Images/markers/flag-neutral-256x256.png",
                     MaxCapacity = 30
                 },
@@ -140,7 +132,6 @@ namespace KIWebApp.Classes
                     Status = "Neutral",
                     BlueUnits = 0,
                     RedUnits = 0,
-                    Pos = new Position(774123.5, -220426.28125),
                     Image = "Images/markers/flag-neutral-256x256.png",
                     MaxCapacity = 30
                 }
@@ -178,7 +169,6 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(840106.5625, -150906.578125),
                     Image = "Images/markers/depot-red-256x256.png"
                 },
 
@@ -207,7 +197,6 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(829208, -153602),
                     Image = "Images/markers/depot-blue-256x256.png"
                 },
 
@@ -236,7 +225,6 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(841868, -150358.28125),
                     Image = "Images/markers/depot-red-256x256.png"
                 },
 
@@ -265,7 +253,6 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(814918.625, -169069.359375),
                     Image = "Images/markers/depot-red-256x256.png"
                 },
 
@@ -294,7 +281,6 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(850409.1875, -168602.5625),
                     Image = "Images/markers/depot-contested-256x256.png"
                 },
 
@@ -323,30 +309,11 @@ Outpost Supplies|4
 Ammo Truck|4    
 APC|8    
 ",
-                    Pos = new Position(801123.5, -200446.28125),
                     Image = "Images/markers/depot-blue-256x256.png"
                 }
             };
 
             return depots;
-        }
-
-        GameMapModel IDAL.GetGameMap(int serverID)
-        {
-            GameMapModel m = new GameMapModel
-            {
-                DCSOriginPosition = new Position(734650, -123282),
-                Resolution = new Resolution(800, 443),
-                ImagePath = "Images/map/map-800x443.png",
-                Ratio = 238.636171875,
-                Layers = this.GetLayers(1)
-            };
-            return m;
-        }
-
-        List<MapLayerModel> IDAL.GetMapLayers(int mapID)
-        {
-            return GetLayers(mapID);
         }
 
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID)
@@ -464,16 +431,6 @@ APC|8
             return servers;
         }
 
-        private List<MapLayerModel> GetLayers(int mapID)
-        {
-            List<MapLayerModel> layers = new List<MapLayerModel>
-            {
-                new MapLayerModel(new Resolution(1880, 1041), "Images/map/map-1880x1041.png"),
-                new MapLayerModel(new Resolution(2685, 1487), "Images/map/map-2685x1487.png")
-            };
-            return layers;
-        }
-
         MarkerViewModel IDAL.GetMarkers(int serverID)
         {
             MarkerViewModel mm = new MarkerViewModel()
@@ -500,19 +457,9 @@ APC|8
             return ((IDAL)this).GetCapturePoints(serverID);
         }
 
-        List<MapLayerModel> IDAL.GetMapLayers(int mapID, ref IDbConnection conn)
-        {
-            return ((IDAL)this).GetMapLayers(mapID);
-        }
-
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID, ref IDbConnection conn)
         {
             return ((IDAL)this).GetOnlinePlayers(serverID);
-        }
-
-        GameMapModel IDAL.GetGameMap(int serverID, ref IDbConnection conn)
-        {
-            return ((IDAL)this).GetGameMap(serverID);
         }
 
         GameModel IDAL.GetGame(int serverID, ref IDbConnection conn)

@@ -34,7 +34,7 @@ namespace KIWebApp.Classes
                 dt.Load(rdr);
                 return dt;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
