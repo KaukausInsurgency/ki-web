@@ -93,8 +93,6 @@ CREATE TABLE `capture_point` (
   `max_capacity` int(11) NOT NULL,
   `latlong` varchar(30) NOT NULL,
   `mgrs` varchar(20) NOT NULL,
-  `x` double NOT NULL DEFAULT '0',
-  `y` double NOT NULL DEFAULT '0',
   `image` varchar(132) NOT NULL,
   `text` varchar(900) DEFAULT NULL,
   `status_changed` bit(1) NOT NULL DEFAULT b'0',
@@ -129,6 +127,22 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Table structure for table `custom_menu_item`
+--
+
+DROP TABLE IF EXISTS `custom_menu_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `custom_menu_item` (
+  `custom_menu_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menu_name` varchar(30) NOT NULL,
+  `icon_class` varchar(45) NOT NULL,
+  `html_content` varchar(300) NOT NULL,
+  PRIMARY KEY (`custom_menu_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `depot`
 --
 
@@ -145,8 +159,6 @@ CREATE TABLE `depot` (
   `capacity` int(11) NOT NULL,
   `resources` varchar(900) NOT NULL,
   `status` varchar(45) NOT NULL,
-  `x` double NOT NULL DEFAULT '0',
-  `y` double NOT NULL DEFAULT '0',
   `image` varchar(132) NOT NULL,
   `status_changed` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`depot_id`),
@@ -180,41 +192,19 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `game_map`
+-- Table structure for table `meta`
 --
 
-DROP TABLE IF EXISTS `game_map`;
+DROP TABLE IF EXISTS `meta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `game_map` (
-  `game_map_id` int(11) NOT NULL AUTO_INCREMENT,
-  `base_image` varchar(132) NOT NULL,
-  `resolution_x` double NOT NULL,
-  `resolution_y` double NOT NULL,
-  `dcs_origin_x` double NOT NULL,
-  `dcs_origin_y` double NOT NULL,
-  `ratio` double NOT NULL,
-  PRIMARY KEY (`game_map_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `map_layer`
---
-
-DROP TABLE IF EXISTS `map_layer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `map_layer` (
-  `map_layer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `game_map_id` int(11) NOT NULL,
-  `image` varchar(132) NOT NULL,
-  `resolution_x` double NOT NULL,
-  `resolution_y` double NOT NULL,
-  PRIMARY KEY (`map_layer_id`),
-  KEY `fk_gamemap_layer_idx` (`game_map_id`),
-  CONSTRAINT `fk_gamemap_layer` FOREIGN KEY (`game_map_id`) REFERENCES `game_map` (`game_map_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `meta` (
+  `meta_id` int(11) NOT NULL,
+  `version` varchar(45) NOT NULL,
+  `version_guid` varchar(128) NOT NULL,
+  `rpt_last_updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`meta_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +260,7 @@ CREATE TABLE `raw_connection_log` (
   `game_time` bigint(32) NOT NULL,
   `real_time` bigint(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +296,7 @@ CREATE TABLE `raw_gameevents_log` (
   `transport_unloaded_count` int(11) DEFAULT NULL,
   `cargo` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -475,18 +465,6 @@ CREATE TABLE `rpt_player_session_series` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `rpt_updated`
---
-
-DROP TABLE IF EXISTS `rpt_updated`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rpt_updated` (
-  `last_updated` datetime(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `server`
 --
 
@@ -496,13 +474,15 @@ DROP TABLE IF EXISTS `server`;
 CREATE TABLE `server` (
   `server_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
-  `description` varchar(900) DEFAULT NULL COMMENT 'server description displayed on website',
+  `description` varchar(900) NOT NULL COMMENT 'server description displayed on website',
   `ip_address` varchar(40) NOT NULL,
+  `simple_radio_enabled` bit(1) NOT NULL DEFAULT b'0',
+  `simple_radio_ip_address` varchar(40) NOT NULL,
   `restart_time` int(11) DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
   `last_heartbeat` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +505,7 @@ CREATE TABLE `session` (
   PRIMARY KEY (`session_id`),
   KEY `server_id_idx` (`server_id`),
   CONSTRAINT `Session_ServerID` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=663 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=666 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,14 +526,12 @@ CREATE TABLE `side_mission` (
   `time_remaining` double NOT NULL,
   `latlong` varchar(30) NOT NULL,
   `mgrs` varchar(20) NOT NULL,
-  `x` double NOT NULL DEFAULT '0',
-  `y` double NOT NULL DEFAULT '0',
   `time_inactive` datetime DEFAULT NULL,
   `status_changed` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`side_mission_id`),
   KEY `fk_server_id_idx` (`server_id`),
   CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=387 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -627,25 +605,6 @@ CREATE TABLE `weapon` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `xref_game_map_server`
---
-
-DROP TABLE IF EXISTS `xref_game_map_server`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xref_game_map_server` (
-  `xref_game_map_server_id` int(11) NOT NULL AUTO_INCREMENT,
-  `game_map_id` int(11) NOT NULL,
-  `server_id` int(11) NOT NULL,
-  PRIMARY KEY (`xref_game_map_server_id`),
-  UNIQUE KEY `server_id_UNIQUE` (`server_id`),
-  KEY `fk_game_map_idx` (`game_map_id`),
-  CONSTRAINT `fk_game_map` FOREIGN KEY (`game_map_id`) REFERENCES `game_map` (`game_map_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_server` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping events for database 'ki'
 --
 /*!50106 SET @save_time_zone= @@TIME_ZONE */ ;
@@ -680,8 +639,8 @@ DELIMITER ;;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;;
 /*!50003 SET @saved_time_zone      = @@time_zone */ ;;
 /*!50003 SET time_zone             = 'SYSTEM' */ ;;
-/*!50106 CREATE*/ /*!50117 DEFINER=`root`@`localhost`*/ /*!50106 EVENT `e_PlayerGainLife` ON SCHEDULE EVERY 1 HOUR STARTS '2017-12-15 14:19:05' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Restores 1 life to each player offline every hour' DO UPDATE player p
-		LEFT JOIN online_players op
+/*!50106 CREATE*/ /*!50117 DEFINER=`root`@`localhost`*/ /*!50106 EVENT `e_PlayerGainLife` ON SCHEDULE EVERY 1 HOUR STARTS '2017-12-15 14:19:05' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Restores 1 life to each player offline every hour' DO UPDATE ki.player p
+		LEFT JOIN ki.online_players op
 		ON op.ucid = p.ucid
 			SET lives = lives + 1
 		WHERE lives < 5 AND op.ucid IS NULL */ ;;
@@ -1359,16 +1318,24 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrAddServer`(
 		IN ServerName VARCHAR(128),
-        IN IP VARCHAR(30),
-        IN Description VARCHAR(900)
+        IN Description VARCHAR(900),
+        IN SimpleRadioEnabled BOOL,
+        IN SimpleRadioIP VARCHAR(40),
+        IN IP VARCHAR(30)
     )
 BEGIN
 	IF ((SELECT EXISTS (SELECT 1 FROM server WHERE server.ip_address = IP)) = 1) THEN
-		UPDATE server SET server.name = ServerName, server.description = Description  WHERE ip_address = IP;
+		UPDATE server 
+			SET server.name = ServerName, 
+				server.description = Description,
+                server.simple_radio_enabled = SimpleRadioEnabled,
+                server.simple_radio_ip_address = SimpleRadioIP
+                WHERE ip_address = IP;
 		SELECT server_id FROM server WHERE ip_address = IP;
     ELSE
 		-- New Entry, Insert the new server into the database
-        INSERT INTO server (name, description, ip_address) VALUES (ServerName, Description, IP);
+        INSERT INTO server (name, description, ip_address, simple_radio_enabled, simple_radio_ip_address) 
+        VALUES (ServerName, Description, IP, SimpleRadioEnabled, SimpleRadioIP);
         SELECT LAST_INSERT_ID();
     END IF;
 END ;;
@@ -1719,7 +1686,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGame`(ServerID INT)
 BEGIN
 	SELECT s.server_id as ServerID, 
 		   s.name as ServerName, 
+           s.description as ServerDescription,
            s.ip_address as IPAddress,  
+           s.simple_radio_enabled as SimpleRadioEnabled,
+           s.simple_radio_ip_address as SimpleRadioIPAddress,
            COUNT(op.ucid) as OnlinePlayerCount,
            s.restart_time as RestartTime,
            s.status
@@ -1728,59 +1698,6 @@ BEGIN
 		ON s.server_id = op.server_id
     WHERE s.server_id = ServerID
     GROUP BY s.server_id, s.name;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `websp_GetGameMap` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGameMap`(ServerID INT)
-BEGIN
-	SELECT  m.game_map_id as GameMapID,
-			m.base_image as ImagePath,
-			m.resolution_x as Width,
-            m.resolution_y as Height,
-            m.dcs_origin_x as X,
-            m.dcs_origin_y as Y,
-            m.ratio as Ratio
-	FROM game_map m
-    INNER JOIN xref_game_map_server x
-		ON m.game_map_id = x.game_map_id
-    WHERE x.server_id = ServerID;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `websp_GetGameMapLayers` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGameMapLayers`(GameMapID INT)
-BEGIN
-	SELECT  m.image as ImagePath,
-			m.resolution_x as Width,
-            m.resolution_y as Height
-	FROM map_layer m
-    WHERE m.game_map_id = GameMapID
-    ORDER BY m.resolution_x ASC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1916,8 +1833,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_SearchPlayers`(IN Criteria VA
 BEGIN
 	SELECT player.ucid AS UCID,
 		   player.name AS Name,
-           player.banned AS Banned
+           player.banned AS Banned,
+           COALESCE(stats.game_time, 0) AS GameTime,
+           COALESCE(stats.takeoffs, 0) AS Sorties,
+           COALESCE(stats.kills, 0) AS Kills
     FROM player 
+    LEFT JOIN rpt_overall_stats stats
+    ON stats.ucid = player.ucid
     WHERE LOWER(player.name) LIKE CONCAT("%", LOWER(Criteria), "%");
 END ;;
 DELIMITER ;
@@ -1954,6 +1876,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `websp_SearchTotals` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_SearchTotals`(IN Criteria VARCHAR(128))
+BEGIN
+	SELECT 
+		(
+			SELECT COUNT(*)
+			FROM player 
+			WHERE LOWER(player.name) LIKE CONCAT("%", LOWER(Criteria), "%")
+		) AS PlayerResults,
+		(
+			SELECT COUNT(*)
+			FROM server 
+			WHERE LOWER(server.name) LIKE CONCAT("%", LOWER(Criteria), "%")
+		) AS ServerResults
+	FROM dual;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1964,4 +1916,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-10  3:38:18
+-- Dump completed on 2018-06-12  3:01:17

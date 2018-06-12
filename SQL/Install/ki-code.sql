@@ -729,16 +729,24 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrAddServer`(
 		IN ServerName VARCHAR(128),
-        IN IP VARCHAR(30),
-        IN Description VARCHAR(900)
+        IN Description VARCHAR(900),
+        IN SimpleRadioEnabled BOOL,
+        IN SimpleRadioIP VARCHAR(40),
+        IN IP VARCHAR(30)
     )
 BEGIN
 	IF ((SELECT EXISTS (SELECT 1 FROM server WHERE server.ip_address = IP)) = 1) THEN
-		UPDATE server SET server.name = ServerName, server.description = Description  WHERE ip_address = IP;
+		UPDATE server 
+			SET server.name = ServerName, 
+				server.description = Description,
+                server.simple_radio_enabled = SimpleRadioEnabled,
+                server.simple_radio_ip_address = SimpleRadioIP
+                WHERE ip_address = IP;
 		SELECT server_id FROM server WHERE ip_address = IP;
     ELSE
 		-- New Entry, Insert the new server into the database
-        INSERT INTO server (name, description, ip_address) VALUES (ServerName, Description, IP);
+        INSERT INTO server (name, description, ip_address, simple_radio_enabled, simple_radio_ip_address) 
+        VALUES (ServerName, Description, IP, SimpleRadioEnabled, SimpleRadioIP);
         SELECT LAST_INSERT_ID();
     END IF;
 END ;;
@@ -1089,7 +1097,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGame`(ServerID INT)
 BEGIN
 	SELECT s.server_id as ServerID, 
 		   s.name as ServerName, 
+           s.description as ServerDescription,
            s.ip_address as IPAddress,  
+           s.simple_radio_enabled as SimpleRadioEnabled,
+           s.simple_radio_ip_address as SimpleRadioIPAddress,
            COUNT(op.ucid) as OnlinePlayerCount,
            s.restart_time as RestartTime,
            s.status
@@ -1098,59 +1109,6 @@ BEGIN
 		ON s.server_id = op.server_id
     WHERE s.server_id = ServerID
     GROUP BY s.server_id, s.name;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `websp_GetGameMap` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGameMap`(ServerID INT)
-BEGIN
-	SELECT  m.game_map_id as GameMapID,
-			m.base_image as ImagePath,
-			m.resolution_x as Width,
-            m.resolution_y as Height,
-            m.dcs_origin_x as X,
-            m.dcs_origin_y as Y,
-            m.ratio as Ratio
-	FROM game_map m
-    INNER JOIN xref_game_map_server x
-		ON m.game_map_id = x.game_map_id
-    WHERE x.server_id = ServerID;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `websp_GetGameMapLayers` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetGameMapLayers`(GameMapID INT)
-BEGIN
-	SELECT  m.image as ImagePath,
-			m.resolution_x as Width,
-            m.resolution_y as Height
-	FROM map_layer m
-    WHERE m.game_map_id = GameMapID
-    ORDER BY m.resolution_x ASC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1286,8 +1244,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_SearchPlayers`(IN Criteria VA
 BEGIN
 	SELECT player.ucid AS UCID,
 		   player.name AS Name,
-           player.banned AS Banned
+           player.banned AS Banned,
+           COALESCE(stats.game_time, 0) AS GameTime,
+           COALESCE(stats.takeoffs, 0) AS Sorties,
+           COALESCE(stats.kills, 0) AS Kills
     FROM player 
+    LEFT JOIN rpt_overall_stats stats
+    ON stats.ucid = player.ucid
     WHERE LOWER(player.name) LIKE CONCAT("%", LOWER(Criteria), "%");
 END ;;
 DELIMITER ;
@@ -1324,6 +1287,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `websp_SearchTotals` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_SearchTotals`(IN Criteria VARCHAR(128))
+BEGIN
+	SELECT 
+		(
+			SELECT COUNT(*)
+			FROM player 
+			WHERE LOWER(player.name) LIKE CONCAT("%", LOWER(Criteria), "%")
+		) AS PlayerResults,
+		(
+			SELECT COUNT(*)
+			FROM server 
+			WHERE LOWER(server.name) LIKE CONCAT("%", LOWER(Criteria), "%")
+		) AS ServerResults
+	FROM dual;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1334,4 +1327,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-10  3:38:43
+-- Dump completed on 2018-06-12  2:51:42
