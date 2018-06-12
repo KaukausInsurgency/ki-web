@@ -1,0 +1,378 @@
+/*
+* Better function for color palettes using Sass maps
+* Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
+* Usage: color: palette(brand,tan);
+*/
+.live-map-layout, .live-map-footer-column, .game-nav, .info-layout {
+  display: block;
+  float: left; }
+
+.live-map-layout {
+  max-width: 700px;
+  width: 100%;
+  height: 500px;
+  position: relative; }
+
+#googleMap {
+  width: 100%;
+  height: 100%; }
+
+.live-map {
+  max-width: 650px;
+  width: 80%;
+  width: -webkit-calc(100% - 50px);
+  width: -moz-calc(100% - 50px);
+  width: calc(100% - 50px);
+  /* body needs to be shifted left of the vertical navbar */
+  flex: 1;
+  height: 470px;
+  background-color: #111; }
+
+.notification {
+  background-color: #8a0000;
+  color: #f1f1f1;
+  font-weight: 800;
+  padding: 0 .25em; }
+
+/* footer on the live map */
+.live-map-layout-footer {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  height: 30px;
+  width: 80%;
+  width: -webkit-calc(100% - 50px);
+  width: -moz-calc(100% - 50px);
+  width: calc(100% - 50px); }
+  @media screen and (max-width: 450px) {
+    .live-map-layout-footer > div:nth-child(2), .live-map-layout-footer > div:nth-child(3) {
+      display: none; } }
+  .live-map-layout-footer > div {
+    font-size: 1em; }
+    @media screen and (max-width: 650px) {
+      .live-map-layout-footer > div {
+        font-size: 0.8em; } }
+
+.live-map-footer-column {
+  width: 33.333333%;
+  height: 100%;
+  position: relative;
+  text-align: center;
+  cursor: context-menu;
+  color: #CACAC4; }
+  .live-map-footer-column:hover {
+    color: #f1f1f1; }
+
+.live-map-footer-span {
+  top: 20%;
+  position: relative;
+  pointer-events: none; }
+
+.live-map-footer-content {
+  display: none;
+  position: absolute;
+  /* make the positioning absolute relative to the parent */
+  bottom: 30px;
+  /* offset to be on top of the notifications div */ }
+
+.prop-game-nav {
+  --max-width: 160px;
+  --min-width: 50px;
+  display: none; }
+
+.game-nav-expander {
+  padding: 10px 8px 10px 16px;
+  text-decoration: none;
+  font-size: 1.1em;
+  color: #CACAC4;
+  display: block; }
+
+/* The sidebar menu */
+.game-nav {
+  height: 500px;
+  position: absolute;
+  width: 50px;
+  /* Set the width of the sidebar */
+  /*position: fixed;  Fixed Sidebar (stay in place on scroll) */
+  left: 650px;
+  top: 0px;
+  background-color: #202020;
+  /* Black */ }
+  .game-nav span {
+    padding: 10px 8px 10px 16px;
+    text-decoration: none;
+    font-size: 1.1em;
+    color: #CACAC4;
+    display: block;
+    cursor: context-menu; }
+  .game-nav span:hover {
+    color: #f1f1f1;
+    background-color: #444; }
+
+.game-navicon {
+  padding-right: 15px;
+  pointer-events: none; }
+
+/* The container div - needed to position the dropdown content */
+.game-dropdown {
+  position: relative;
+  display: block; }
+
+.game-dropdown:hover .game-dropdown-content {
+  display: block; }
+
+/* Dropdown Content (Hidden by Default) */
+.game-dropdown-content {
+  display: none;
+  position: absolute;
+  /* make the positioning absolute relative to the parent */
+  top: 0px;
+  /* be at the same height as the parent element */
+  right: 50px;
+  background-color: #202020;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  color: #CACAC4;
+  text-decoration: none;
+  cursor: context-menu;
+  overflow: visible;
+  font-size: 1.1em; }
+  .game-dropdown-content:hover {
+    background-color: #444;
+    color: #f1f1f1; }
+  .game-dropdown-content.nav-expanded {
+    left: 160px;
+    /* add a left offset that is outside of the nav-bar width */ }
+  .game-dropdown-content.nav-collapsed {
+    left: 50px;
+    /* add a left offset that is outside of the nav-bar width */ }
+
+.game-flyout-content {
+  display: none;
+  position: absolute;
+  /* make the positioning absolute relative to the parent */
+  top: 0px;
+  /* be at the same height as the parent element */
+  right: 50px;
+  z-index: 1;
+  background-color: #202020;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); }
+
+@media screen and (max-width: 520px) {
+  .game-nav > .game-dropdown {
+    display: none; }
+
+  .game-nav > .game-dropdown:nth-child(1) {
+    display: block; }
+
+  .game-dropdown:hover .game-dropdown-content {
+    display: none; } }
+.redfor-bg-icon {
+  color: #DF1E1E; }
+
+.blufor-bg-icon {
+  color: #1e4bdf; }
+
+.neutral-bg-icon {
+  color: #4e4e4e; }
+
+.icon-color {
+  color: white; }
+
+/* hidden properties used in javascript */
+.prop-icons {
+  --icon-span: fa-stack fa-lg;
+  --icon-border: fa fa-circle fa-stack-2x;
+  --icon-capture-point: far fa-flag fa-stack-1x icon-color;
+  --icon-depot: fas fa-warehouse fa-stack-1x icon-color;
+  --icon-airport: fas fa-plane fa-rotate-45 fa-stack-1x icon-color;
+  --icon-farp: fas fa-hospital-symbol fa-stack-1x icon-color;
+  display: none; }
+
+.online-players-redfor {
+  color: #e85a5a; }
+
+.online-players-blufor {
+  color: #5a8be8; }
+
+.online-players-neutral {
+  color: #9b9b9b; }
+
+.online-players-layout {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: block;
+  width: 600px;
+  height: 300px;
+  padding: 0.5em; }
+  .online-players-layout::-webkit-scrollbar {
+    width: 10px; }
+  .online-players-layout::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cdcdcd; }
+  .online-players-layout::-webkit-scrollbar-track {
+    border-radius: 5px; }
+
+.online-players {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #CACAC4;
+  background-color: #111;
+  opacity: 0.85;
+  line-height: 1em;
+  width: 100%;
+  height: 100%; }
+
+table.online-players > caption {
+  text-align: center;
+  font-weight: 900; }
+
+table.online-players > thead > tr {
+  display: table-row;
+  vertical-align: inherit; }
+
+table.online-players > thead > tr > th {
+  color: #ebebeb;
+  border-collapse: collapse;
+  vertical-align: bottom;
+  text-align: left;
+  padding: 8px;
+  box-sizing: border-box;
+  display: table-cell;
+  font-weight: bold;
+  font-size: 1em; }
+
+table.online-players > tbody > tr > td {
+  font-weight: 500;
+  font-size: 0.85em;
+  padding: 2px 5px; }
+
+table.online-players > tbody > tr:nth-child(odd) td {
+  background-color: #272727; }
+
+table.online-players > tbody > tr:nth-child(even) td {
+  background-color: #474747; }
+
+@media screen and (max-width: 760px) {
+  table.online-players > tbody > tr > td:nth-child(3),
+  table.online-players > tbody > tr > td:nth-child(5),
+  table.online-players > thead > tr > th:nth-child(3),
+  table.online-players > thead > tr > th:nth-child(5) {
+    display: none; }
+
+  .online-players-layout {
+    width: 450px; } }
+@media screen and (max-width: 613px) {
+  table.online-players > tbody > tr > td:nth-child(4),
+  table.online-players > thead > tr > th:nth-child(4) {
+    display: none; }
+
+  .online-players-layout {
+    width: 300px; }
+
+  table.online-players > tbody > tr > td {
+    font-size: 0.6em; }
+
+  table.online-players > thead > tr > th {
+    font-size: 0.8em; } }
+@media screen and (max-width: 427px) {
+  table.online-players > tbody > tr > td:nth-child(1),
+  table.online-players > thead > tr > th:nth-child(1) {
+    display: none; }
+
+  .online-players-layout {
+    width: 200px; }
+
+  table.online-players > thead > tr > th {
+    font-size: 0.7em; }
+
+  table.online-players > caption {
+    font-size: 0.8em; } }
+.game-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-bottom: 50px; }
+
+.info-layout {
+  min-width: 200px;
+  flex: 1;
+  margin-left: 2%;
+  margin-right: 2%;
+  color: #CACAC4;
+  padding: 0.5em 0.5em; }
+  @media screen and (max-width: 860px) {
+    .info-layout {
+      margin-left: 0%;
+      margin-right: 0%;
+      padding: 0.5em 0em; } }
+  .info-layout > h2 {
+    font-size: 2em;
+    padding: 0.2em;
+    text-align: center; }
+    @media screen and (max-width: 1070px) {
+      .info-layout > h2 {
+        font-size: 1.5em; } }
+    @media screen and (max-width: 520px) {
+      .info-layout > h2 {
+        font-size: 1em; } }
+
+.server-description {
+  height: 100%;
+  padding: 0em;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  margin: 2em 0em; }
+  @media screen and (max-width: 1070px) {
+    .server-description {
+      margin: 1.5em 0em; } }
+  @media screen and (max-width: 520px) {
+    .server-description {
+      margin: 1em 0em; } }
+  .server-description h1 {
+    font-size: 2em;
+    font-weight: 500;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    padding: 0.2em 0em; }
+    @media screen and (max-width: 520px) {
+      .server-description h1 {
+        font-size: 1.4em; } }
+  .server-description h2 {
+    font-size: 1.8em;
+    font-weight: 400;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    padding: 0.2em 0em; }
+    @media screen and (max-width: 520px) {
+      .server-description h2 {
+        font-size: 1.3em; } }
+  .server-description h3 {
+    font-size: 1.6em;
+    font-weight: 300;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    padding: 0.2em 0em; }
+    @media screen and (max-width: 520px) {
+      .server-description h3 {
+        font-size: 1.2em; } }
+  .server-description h4 {
+    font-size: 1.4em;
+    font-weight: 200;
+    text-align: left;
+    font-family: "Roboto", sans-serif;
+    padding: 0.2em;
+    margin: 0.5em 0em; }
+    @media screen and (max-width: 520px) {
+      .server-description h4 {
+        font-size: 1.1em; } }
+  .server-description p {
+    font-size: 1em;
+    font-family: "Roboto", sans-serif;
+    line-height: 1.2em;
+    margin: 1em 0em; }
+    @media screen and (max-width: 520px) {
+      .server-description p {
+        font-size: 0.9em; } }
+
+/*# sourceMappingURL=game.css.map */

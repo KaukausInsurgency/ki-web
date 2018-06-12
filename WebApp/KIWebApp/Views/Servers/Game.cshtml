@@ -1,290 +1,162 @@
 ﻿@model KIWebApp.Models.GameModel
-@{
-    ViewBag.Title = "Game";
+
+@section styles {
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/game/game.css" rel="stylesheet" type="text/css" />
 }
-<script>
-    var ROOT = '@Url.Content("~")';
-</script>
 
-<style>
-    .mapwrapper {
-        margin: 20px auto;
-        width: 800px;
-    }
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-browser",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
 
-    #viewport {
-        width: @(Model.Map.MapExists ? Model.Map.Resolution.Width : 800)px;
-        height: @(Model.Map.MapExists ? Model.Map.Resolution.Height : 450)px;
-        cursor: move;
-        overflow: hidden;
-        border: 5px solid black;
-    }
-
-    .mapwrapper {
-        position: relative;
-    }
-
-    .map-control {
-        position: absolute;
-        top: 50px;
-        right: 10px;
-        background: url(@Url.Content("~/Images/map-control.png")) no-repeat;
-        height: 63px;
-        width: 100px;
-    }
-
-    .map-control a {
-        height: 18px;
-        width: 18px;
-        display: block;
-        text-indent: -999em;
-        position: absolute;
-        outline: none;
-    }
-
-    .map-control a:hover {
-        background: #535353;
-        opacity: .4;
-        filter: alpha(opacity=40);
-    }
-
-    .map-control a.left {
-        left: 39px;
-        top: 22px;
-    }
-
-    .map-control a.right {
-        left: 79px;
-        top: 22px;
-    }
-
-    .map-control a.up {
-        left: 59px;
-        top: 2px;
-    }
-
-    .map-control a.down {
-        left: 59px;
-        top: 42px;
-    }
-
-    .map-control a.zoom {
-        left: 2px;
-        top: 8px;
-        height: 21px;
-        width: 21px;
-    }
-
-    .map-control a.back {
-        left: 2px;
-        top: 31px;
-        height: 21px;
-        width: 21px;
-    }
-</style>
-
-<div class="dash-row">
-    <h2 class="dark-gray-font dash-main-title">@Model.ServerName</h2>
-</div>
-
-<div class="dash-background-color">
-    <hr class="dash-background-lighter-color" />
-    <div class="dash-row">
-        <div class="dash-columns-four">
-            <div id="dash-status" class="dash-header dash-header-large-font">@Model.Status</div>
-            <div class="dash-header dash-header-small-font">Status</div>
-        </div>
-        <div class="dash-columns-four">
-            <div id="dash-restart" class="dash-header dash-header-large-font">@Model.RestartTime</div>
-            <div class="dash-header dash-header-small-font">Restart Time</div>
-        </div>
-        <div class="dash-columns-four">
-            <div id="dash-onlinecount" class="dash-header dash-header-large-font">@Model.OnlinePlayersCount</div>
-            <div class="dash-header dash-header-small-font">Online</div>
-        </div>
-        <div class="dash-columns-four">
-            <div class="dash-header dash-header-large-font">@Model.IPAddress.Replace("::ffff:", "")</div>
-            <div class="dash-header dash-header-small-font">IP</div>
-        </div>
+<div class="main">
+    <div class="server-description">
+        <h1>@Model.ServerName</h1>
+        <h2>H2 Flag</h2>
+        <h3>H3 Flag</h3>
+        <h4>Description</h4>
+        <p>
+            The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            dolore eu fugiat nulla pariatur.
+        </p>
+        <p>
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." Section
+            1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC "Sed ut perspiciatis unde omnis iste natus error
+            sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+            architecto beatae vitae dicta sunt explicabo.
+        </p>
+        <p>
+            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui
+            ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+            velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim
+            ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+            Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui
+            dolorem eum fugiat quo voluptas nulla pariatur?
+        </p>
     </div>
-    <hr />
-</div>
 
-<div align="center">
-    <div id="Heading" style="display: inline-block; text-align: left"></div>
-</div>
-
-    <div id="GameMap" style="position:relative">
-        <div class="mapwrapper">
-            <div id="viewport">
-                @{
-                    if (Model.Map.MapExists)
-                    {
-                        <div style="background: url(@Url.Content("~/" + Model.Map.ImagePath)) no-repeat; width: @(Model.Map.Resolution.Width)px; height: @(Model.Map.Resolution.Height)px;" class='map-layer'>
-                            <!--top level map content goes here-->
-                            <div class="mapcontent">
-                                <!--map content goes here-->
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div style="background: url(@Url.Content("~/Images/map/map-none-800x450.jpg")) no-repeat; width: 800px; height: 450px;" class='map-layer'>
-                            <!--top level map content goes here-->
-                            <div class="mapcontent">
-                                <!--map content goes here-->
-                            </div>
-                        </div>
-                    }
-                }
-
-                @foreach (var item in @Model.Map.Layers)
-            {
-                string h = item.Resolution.Height + "px";
-                string w = item.Resolution.Width + "px";
-                string p = "~/" + item.ImagePath;
-                    <div style="height: @h; width: @w;" class='map-layer'>
-                        <img src="@Url.Content(@p)" alt="" />
-                        <div class="mapcontent">
-                            <!--map content goes here-->
-                        </div>
-                    </div>
-                }
+    <section class="game-section">
+        <div class="info-layout">
+            <h2>Server</h2>
+            <div class="progress-bar-layout">
+                <div class="progress-bar-title">Time Remaining: @Model.RestartTime</div>
+                <div class="progress-bar">
+                    <span style="width: 25%"></span>
+                </div>
             </div>
-            <div class="map-control">
-                <a href="#left" class="left">Left</a>
-                <a href="#right" class="right">Right</a>
-                <a href="#up" class="up">Up</a>
-                <a href="#down" class="down">Down</a>
-                <a href="#zoom" class="zoom">Zoom</a>
-                <a href="#zoom_out" class="back">Back</a>
+
+            <div class="dash-row">
+                <div class="dash-columns dash-col-green">
+                    <div class="dash-header dash-large-font">@Model.Status</div>
+                    <div class="dash-header dash-small-font">Status</div>
+                </div>
+            </div>
+            <div class="dash-row">
+                <div class="dash-columns dash-col-tan">
+                    <div class="dash-header dash-large-font">@Model.IPAddress</div>
+                    <div class="dash-header dash-small-font">Address</div>
+                </div>
+                <div class="dash-columns dash-col-tan">
+                    <div class="dash-header dash-large-font">158.69.241.110:5014</div>
+                    <div class="dash-header dash-small-font">Simple Radio</div>
+                </div>
+            </div>
+            <div class="dash-row">
+                <div class="dash-columns dash-columns-4 dash-col-dark">
+                    <div class="dash-header dash-large-font">@Model.OnlinePlayersCount</div>
+                    <div class="dash-header dash-small-font">Online</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-lred">
+                    <div class="dash-header dash-large-font">12</div>
+                    <div class="dash-header dash-small-font">Red</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-lblue">
+                    <div class="dash-header dash-large-font">14</div>
+                    <div class="dash-header dash-small-font">Blue</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-gray">
+                    <div class="dash-header dash-large-font">4</div>
+                    <div class="dash-header dash-small-font">Spectators</div>
+                </div>
+            </div>
+            <div class="dash-row">
+                <div class="dash-columns dash-columns-4 dash-col-dark">
+                    <div class="dash-header dash-large-font">5</div>
+                    <div class="dash-header dash-small-font">Lives Configured</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-lred">
+                    <div class="dash-header dash-large-font">10</div>
+                    <div class="dash-header dash-small-font">Depots</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-lblue">
+                    <div class="dash-header dash-large-font">18</div>
+                    <div class="dash-header dash-small-font">Capture Points</div>
+                </div>
+                <div class="dash-columns dash-columns-4 dash-col-gray">
+                    <div class="dash-header dash-large-font">4</div>
+                    <div class="dash-header dash-small-font">Spectators</div>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="live-map-layout">
+            <div class="live-map">
+                <div id="googleMap"></div>
+            </div>
+            <div class="live-map-layout-footer">
+                <div id="ingame-chat" class="live-map-footer-column glass-black">
+                    <i class="fas fa-address-book game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">Chat</span>
+                    @Html.Partial("_Chat", Model)
+                </div>
+                <div id="ingame-notifications" class="live-map-footer-column glass-black">
+                    <i class="fas fa-address-book game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">Notifications</span>
+                    @Html.Partial("_Notifications", Model)
+                </div>
+                <div class="live-map-footer-column glass-black">
+                    <i class="fas fa-address-book game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">
+                        Missions
+                        <a class="notification">5</a>
+                    </span>
+                </div>
+            </div>
+            @Html.Partial("_GameNavigation", Model)
+        </div>
+    </section>
 
-    <div id="OnlinePlayersTable">
-        <table id="players-table" class="table table-bordered" style="width: 60%;" align="center">
-            <caption style="text-align:center"><b>Online Players</b></caption>
-            <thead>
-                <tr>
-                    <th><a>Role</a></th>
-                    <th><a>Player Name</a></th>
-                    <th><a>Side</a></th>
-                    <th><a>Lives</a></th>
-                    <th><a>Ping</a></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in @Model.OnlinePlayers)
-                {
-                    string ImagePath = "~/" + item.RoleImage;
+</div>
 
-                    <tr class="clickable-row" playerUCID="@item.UCID">
-                        <td><img src="@Url.Content(ImagePath)" />  @item.Role</td>
-                        <td>@item.Name</td>
-                        <td>@item.Side</td>
-                        <td>@item.Lives</td>
-                        <td>@item.Ping</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
 
-    </div>
+@section scripts {
+    @Scripts.Render("~/bundles/signalr")
+    <script src="~/signalr/hubs"></script>
 
-    @section scripts {
-        @Scripts.Render("~/bundles/signalr")
-        <script src="~/signalr/hubs"></script>
-        @Scripts.Render("~/bundles/knockout")
-        @Scripts.Render("~/bundles/tooltipster")
-        @Scripts.Render("~/bundles/gamemap")
-        @Styles.Render("~/bundles/Content/statistics")
-        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var MODEL = @Html.Raw(Json.Encode(Model));
+    </script>      
+}
 
-        <script type="text/javascript">
-            var MODEL = @Html.Raw(Json.Encode(Model));
-        </script>
+@section postscripts {
+    <script src="~/Scripts/views/game/game-navigation.js"></script>
+    <script src="~/Scripts/views/game/chat.js"></script>
+    <script src="~/Scripts/views/game/notification.js"></script>
+    <script src="~/Scripts/views/game/live-map.js"></script>
+    <script src="~/Scripts/views/game/iconBuilder.js"></script>
+    <script src="~/Scripts/views/game/gmaps.js"></script>    
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(document).ready(function () {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYmQlCOtX05GriYZDAfgnTUL5mY4kjyYQ&callback=initGoogleMap"></script>
+    <script type="text/javascript">
+        var n = $('#ingame-notifications').kiChat();
+        var c = $('#ingame-chat').kiChat();
 
-                    // Apply line color to each column
-                    $('.dash-columns-four').each(function (i) {
-                        var cl = "";
-                        switch (i) {
-                            case 0:
-                                cl = 'dash-col-lblue';
-                                break;
-                            case 1:
-                                cl = 'dash-col-lorange';
-                                break;
-                            case 2:
-                                cl = 'dash-col-lred';
-                                break;
-                            case 3:
-                                cl = 'dash-col-lgreen';
-                                break;
-                            case 4:
-                                cl = 'dash-col-lgold';
-                                break;
-                            case 5:
-                                cl = 'dash-col-lpurple';
-                                break;
-                            case 6:
-                                cl = 'dash-col-orange';
-                                break;
-                            case 7:
-                                cl = 'dash-col-tan';
-                                break;
-                            case 8:
-                                cl = 'dash-col-green';
-                                break;
-                            case 9:
-                                cl = 'dash-col-brown';
-                                break;
-                            case 10:
-                                cl = 'dash-col-dpink';
-                                break;
-                            case 11:
-                                cl = 'dash-col-dark';
-                                break;
-                            case 12:
-                                cl = 'dash-col-gray';
-                                break;
-                            default:
-                                cl = 'dash-col-lblue';
-                        };
+        c.add('Jojo', 0, 'Some scripted text');
+        n.add('4:33 PM', 2, 'Scripted mission notification');
+    </script>
 
-                        $(this).addClass(cl);
-                    });
-                });
-
-                /*
-                function myRowWriter(rowIndex, record, columns, cellWriter) {
-                    var tr = '';
-
-                    // grab the record's attribute for each column
-                    for (var i = 0, len = columns.length; i < len; i++) {
-                        tr += cellWriter(columns[i], record);
-                    }
-
-                    return '<tr class="clickable-row">' + tr + '</tr>';
-                };
-
-                $('#players-table').dynatable({
-                    features: {
-                        paginate: false,
-                        sort: true,
-                        search: false,
-                        recordCount: false,
-                        perPageSelect: false
-                    },
-                    writers: {
-                        _rowWriter: myRowWriter
-                    }
-                });
-                */
-            });
-        </script>
-    }
+}

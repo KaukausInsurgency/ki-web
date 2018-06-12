@@ -1,0 +1,120 @@
+$nav-font-size: 1.1em;
+$nav-font-color: $primary-font-color;
+$nav-font-hover: $primary-font-color-hover;
+$nav-item-padding: 10px 8px 10px 16px;
+
+$nav-width-expanded: 160px;
+$nav-width-collapsed: 50px;
+
+.prop-game-nav {
+	#{--max-width}:$nav-width-expanded;
+	#{--min-width}:$nav-width-collapsed;
+	display: none;
+}
+
+.game-nav-expander {
+	padding: $nav-item-padding;
+	text-decoration: none;
+	font-size: $nav-font-size;
+	color: $nav-font-color;
+	display: block;
+}
+
+/* The sidebar menu */
+.game-nav {
+    @extend %block-float;
+	height: 500px; 
+	position: absolute;
+    width: $nav-width-collapsed; /* Set the width of the sidebar */
+    /*position: fixed;  Fixed Sidebar (stay in place on scroll) */
+	left: 650px;
+	top: 0px;
+    background-color: $nav-background-color; /* Black */
+	
+	span {
+		padding: $nav-item-padding;
+		text-decoration: none;
+		font-size: $nav-font-size;
+		color: $nav-font-color;
+		display: block;
+		cursor: context-menu;
+	}
+	
+	span:hover {
+		color: $nav-font-hover;
+		background-color: $nav-background-color-hover;
+	}
+}
+
+.game-navicon {
+    padding-right: 15px;
+    pointer-events: none;   // allow click handlers attached to parent fire on icons as well
+}
+
+/* The container div - needed to position the dropdown content */
+.game-dropdown {
+    position: relative;
+    display: block;
+}
+
+.game-dropdown:hover .game-dropdown-content {
+    display: block; 
+}
+
+/* Dropdown Content (Hidden by Default) */
+.game-dropdown-content {
+    display: none;
+    position: absolute;		/* make the positioning absolute relative to the parent */
+    top: 0px;	/* be at the same height as the parent element */	
+    right: $nav-width-collapsed;
+    background-color: $nav-background-color; 
+    min-width: $nav-width-expanded;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+	color: $nav-font-color;
+	text-decoration: none;
+	cursor: context-menu;
+	overflow:visible;
+	font-size: $nav-font-size;
+	
+	&:hover {
+		background-color: $nav-background-color-hover;
+		color: $nav-font-hover;
+	}
+	
+	&.nav-expanded {
+		left: $nav-width-expanded;	/* add a left offset that is outside of the nav-bar width */
+	}
+	
+	&.nav-collapsed {
+		left: $nav-width-collapsed;	/* add a left offset that is outside of the nav-bar width */
+	}
+}
+
+.game-flyout-content {
+    display: none;
+    position: absolute;		/* make the positioning absolute relative to the parent */
+    top: 0px;	/* be at the same height as the parent element */	
+    right: $nav-width-collapsed;
+    z-index: 1;
+
+    background-color: $nav-background-color; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+// hide everything but the online players menu item for small screens
+// also stop triggering the hover of content from appearing as it looks odd
+
+@media screen and (max-width: 520px) {
+	.game-nav > .game-dropdown {
+		display: none;
+	}
+
+	.game-nav > .game-dropdown:nth-child(1) {
+		display: block;
+	}
+
+	.game-dropdown:hover .game-dropdown-content {
+		display: none; 
+	}
+}	

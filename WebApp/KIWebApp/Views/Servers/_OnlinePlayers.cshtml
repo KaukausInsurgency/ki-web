@@ -1,0 +1,56 @@
+﻿@model KIWebApp.Models.GameModel
+@{ Layout = null; }
+
+<div class="game-flyout-content">
+    <div class="online-players-layout">
+        <table id="players-table" class="online-players" align="center">
+            <caption>Online Players</caption>
+            <thead>
+                <tr>
+                    <th>
+                        <a>Role</a>
+                    </th>
+                    <th>
+                        <a>Player Name</a>
+                    </th>
+                    <th>
+                        <a>Side</a>
+                    </th>
+                    <th>
+                        <a>Lives</a>
+                    </th>
+                    <th>
+                        <a>Ping</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model.OnlinePlayers)
+                {
+                    string factionClass = "online-players-neutral";
+                    if (item.Side.ToLower() == "red")
+                    {
+                        factionClass = "online-players-redfor";
+                    }
+                    else if (item.Side.ToLower() == "blue")
+                    {
+                        factionClass = "online-players-blufor";
+                    }
+                     <tr>
+                        <td>
+                            @if (!String.IsNullOrWhiteSpace(item.Role))
+                            {
+                                <i class="fas fa-fighter-jet"></i>
+                            }
+                            @item.Role
+                        </td>
+                        <td class="@factionClass">@item.Name</td>
+                        <td class="@factionClass">@item.Side</td>
+                        <td>@item.Lives</td>
+                        <td>@item.Ping</td>
+                    </tr>
+                }
+             </tbody>
+        </table>
+    </div>
+</div>

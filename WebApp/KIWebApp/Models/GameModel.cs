@@ -17,6 +17,7 @@ namespace KIWebApp.Models
         public List<CapturePointModel> CapturePoints { get; set; }
         public List<OnlinePlayerModel> OnlinePlayers { get; set; }
         public List<SideMissionModel> Missions { get; set; }
+        public List<CustomMenuItemModel> CustomMenuItems { get; set; }
         public GameMapModel Map { get; set; }
 
     }

@@ -1,0 +1,26 @@
+.redfor-bg-icon {
+    color: palette(game, 'redfor');
+}
+
+.blufor-bg-icon {
+    color: palette(game, 'blufor');
+}
+
+.neutral-bg-icon {
+    color: palette(game, 'neutral');
+}
+
+.icon-color {
+    color: white;   // this color should never be used
+}
+
+/* hidden properties used in javascript */
+.prop-icons {
+    #{--icon-span}:fa-stack fa-lg;
+    #{--icon-border}:fa fa-circle fa-stack-2x;
+    #{--icon-capture-point}:far fa-flag fa-stack-1x icon-color;
+    #{--icon-depot}:fas fa-warehouse fa-stack-1x icon-color;
+    #{--icon-airport}:fas fa-plane fa-rotate-45 fa-stack-1x icon-color;
+    #{--icon-farp}:fas fa-hospital-symbol fa-stack-1x icon-color;
+	display: none;
+}

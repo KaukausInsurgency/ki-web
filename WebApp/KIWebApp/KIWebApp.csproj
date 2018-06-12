@@ -234,7 +234,11 @@
     </Compile>
     <Compile Include="Hubs\GameHub.cs" />
     <Compile Include="Models\CapturePointModel.cs" />
+    <Compile Include="Models\CustomMenuItemModel.cs" />
+    <Compile Include="Models\HtmlContentSimpleModel.cs" />
     <Compile Include="Models\HtmlHeaderModel.cs" />
+    <Compile Include="Models\HtmlContentIFrameModel.cs" />
+    <Compile Include="Models\IHtmlContentModel.cs" />
     <Compile Include="Models\RptSessionEventsDataModel.cs" />
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />
@@ -262,6 +266,7 @@
     <Content Include="Content\css\shared\style.css" />
     <Content Include="Content\css\vendor-extensions\vendor-extensions.css" />
     <Content Include="Content\css\vendor\dynatable\jquery.dynatable.css" />
+    <Content Include="Content\css\views\game\game.css" />
     <Content Include="Content\css\views\home\home.css" />
     <Content Include="Content\css\views\learn-more\learn-more.css" />
     <Content Include="Content\css\views\search\search.css" />
@@ -283,6 +288,14 @@
     <Content Include="Content\sass\components\_menu.scss" />
     <Content Include="Content\css\views\shared\menu-responsive.css.map" />
     <Content Include="Content\css\views\shared\search-results.css.map" />
+    <Content Include="Content\sass\views\game\live-map\_game-navigation.scss" />
+    <Content Include="Content\sass\views\game\live-map\_icons.scss" />
+    <Content Include="Content\sass\views\game\live-map\_live-map-footer.scss" />
+    <Content Include="Content\sass\views\game\live-map\_live-map.scss" />
+    <Content Include="Content\sass\views\game\live-map\_missions.scss" />
+    <Content Include="Content\sass\views\game\live-map\_online-players.scss" />
+    <Content Include="Content\sass\views\game\game.scss" />
+    <Content Include="Content\css\views\game\game.css.map" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
@@ -383,6 +396,12 @@
     <Content Include="Scripts\tooltipster\tooltipster.bundle.min.js" />
     <Content Include="Scripts\tooltipster\tooltipster.main.js" />
     <Content Include="Scripts\tooltipster\tooltipster.main.min.js" />
+    <Content Include="Scripts\views\game\chat.js" />
+    <Content Include="Scripts\views\game\game-navigation.js" />
+    <Content Include="Scripts\views\game\gmaps.js" />
+    <Content Include="Scripts\views\game\iconBuilder.js" />
+    <Content Include="Scripts\views\game\live-map.js" />
+    <Content Include="Scripts\views\game\notification.js" />
     <Content Include="Scripts\views\search\init.js" />
     <Content Include="Scripts\views\server\init.js" />
     <Content Include="Web.config">
@@ -411,6 +430,10 @@
     <Content Include="Views\Home\_ServerSearchResults.cshtml" />
     <Content Include="Views\Home\PlayerLeaderboards.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Servers\_OnlinePlayers.cshtml" />
+    <Content Include="Views\Servers\_Notifications.cshtml" />
+    <Content Include="Views\Servers\_Chat.cshtml" />
+    <Content Include="Views\Servers\_GameNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -81,11 +81,12 @@ $chat-font-pack: $seconday-font-stack;
 .chat-title {
     color: $chat-title-text-color;
     background-color: $chat-title-background-color;
-    border-bottom: 1px solid $chat-title-background-color;;
+    border-bottom: 1px solid $chat-title-background-color;
     @include box-shadow(0 4px 8px 0 rgba(255, 255, 255, 0.2));
     transition: 0.3s;
-
     font-weight: 700;
+
+    padding-top: 3px;
 }
 
 .chat-message {
