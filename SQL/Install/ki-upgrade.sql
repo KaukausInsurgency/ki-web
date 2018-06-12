@@ -110,6 +110,55 @@ BEGIN
 	SET Version = "5762581d943af07f9b4864e30e9070e3305b5b77";
   END IF;
   
+  -- VERSION 0.79
+  IF Version = "5762581d943af07f9b4864e30e9070e3305b5b77" THEN
+    INSERT INTO ki_upgrade_log VALUES ("Database Version is 0.79 - Upgrading to 0.80");
+  
+	-- Custom Menu Items that can be dynamically added to the Game Navigation bar
+	CREATE TABLE IF NOT EXISTS custom_menu_item (
+	  `custom_menu_item_id` INT NOT NULL AUTO_INCREMENT,
+	  `menu_name` VARCHAR(30) NOT NULL,
+	  `icon_class` VARCHAR(45) NOT NULL,
+	  `html_content` VARCHAR(300) NOT NULL,
+	  PRIMARY KEY (`custom_menu_item_id`));
+	  
+	-- Simple Radio support and integration
+	ALTER TABLE server
+	ADD COLUMN `simple_radio_enabled` BIT(1) NULL DEFAULT 0 AFTER `ip_address`,
+	ADD COLUMN `simple_radio_ip_address` VARCHAR(40) NULL AFTER `simple_radio_enabled`;
+	
+	ALTER TABLE server
+	CHANGE COLUMN `description` `description` VARCHAR(900) NOT NULL COMMENT 'server description displayed on website' ,
+	CHANGE COLUMN `simple_radio_enabled` `simple_radio_enabled` BIT(1) NOT NULL DEFAULT b'0' ,
+	CHANGE COLUMN `simple_radio_ip_address` `simple_radio_ip_address` VARCHAR(40) NOT NULL ;
+	
+	-- MapBox support was replaced with google maps - map data is no longer stored in DB
+	DROP TABLE IF EXISTS xref_game_map_server;
+	DROP TABLE IF EXISTS map_layer;
+	DROP TABLE IF EXISTS game_map;
+	
+	-- Dropping game position from various tables
+	ALTER TABLE capture_point
+	DROP COLUMN `y`,
+	DROP COLUMN `x`;
+	
+	ALTER TABLE depot
+	DROP COLUMN `y`,
+	DROP COLUMN `x`;
+	
+	ALTER TABLE side_mission
+	DROP COLUMN `y`,
+	DROP COLUMN `x`;
+  
+	-- insert data
+    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
+    VALUES (1, "0.80", "4be0bd54461842c23a1da692ec236a1f736f70cc", NULL);
+    
+    INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.80");
+	SET Version = "4be0bd54461842c23a1da692ec236a1f736f70cc";
+  END IF;
+  
+  
   SELECT * FROM ki_upgrade_log;
 
 END $$
