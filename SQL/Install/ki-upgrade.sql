@@ -137,18 +137,11 @@ BEGIN
 	DROP TABLE IF EXISTS map_layer;
 	DROP TABLE IF EXISTS game_map;
 	
-	-- Dropping game position from various tables
-	ALTER TABLE capture_point
-	DROP COLUMN `y`,
-	DROP COLUMN `x`;
-	
-	ALTER TABLE depot
-	DROP COLUMN `y`,
-	DROP COLUMN `x`;
-	
-	ALTER TABLE side_mission
-	DROP COLUMN `y`,
-	DROP COLUMN `x`;
+	-- This data was moved to Redis, no longer stored in MySql
+	DROP TABLE IF EXISTS capture_point;
+	DROP TABLE IF EXISTS depot;
+	DROP TABLE IF EXISTS online_players;
+	DROP TABLE IF EXISTS side_mission;
   
 	-- insert data
     INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)

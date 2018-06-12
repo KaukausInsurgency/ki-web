@@ -74,33 +74,6 @@ CREATE TABLE `backup_gameevents_log` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `capture_point`
---
-
-DROP TABLE IF EXISTS `capture_point`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `capture_point` (
-  `capture_point_id` int(11) NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) NOT NULL,
-  `type` varchar(12) NOT NULL DEFAULT 'CAPTUREPOINT',
-  `name` varchar(128) NOT NULL,
-  `status` varchar(15) NOT NULL,
-  `blue_units` int(11) NOT NULL,
-  `red_units` int(11) NOT NULL,
-  `max_capacity` int(11) NOT NULL,
-  `latlong` varchar(30) NOT NULL,
-  `mgrs` varchar(20) NOT NULL,
-  `image` varchar(132) NOT NULL,
-  `text` varchar(900) DEFAULT NULL,
-  `status_changed` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`capture_point_id`),
-  KEY `FK_CP_ServerID_idx` (`server_id`),
-  CONSTRAINT `FK_CP_ServerID` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `custom_menu_item`
 --
 
@@ -117,31 +90,6 @@ CREATE TABLE `custom_menu_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `depot`
---
-
-DROP TABLE IF EXISTS `depot`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `depot` (
-  `depot_id` int(11) NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) NOT NULL,
-  `name` varchar(125) NOT NULL,
-  `latlong` varchar(30) NOT NULL,
-  `mgrs` varchar(20) NOT NULL,
-  `current_capacity` int(11) NOT NULL,
-  `capacity` int(11) NOT NULL,
-  `resources` varchar(900) NOT NULL,
-  `status` varchar(45) NOT NULL,
-  `image` varchar(132) NOT NULL,
-  `status_changed` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`depot_id`),
-  KEY `FK_ServerID_idx` (`server_id`),
-  CONSTRAINT `FK_ServerID` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `meta`
 --
 
@@ -154,23 +102,6 @@ CREATE TABLE `meta` (
   `version_guid` varchar(128) NOT NULL,
   `rpt_last_updated` datetime DEFAULT NULL,
   PRIMARY KEY (`meta_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `online_players`
---
-
-DROP TABLE IF EXISTS `online_players`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `online_players` (
-  `server_id` int(11) NOT NULL,
-  `ucid` varchar(128) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `role` varchar(45) NOT NULL,
-  `side` int(10) NOT NULL,
-  `ping` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -459,32 +390,6 @@ CREATE TABLE `session` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `side_mission`
---
-
-DROP TABLE IF EXISTS `side_mission`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `side_mission` (
-  `side_mission_id` int(11) NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) NOT NULL,
-  `server_mission_id` int(11) NOT NULL,
-  `task_name` varchar(128) NOT NULL,
-  `task_desc` varchar(900) NOT NULL,
-  `image` varchar(132) NOT NULL,
-  `status` varchar(20) NOT NULL,
-  `time_remaining` double NOT NULL,
-  `latlong` varchar(30) NOT NULL,
-  `mgrs` varchar(20) NOT NULL,
-  `time_inactive` datetime DEFAULT NULL,
-  `status_changed` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`side_mission_id`),
-  KEY `fk_server_id_idx` (`server_id`),
-  CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `sproc_log`
 --
 
@@ -539,4 +444,4 @@ CREATE TABLE `weapon` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-12  2:55:32
+-- Dump completed on 2018-06-12  3:13:38
