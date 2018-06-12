@@ -3,40 +3,6 @@
 * Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
 * Usage: color: palette(brand,tan);
 */
-table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
-  padding: 10px; }
-  @media screen and (max-width: 800px) {
-    table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
-      padding: 8px; } }
-  @media screen and (max-width: 380px) {
-    table.table.servers > thead > tr > th, table.table.servers > tbody > tr > td {
-      padding: 4px; } }
-
-table.table.servers > thead > tr > th {
-  font-size: 1em; }
-  @media screen and (max-width: 1000px) {
-    table.table.servers > thead > tr > th {
-      font-size: 0.85em; } }
-  @media screen and (max-width: 850px) {
-    table.table.servers > thead > tr > th {
-      font-size: 0.75em; } }
-
-table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
-  font-size: 0.95em; }
-  @media screen and (max-width: 1000px) {
-    table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
-      font-size: 0.8em; } }
-  @media screen and (max-width: 850px) {
-    table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b {
-      font-size: 0.7em; } }
-
-@media screen and (max-width: 1000px) {
-  .sr-layout > span, .sr-layout > ul {
-    font-size: 0.8em; } }
-@media screen and (max-width: 850px) {
-  .sr-layout > span, .sr-layout > ul {
-    font-size: 0.65em; } }
-
 @media screen and (max-width: 788px) {
   table.table.servers > tbody > tr > td:nth-child(4), table.table.servers > thead > tr > th:nth-child(4) {
     display: none; } }
@@ -45,6 +11,10 @@ table.table.servers > tbody > tr > td, table.table.servers > tbody > tr > td > b
     display: none; } }
 @media screen and (max-width: 450px) {
   table.table.servers > tbody > tr > td:nth-child(2), table.table.servers > thead > tr > th:nth-child(2) {
+    display: none; } }
+
+@media screen and (max-width: 450px) {
+  table.table.players > tbody > tr > td:nth-child(2), table.table.players > thead > tr > th:nth-child(2) {
     display: none; } }
 
 .search-menu {

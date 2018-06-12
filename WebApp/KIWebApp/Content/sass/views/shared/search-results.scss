@@ -2,6 +2,57 @@
 
 $sr-icon-bg-hover-color: #7a7a7a;
 
+
+%table-column-padding-media {
+    padding: 10px;
+
+    @media screen and (max-width: 1000px) {
+        padding: 8px;
+    }
+
+    @media screen and (max-width: 850px) {
+        padding: 4px;
+    }
+}
+
+%table-th-font-media {
+    font-size: 1em;
+
+    @media screen and (max-width: 1000px) {
+        font-size: 0.85em;
+    }
+
+    @media screen and (max-width: 850px) {
+        font-size: 0.75em;
+    }
+}
+
+%table-td-font-media {
+    font-size: 0.95em;
+
+    @media screen and (max-width: 1000px) {
+        font-size: 0.8em;
+    }
+
+    @media screen and (max-width: 850px) {
+        font-size: 0.7em;
+    }
+}
+
+%sr-dynatable-font-media {
+    font-size: 1em;
+
+    @media screen and (max-width: 1000px) {
+        font-size: 0.8em;
+    }
+
+    @media screen and (max-width: 850px) {
+        font-size: 0.65em;
+    }
+}
+
+
+
 // status icon colors
 
 .sr-status-online-icon {
@@ -61,10 +112,21 @@ td > i {
     }
 
     & > span {
-        font-size: 1em;
+        @extend %sr-dynatable-font-media;
     }
 
     & > ul {
-        font-size: 1em;
+        @extend %sr-dynatable-font-media;
     }
 }
+
+table.table > thead > tr > th {
+    @extend %table-th-font-media;
+    @extend %table-column-padding-media;
+}
+
+table.table > tbody > tr > td {
+    @extend %table-column-padding-media;
+    @extend %table-td-font-media;
+}
+

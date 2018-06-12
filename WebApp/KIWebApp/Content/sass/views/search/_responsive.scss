@@ -1,64 +1,4 @@
-﻿%table-column-padding-media {
-    padding: 10px;
-
-    @media screen and (max-width: 800px) {
-        padding: 8px;
-    }
-
-    @media screen and (max-width: 380px) {
-        padding: 4px;
-    }
-}
-
-%table-th-font-media {
-    font-size: 1em;
-
-    @media screen and (max-width: 1000px) {
-        font-size: 0.85em;
-    }
-
-    @media screen and (max-width: 850px) {
-        font-size: 0.75em;
-    }
-}
-
-%table-td-font-media {
-    font-size: 0.95em;
-
-    @media screen and (max-width: 1000px) {
-        font-size: 0.8em;
-    }
-
-    @media screen and (max-width: 850px) {
-        font-size: 0.7em;
-    }
-}
-
-%sr-dynatable-font-media {
-    @media screen and (max-width: 1000px) {
-        font-size: 0.8em;
-    }
-
-    @media screen and (max-width: 850px) {
-        font-size: 0.65em;
-    }
-}
-
-
-
-
-.sr-layout {
-    // make the font sizes responsive for the dynatable auto generated html elements
-    & > span {
-        @extend %sr-dynatable-font-media;
-    }
-    // make the font sizes responsive for the dynatable auto generated html elements
-    & > ul {
-        @extend %sr-dynatable-font-media;
-    }
-}
-
-table.table.servers {
+﻿table.table.servers {
     // hide the restart column
     @media screen and (max-width: 788px) {
         & > tbody > tr > td:nth-child(4),
@@ -82,20 +22,15 @@ table.table.servers {
     }
 }
 
-table.table.servers > thead > tr > th {
-    @extend %table-th-font-media;
-    @extend %table-column-padding-media;
-}
 
-table.table.servers > tbody > tr > td {
-    @extend %table-column-padding-media;
-    @extend %table-td-font-media;
 
-    & > b {
-        @extend %table-td-font-media;
+table.table.players {
+    // hide the Game Time column
+    @media screen and (max-width: 450px) {
+        & > tbody > tr > td:nth-child(2),
+        & > thead > tr > th:nth-child(2) {
+            display: none;
+        }
     }
-}
-
-.table.players {
 }
 

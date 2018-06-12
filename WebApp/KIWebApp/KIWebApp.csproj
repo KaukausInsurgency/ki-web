@@ -266,6 +266,9 @@
     <Content Include="Content\css\views\learn-more\learn-more.css" />
     <Content Include="Content\css\views\search\search.css" />
     <Content Include="Content\css\views\servers\servers.css" />
+    <Content Include="Content\css\views\shared\menu-responsive.css" />
+    <Content Include="Content\css\views\shared\search-results.css" />
+    <Content Include="Content\css\views\shared\search-results.min.css" />
     <Content Include="Content\sass\vendor-extensions\_dynatable.scss" />
     <Content Include="Content\css\views\servers\servers.css.map" />
     <Content Include="Content\sass\vendor-extensions\vendor-extensions.scss" />
@@ -278,6 +281,8 @@
     <Content Include="Content\sass\views\learn-more\_common.scss" />
     <Content Include="Content\sass\views\search\_responsive.scss" />
     <Content Include="Content\sass\components\_menu.scss" />
+    <Content Include="Content\css\views\shared\menu-responsive.css.map" />
+    <Content Include="Content\css\views\shared\search-results.css.map" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
