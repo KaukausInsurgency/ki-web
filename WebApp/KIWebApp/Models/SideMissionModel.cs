@@ -20,23 +20,16 @@ namespace KIWebApp.Models
         public string LatLong { get; set; }
         public string MGRS { get; set; }
 
-        public SideMissionModel(DataRow dr)
+        public SideMissionModel()
         {
-            ID = dr.Field<int>("ServerMissionID");
-            Name = dr.Field<string>("Name");
-            Desc = dr.Field<string>("Description");
-            Image = dr.Field<string>("ImagePath");
-            Status = dr.Field<string>("Status");
-            StatusChanged = dr.Field<ulong>("StatusChanged") == 1;  // for some reason MySQL treats BIT(1) as ulong
-            LatLong = dr.Field<string>("LatLong");
-            MGRS = dr.Field<string>("MGRS");
-
+            /*
             TimeRemaining = SqlUtility.ConvertTimeTicksToStringDouble(ref dr, "TimeRemaining");
 
             if (dr["TimeInactive"] != DBNull.Value && dr["TimeInactive"] != null)
                 TimeInactive = ((TimeSpan)(DateTime.Now - dr.Field<DateTime>("TimeInactive"))).TotalSeconds;
             else
                 TimeInactive = 0;
+            */
         }
     }
 }

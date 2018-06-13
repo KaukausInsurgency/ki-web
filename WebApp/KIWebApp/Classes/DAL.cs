@@ -6,112 +6,88 @@ using KIWebApp.Models;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data;
+using StackExchange.Redis;
 
 namespace KIWebApp.Classes
 {
     public class DAL : IDAL
     {
         private const string SP_GET_SERVERS = "websp_GetServersList";
-        private const string SP_GET_ONLINEPLAYERS = "websp_GetOnlinePlayers";
-        private const string SP_GET_DEPOTS= "websp_GetDepots";
-        private const string SP_GET_CAPTUREPOINTS = "websp_GetCapturePoints";
         private const string SP_GET_GAME = "websp_GetGame";
-        private const string SP_GET_SIDEMISSIONS = "websp_GetSideMissions";
         private const string SP_SEARCH_TOTALS = "websp_SearchTotals";
         private const string SP_SEARCH_PLAYERS = "websp_SearchPlayers";
         private const string SP_SEARCH_SERVERS = "websp_SearchServers";
         private const string SP_GET_SERVER_INFO = "websp_GetServerInfo";
+        private const string SP_GET_CUSTOM_MENU_ITEMS = "websp_GetCustomMenuItems";
         private string _DBMySQLConnectionString;
         private string _DBRedisConnectionString;
+
         
-       
+        public IAppSettings AppSettings { get; set; }
+
         public DAL()
         {
             _DBMySQLConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString;
             _DBRedisConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString;
+            AppSettings = new WebAppSettings();
         }
 
-        public DAL(string mySQLConnect, string redisConnect)
+        public DAL(string mySQLConnect, string redisConnect, IAppSettings AppSettings)
         {
             _DBMySQLConnectionString = mySQLConnect;
             _DBRedisConnectionString = redisConnect;
+            this.AppSettings = AppSettings;
         }
 
         List<CapturePointModel> IDAL.GetCapturePoints(int serverID)
         {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer conn = null;
             try
             {
-                conn.Open();
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
                 return ((IDAL)this).GetCapturePoints(serverID, ref conn);
             }
             finally
             {
-                conn.Close();
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
             }
         }
 
-        List<CapturePointModel> IDAL.GetCapturePoints(int serverID, ref IDbConnection conn)
+        List<CapturePointModel> IDAL.GetCapturePoints(int serverID, ref IConnectionMultiplexer conn)
         {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-        
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_CAPTUREPOINTS, 
-                new Dictionary<string, object>() { { "ServerID", serverID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            List<CapturePointModel> capturepoints = new List<CapturePointModel>();
-
-            foreach (DataRow dr in dt.Rows)
-                capturepoints.Add(new CapturePointModel(dr));
-
-            return capturepoints;
+            return GetModelCollection<int, List<CapturePointModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyCapturePoint);
         }
 
         List<DepotModel> IDAL.GetDepots(int serverID)
         {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer conn = null;
             try
             {
-                conn.Open();
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
                 return ((IDAL)this).GetDepots(serverID, ref conn);
             }
             finally
             {
-                conn.Close();
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
             }
         }
 
-        List<DepotModel> IDAL.GetDepots(int serverID, ref IDbConnection conn)
+        List<DepotModel> IDAL.GetDepots(int serverID, ref IConnectionMultiplexer conn)
         {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-        
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_DEPOTS, 
-                new Dictionary<string, object>() { { "ServerID", serverID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            List<DepotModel> depots = new List<DepotModel>();
-
-            foreach (DataRow dr in dt.Rows)
-                depots.Add(new DepotModel(dr));
-
-            return depots;
+            return GetModelCollection<int, List<DepotModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyDepot);
         }
 
         GameModel IDAL.GetGame(int serverID)
         {
             IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer redisconn = null;
             try
             {
                 conn.Open();
-                return ((IDAL)this).GetGame(serverID, ref conn);
+                redisconn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
+                return ((IDAL)this).GetGame(serverID, ref conn, ref redisconn);
             }
             finally
             {
@@ -119,12 +95,12 @@ namespace KIWebApp.Classes
             }
         }
 
-        GameModel IDAL.GetGame(int serverID, ref IDbConnection conn)
+        GameModel IDAL.GetGame(int serverID, ref IDbConnection dbconn, ref IConnectionMultiplexer redisconn)
         {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
+            if (dbconn.State == ConnectionState.Closed || dbconn.State == ConnectionState.Broken)
+                dbconn.Open();
        
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_GAME,
+            IDbCommand cmd = SqlUtility.CreateCommand(dbconn, SP_GET_GAME,
                 new Dictionary<string, object>() { { "ServerID", serverID } });
             DataTable dt = SqlUtility.Execute(cmd);
 
@@ -137,14 +113,11 @@ namespace KIWebApp.Classes
             {
                 g = new GameModel(serverID, dr)
                 {
-                    Depots = ((IDAL)this).GetDepots(serverID, ref conn),
-                    CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref conn),
-                    Missions = ((IDAL)this).GetSideMissions(serverID, ref conn),
-                    OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref conn),
-
-
-                    // Temporary mocked code
-                    CustomMenuItems = new List<CustomMenuItemModel>()
+                    Depots = ((IDAL)this).GetDepots(serverID, ref redisconn),
+                    CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref redisconn),
+                    Missions = ((IDAL)this).GetSideMissions(serverID, ref redisconn),
+                    OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref redisconn),
+                    CustomMenuItems = ((IDAL)this).GetCustomMenuItems(serverID, ref dbconn),
                 };
                 g.CustomMenuItems.Add(new CustomMenuItemModel()
                 {
@@ -156,9 +129,12 @@ namespace KIWebApp.Classes
                 g.CustomMenuItems.Add(new CustomMenuItemModel()
                 {
                     MenuName = "Custom Menu",
-                    IconClass = "fas fa-archive",
                     Content = new HtmlContentSimpleModel("<h3>Rules</h3><ul><li>No Spitting</li><li>No Lying</li><li>Be Respectful</li></ul><p>These are our rules and they will be followed!</p>")
-                });
+
+                g.OnlinePlayersCount = g.OnlinePlayers.Count;
+                g.RedforPlayersCount = g.OnlinePlayers.Count(op => op.Side == 1);
+                g.BluforPlayersCount = g.OnlinePlayers.Count(op => op.Side == 2);
+                g.NeutralPlayersCount = g.OnlinePlayers.Count(op => op.Side == 0);
                 break;
             }
             return g;
@@ -166,19 +142,20 @@ namespace KIWebApp.Classes
 
         MarkerViewModel IDAL.GetMarkers(int serverID)
         {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer conn = null;
             try
             {
-                conn.Open();
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
                 return ((IDAL)this).GetMarkers(serverID, ref conn);
             }
             finally
             {
-                conn.Close();
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
             }
         }
 
-        MarkerViewModel IDAL.GetMarkers(int serverID, ref IDbConnection conn)
+        MarkerViewModel IDAL.GetMarkers(int serverID, ref IConnectionMultiplexer conn)
         {
             MarkerViewModel mm = new MarkerViewModel()
             {
@@ -192,36 +169,23 @@ namespace KIWebApp.Classes
 
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID)
         {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer conn = null;
             try
             {
-                conn.Open();
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
                 return ((IDAL)this).GetOnlinePlayers(serverID, ref conn);
             }
             finally
             {
-                conn.Close();
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
             }
         }
 
-        List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID, ref IDbConnection conn)
+
+        List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID, ref IConnectionMultiplexer conn)
         {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-            
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_ONLINEPLAYERS,
-                new Dictionary<string, object>() { { "ServerID", serverID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            List<OnlinePlayerModel> players = new List<OnlinePlayerModel>();
-
-            foreach (DataRow dr in dt.Rows)
-                players.Add(new OnlinePlayerModel(dr));
-
-            return players;
+            return GetModelCollection<int, List<OnlinePlayerModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyOnlinePlayer);                
         }
 
         List<ServerModel> IDAL.GetServers()
@@ -259,37 +223,22 @@ namespace KIWebApp.Classes
 
         List<SideMissionModel> IDAL.GetSideMissions(int serverID)
         {
-            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            IConnectionMultiplexer conn = null ;
             try
             {
-                conn.Open();
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
                 return ((IDAL)this).GetSideMissions(serverID, ref conn);
             }
             finally
             {
-                conn.Close();
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
             }
         }
 
-        List<SideMissionModel> IDAL.GetSideMissions(int serverID, ref IDbConnection conn)
+        List<SideMissionModel> IDAL.GetSideMissions(int serverID, ref IConnectionMultiplexer conn)
         {
-            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                conn.Open();
-            
-            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_SIDEMISSIONS,
-                new Dictionary<string, object>() { { "ServerID", serverID } });
-            DataTable dt = SqlUtility.Execute(cmd);
-
-            if (dt == null)
-                return null;
-
-            List<SideMissionModel> missions = new List<SideMissionModel>();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                missions.Add(new SideMissionModel(dr));
-            }
-            return missions;
+            return GetModelCollection<int, List<SideMissionModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeySideMission);
         }
 
         SearchResultsModel IDAL.GetSearchResults(string query)
@@ -429,6 +378,58 @@ namespace KIWebApp.Classes
                 break;
             }
             return s;
+        }
+
+
+        private ReturnT GetModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
+        {
+            IDatabase db = conn.GetDatabase();
+            RedisValue v = db.StringGet(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID));
+
+            if (v.IsNullOrEmpty && !v.HasValue)
+            {
+                return new ReturnT();
+            }
+            else
+            {
+                ReturnT model = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(v);
+
+                return model;
+            }
+        }
+
+        List<CustomMenuItemModel> IDAL.GetCustomMenuItems(int serverID)
+        {
+            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
+            try
+            {
+                conn.Open();
+                return ((IDAL)this).GetCustomMenuItems(serverID, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        List<CustomMenuItemModel> IDAL.GetCustomMenuItems(int serverID, ref IDbConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            List<CustomMenuItemModel> model = new List<CustomMenuItemModel>();
+
+            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_CUSTOM_MENU_ITEMS,
+                new Dictionary<string, object>() { { "ServerID", serverID } });
+            DataTable dt = SqlUtility.Execute(cmd);
+
+            if (dt == null)
+                return model;       
+
+            foreach (DataRow dr in dt.Rows)
+                model.Add(new CustomMenuItemModel(dr));
+
+            return model;
         }
     }
 }

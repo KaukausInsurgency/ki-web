@@ -23,6 +23,7 @@ namespace KIWebApp.Models
 
         public DepotModel(DataRow dr)
         {
+            /*
             ID = dr.Field<int>("DepotID");
             Name = dr.Field<string>("Name");
             LatLong = dr.Field<string>("LatLong");
@@ -37,6 +38,7 @@ namespace KIWebApp.Models
 
             // if the cap or currentcap are -1, these are marked as supplier depots with infinite resources
             Capacity = (cap == -1 || currentcap == -1) ? "Infinite" : (currentcap + " / " + cap);
+            */
         }
     }
 }

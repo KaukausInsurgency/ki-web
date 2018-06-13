@@ -28,13 +28,16 @@
                 @foreach (var item in @Model.OnlinePlayers)
                 {
                     string factionClass = "online-players-neutral";
-                    if (item.Side.ToLower() == "red")
+                    string faction = "Neutral";
+                    if (item.Side == 1)
                     {
                         factionClass = "online-players-redfor";
+                        faction = "Redfor";
                     }
-                    else if (item.Side.ToLower() == "blue")
+                    else if (item.Side == 2)
                     {
                         factionClass = "online-players-blufor";
+                        faction = "Blufor";
                     }
                      <tr>
                         <td>
@@ -45,7 +48,7 @@
                             @item.Role
                         </td>
                         <td class="@factionClass">@item.Name</td>
-                        <td class="@factionClass">@item.Side</td>
+                        <td class="@factionClass">@faction</td>
                         <td>@item.Lives</td>
                         <td>@item.Ping</td>
                     </tr>

@@ -220,9 +220,11 @@
     <Compile Include="Asyncs\GameThreadWorker.cs" />
     <Compile Include="Classes\DAL.cs" />
     <Compile Include="Classes\DAL_Rpt.cs" />
+    <Compile Include="Classes\IAppSettings.cs" />
     <Compile Include="Classes\IDAL_Rpt.cs" />
-    <Compile Include="Classes\MockDAL.cs" />
+    <Compile Include="Classes\RedisUtility.cs" />
     <Compile Include="Classes\SqlUtility.cs" />
+    <Compile Include="Classes\WebAppSettings.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Classes\IDAL.cs" />

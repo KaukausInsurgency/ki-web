@@ -19,9 +19,7 @@ namespace Tests
             Assert.That(model.UCID == "12345");
             Assert.That(model.Name == "MockPlayer");
             Assert.That(model.Role == "Mock");
-            Assert.That(model.RoleImage == "Image");
             Assert.That(model.Ping == "100 ms");
-            Assert.That(model.Side == "Red");
             Assert.That(model.Lives == "5");
         }
 
@@ -40,7 +38,6 @@ namespace Tests
             DataRow dr = CreateMockDataRow();
             dr["Side"] = 2;
             OnlinePlayerModel model = new OnlinePlayerModel(dr);
-            Assert.That(model.Side == "Blue");
         }
 
         [Test]
@@ -49,7 +46,6 @@ namespace Tests
             DataRow dr = CreateMockDataRow();
             dr["Side"] = 0;
             OnlinePlayerModel model = new OnlinePlayerModel(dr);
-            Assert.That(model.Side == "Neutral");
         }
 
         private DataRow CreateMockDataRow()

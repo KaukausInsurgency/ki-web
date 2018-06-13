@@ -26,6 +26,7 @@ namespace KIWebApp.Models
 
         public CapturePointModel(DataRow dr)
         {
+            /*
             ID = dr.Field<int>("CapturePointID");
             Type = dr.Field<string>("Type");
             Name = dr.Field<string>("Name");
@@ -38,6 +39,7 @@ namespace KIWebApp.Models
             RedUnits = dr.Field<int>("RedUnits");
             Image = dr.Field<string>("ImagePath");
             Text = SqlUtility.GetValueOrDefault(ref dr, "Text", "");
+            */
         }
     }
 }
