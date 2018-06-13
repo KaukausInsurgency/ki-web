@@ -119,17 +119,6 @@ namespace KIWebApp.Classes
                     OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref redisconn),
                     CustomMenuItems = ((IDAL)this).GetCustomMenuItems(serverID, ref dbconn),
                 };
-                g.CustomMenuItems.Add(new CustomMenuItemModel()
-                {
-                    MenuName = "Discord",
-                    IconClass = "fab fa-discord",
-                    Content = new HtmlContentIFrameModel(500, 300, "https://discordapp.com/widget?id=410076123242954753&theme=dark",
-                                                        "allowtransparency = \"true\" frameborder = \"0\"")
-                });
-                g.CustomMenuItems.Add(new CustomMenuItemModel()
-                {
-                    MenuName = "Custom Menu",
-                    Content = new HtmlContentSimpleModel("<h3>Rules</h3><ul><li>No Spitting</li><li>No Lying</li><li>Be Respectful</li></ul><p>These are our rules and they will be followed!</p>")
 
                 g.OnlinePlayersCount = g.OnlinePlayers.Count;
                 g.RedforPlayersCount = g.OnlinePlayers.Count(op => op.Side == 1);
