@@ -1,0 +1,204 @@
+/*
+* Better function for color palettes using Sass maps
+* Link: http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/
+* Usage: color: palette(brand,tan);
+*/
+.chart-columns-2::after, #hc-kills-by-category-pie::after,
+#hc-score-pie::after, #hc-last-sortie::after,
+#hc-last-5-sorties::after, .chart-layout-graphs::after {
+  content: "";
+  display: table;
+  clear: both; }
+
+@media screen and (max-width: 880px) {
+  .dash-columns-eight {
+    width: 25%; }
+    .dash-columns-eight:nth-child(4)::after {
+      clear: left; } }
+@media screen and (max-width: 570px) {
+  .dash-columns-eight {
+    width: 50%; }
+    .dash-columns-eight:nth-child(2)::after, .dash-columns-eight:nth-child(4)::after, .dash-columns-eight:nth-child(6)::after, .dash-columns-eight:nth-child(8)::after {
+      clear: left; } }
+
+@media screen and (max-width: 450px) {
+  .dash-columns-four {
+    width: 50%; }
+    .dash-columns-four:nth-child(2)::after {
+      clear: left; } }
+
+@media screen and (max-width: 450px) {
+  .dash-columns-three {
+    width: 50%; }
+    .dash-columns-three:nth-child(2)::after {
+      clear: left; } }
+
+@media screen and (max-width: 880px) {
+  .dashboard-row {
+    margin-left: 1.8em;
+    margin-right: 1.8em; } }
+@media screen and (max-width: 570px) {
+  .dashboard-row {
+    margin-left: 1.5em;
+    margin-right: 1.5em; } }
+
+@media screen and (max-width: 724px) {
+  .dashboard-background-columns-2 {
+    width: 100%;
+    float: none; }
+    .dashboard-background-columns-2:nth-child(1) {
+      margin-right: 0%; }
+    .dashboard-background-columns-2:nth-child(2) {
+      margin-left: 0%; } }
+
+@media screen and (max-width: 1018px) {
+  .dash-header-large-font {
+    font-size: 1.2em; } }
+
+@media screen and (max-width: 1018px) {
+  .dash-header-medium-font {
+    font-size: 0.9em; } }
+
+@media screen and (max-width: 1018px) {
+  .dash-header-small-font {
+    font-size: 0.55em; } }
+
+.dash-background-color {
+  margin-left: -4em;
+  margin-right: -4em; }
+
+.dashboard-layout {
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.chart-layout {
+  overflow: hidden; }
+
+.left-margin-inner {
+  margin-left: 10px; }
+
+.right-margin-inner {
+  margin-right: 10px; }
+
+.chart-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  overflow: hidden; }
+
+.chart-columns-2 {
+  width: 50%;
+  float: left;
+  height: 200px; }
+
+.chart-background {
+  background: #4e4e4e;
+  background: -webkit-linear-gradient(-90deg, #4e4e4e, #383838);
+  background: -moz-linear-gradient(180deg, #4e4e4e, #383838);
+  background: linear-gradient(180deg, #4e4e4e, #383838);
+  border-width: 0px;
+  border-radius: 15px;
+  overflow: hidden; }
+
+.stats-table-layout {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%; }
+  .stats-table-layout::-webkit-scrollbar {
+    width: 10px; }
+  .stats-table-layout::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cdcdcd; }
+  .stats-table-layout::-webkit-scrollbar-track {
+    border-radius: 5px; }
+
+.stats-table-title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500; }
+
+@media screen and (max-width: 716px) {
+  .chart-columns-2 {
+    width: 100%;
+    float: none; } }
+
+#hc-kills-by-category-pie,
+#hc-score-pie {
+  width: 50%;
+  float: left;
+  position: relative;
+  height: 300px;
+  margin: 0 auto; }
+
+#hc-last-sortie,
+#hc-last-5-sorties {
+  width: 50%;
+  float: left;
+  position: relative;
+  height: 300px;
+  margin: 0 auto; }
+  @media screen and (max-width: 740px) {
+    #hc-last-sortie,
+    #hc-last-5-sorties {
+      width: 100%;
+      float: none;
+      padding-top: 10px;
+      padding-bottom: 10px; } }
+
+#hc-last-sortie {
+  padding-right: 10px; }
+  @media screen and (max-width: 740px) {
+    #hc-last-sortie {
+      padding-right: 0px; } }
+
+#hc-last-5-sorties {
+  padding-left: 10px; }
+  @media screen and (max-width: 740px) {
+    #hc-last-5-sorties {
+      padding-left: 0px; } }
+
+#hc-kills-by-type-bar,
+#hc-deaths-by-type-bar {
+  height: 300px; }
+
+#hc-missile-accuracy,
+#hc-rocket-accuracy,
+#hc-bomb-accuracy,
+#hc-gun-accuracy {
+  float: left;
+  width: 25%;
+  position: relative;
+  height: 200px; }
+
+@media screen and (max-width: 550px) {
+  #hc-missile-accuracy,
+  #hc-rocket-accuracy,
+  #hc-bomb-accuracy,
+  #hc-gun-accuracy {
+    width: 50%; }
+
+  #hc-bomb-accuracy {
+    clear: left; } }
+.chart-layout-graphs {
+  width: 50%;
+  float: left;
+  position: relative; }
+  .chart-layout-graphs:nth-child(1) {
+    padding-right: 10px; }
+  .chart-layout-graphs:nth-child(2) {
+    padding-left: 10px; }
+  @media screen and (max-width: 740px) {
+    .chart-layout-graphs {
+      width: 100%;
+      float: none;
+      padding-top: 10px;
+      padding-bottom: 10px; }
+      .chart-layout-graphs:nth-child(1) {
+        padding-right: 0px; }
+      .chart-layout-graphs:nth-child(2) {
+        padding-left: 0px; } }
+
+h3 {
+  font-size: 19px;
+  text-align: center; }
+
+/*# sourceMappingURL=airframe-statistics.css.map */

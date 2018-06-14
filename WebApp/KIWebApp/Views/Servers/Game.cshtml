@@ -20,7 +20,7 @@
     </div>
 
     <section class="game-section">
-        <div class="info-layout">
+        <div class="info-layout dashboard-layout">
             <h2>Server</h2>
             <div class="progress-bar-layout">
                 <div class="progress-bar-title">Time Remaining: @Model.RestartTimeString</div>
@@ -29,55 +29,55 @@
                 </div>
             </div>
 
-            <div class="dash-row">
-                <div class="dash-columns dash-col-green">
-                    <div class="dash-header dash-large-font">@Model.Status</div>
-                    <div class="dash-header dash-small-font">Status</div>
+            <div class="dashboard-row">
+                <div class="dash-columns">
+                    <div class="dash-header dash-header-large-font">@Model.Status</div>
+                    <div class="dash-header dash-header-small-font">Status</div>
                 </div>
             </div>
-            <div class="dash-row">
-                <div class="dash-columns dash-col-tan">
-                    <div class="dash-header dash-large-font">@Model.IPAddress</div>
-                    <div class="dash-header dash-small-font">Address</div>
+            <div class="dashboard-row">
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">@Model.IPAddress</div>
+                    <div class="dash-header dash-header-small-font">Address</div>
                 </div>
                 @if (Model.SimpleRadioEnabled)
                 {
-                    <div class="dash-columns dash-col-tan">
-                        <div class="dash-header dash-large-font">@Model.SimpleRadioIPAddress</div>
-                        <div class="dash-header dash-small-font">Simple Radio</div>
+                    <div class="dash-columns-three">
+                        <div class="dash-header dash-header-large-font">@Model.SimpleRadioIPAddress</div>
+                        <div class="dash-header dash-header-small-font">Simple Radio</div>
                     </div>
                 }           
             </div>
-            <div class="dash-row">
-                <div class="dash-columns dash-columns-4 dash-col-dark">
-                    <div class="dash-header dash-large-font">@Model.OnlinePlayersCount</div>
-                    <div class="dash-header dash-small-font">Online</div>
+            <div class="dashboard-row">
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">@Model.OnlinePlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Online</div>
                 </div>
-                <div class="dash-columns dash-columns-4 dash-col-lred">
-                    <div class="dash-header dash-large-font">@Model.RedforPlayersCount</div>
-                    <div class="dash-header dash-small-font">Red</div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">@Model.RedforPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Red</div>
                 </div>
-                <div class="dash-columns dash-columns-4 dash-col-lblue">
-                    <div class="dash-header dash-large-font">@Model.BluforPlayersCount</div>
-                    <div class="dash-header dash-small-font">Blue</div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">@Model.BluforPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Blue</div>
                 </div>
-                <div class="dash-columns dash-columns-4 dash-col-gray">
-                    <div class="dash-header dash-large-font">@Model.NeutralPlayersCount</div>
-                    <div class="dash-header dash-small-font">Spectators</div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">@Model.NeutralPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Spectators</div>
                 </div>
             </div>
-            <div class="dash-row">
-                <div class="dash-columns dash-columns-4 dash-col-dark">
-                    <div class="dash-header dash-large-font">5</div>
-                    <div class="dash-header dash-small-font">Lives Configured</div>
+            <div class="dashboard-row">
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">5</div>
+                    <div class="dash-header dash-header-small-font">Lives Configured</div>
                 </div>
-                <div class="dash-columns dash-columns-4 dash-col-lred">
-                    <div class="dash-header dash-large-font">@Model.Depots.Count</div>
-                    <div class="dash-header dash-small-font">Depots</div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">@Model.Depots.Count</div>
+                    <div class="dash-header dash-header-small-font">Depots</div>
                 </div>
-                <div class="dash-columns dash-columns-4 dash-col-lblue">
-                    <div class="dash-header dash-large-font">@Model.CapturePoints.Count</div>
-                    <div class="dash-header dash-small-font">Capture Points</div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">@Model.CapturePoints.Count</div>
+                    <div class="dash-header dash-header-small-font">Capture Points</div>
                 </div>
             </div>
         </div>

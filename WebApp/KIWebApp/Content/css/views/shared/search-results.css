@@ -5,10 +5,10 @@
 */
 table.table > thead > tr > th, table.table > tbody > tr > td {
   padding: 10px; }
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1000px) {
     table.table > thead > tr > th, table.table > tbody > tr > td {
       padding: 8px; } }
-  @media screen and (max-width: 380px) {
+  @media screen and (max-width: 850px) {
     table.table > thead > tr > th, table.table > tbody > tr > td {
       padding: 4px; } }
 

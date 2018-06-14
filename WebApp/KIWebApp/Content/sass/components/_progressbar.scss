@@ -3,7 +3,9 @@ $progress-passive-color: rgb(107, 177, 209);
 $progress-background-color: rgb(56, 56, 56);
 
 .progress-bar-layout {
-  height: auto;
+    height: auto;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 .progress-bar-title {

@@ -1,0 +1,25 @@
+.stats-table-layout {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: #cdcdcd;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+}
+
+.stats-table-title {
+    font-family: $primary-font-stack;
+    font-weight: 500;
+}
+
+
