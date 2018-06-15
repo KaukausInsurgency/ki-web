@@ -725,6 +725,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `websp_GetCustomMenuItems` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetCustomMenuItems`(ServerID INT)
+BEGIN
+	SELECT c.menu_name AS MenuName,
+		   c.icon_class AS IconClass,
+           c.html_content AS HtmlContent
+	FROM custom_menu_item c
+    WHERE c.server_id = ServerID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `websp_GetGame` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -745,10 +768,13 @@ BEGIN
            s.simple_radio_ip_address as SimpleRadioIPAddress,
            COUNT(op.ucid) as OnlinePlayerCount,
            s.restart_time as RestartTime,
-           s.status
+           s.status as Status,
+           m.name as Map
 	FROM server s
     LEFT JOIN online_players op
 		ON s.server_id = op.server_id
+	LEFT JOIN map m
+		ON s.map_id = m.map_id
     WHERE s.server_id = ServerID
     GROUP BY s.server_id, s.name;
 END ;;
@@ -905,4 +931,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-12  3:17:45
+-- Dump completed on 2018-06-14 22:43:25

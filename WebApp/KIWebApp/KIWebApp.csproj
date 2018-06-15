@@ -305,6 +305,7 @@
     <Content Include="Content\css\views\statistics\player-statistics.css.map" />
     <Content Include="Content\css\views\search\search.css.map" />
     <Content Include="Content\css\views\home\home.css.map" />
+    <Content Include="Content\sass\views\game\_dashboard.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />

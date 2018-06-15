@@ -30,20 +30,24 @@
             </div>
 
             <div class="dashboard-row">
-                <div class="dash-columns">
+                <div class="dash-columns-two">
                     <div class="dash-header dash-header-large-font">@Model.Status</div>
                     <div class="dash-header dash-header-small-font">Status</div>
                 </div>
+                <div class="dash-columns-two">
+                    <div class="dash-header dash-header-medium-font">@Model.Map</div>
+                    <div class="dash-header dash-header-small-font">Map</div>
+                </div>
             </div>
             <div class="dashboard-row">
-                <div class="dash-columns-three">
-                    <div class="dash-header dash-header-large-font">@Model.IPAddress</div>
+                <div class="dash-columns-two">
+                    <div class="dash-header dash-header-medium-font">@Model.IPAddress</div>
                     <div class="dash-header dash-header-small-font">Address</div>
                 </div>
                 @if (Model.SimpleRadioEnabled)
                 {
-                    <div class="dash-columns-three">
-                        <div class="dash-header dash-header-large-font">@Model.SimpleRadioIPAddress</div>
+                    <div class="dash-columns-two">
+                        <div class="dash-header dash-header-medium-font">@Model.SimpleRadioIPAddress</div>
                         <div class="dash-header dash-header-small-font">Simple Radio</div>
                     </div>
                 }           

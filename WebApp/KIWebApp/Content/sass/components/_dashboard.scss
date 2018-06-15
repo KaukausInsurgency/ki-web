@@ -67,6 +67,16 @@
     }
 }
 
+.dash-columns-two {
+    float: left;
+    width: 50%;
+    position: relative;
+
+    &:after {
+        @extend %dashboard-line-after;
+    }
+}
+
 
 .dashboard-row {
     padding-top: 5px;

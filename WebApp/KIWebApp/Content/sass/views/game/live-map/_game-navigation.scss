@@ -23,27 +23,26 @@ $nav-width-collapsed: 50px;
 /* The sidebar menu */
 .game-nav {
     @extend %block-float;
-	height: 500px; 
-	position: absolute;
+    height: 500px;
+    position: absolute;
     width: $nav-width-collapsed; /* Set the width of the sidebar */
     /*position: fixed;  Fixed Sidebar (stay in place on scroll) */
-	left: 650px;
-	top: 0px;
+    @include calc(left, 80%, '100% - #{$nav-width-collapsed}'); 
+    top: 0px;
     background-color: $nav-background-color; /* Black */
-	
-	span {
-		padding: $nav-item-padding;
-		text-decoration: none;
-		font-size: $nav-font-size;
-		color: $nav-font-color;
-		display: block;
-		cursor: context-menu;
-	}
-	
-	span:hover {
-		color: $nav-font-hover;
-		background-color: $nav-background-color-hover;
-	}
+    span {
+        padding: $nav-item-padding;
+        text-decoration: none;
+        font-size: $nav-font-size;
+        color: $nav-font-color;
+        display: block;
+        cursor: context-menu;
+    }
+
+    span:hover {
+        color: $nav-font-hover;
+        background-color: $nav-background-color-hover;
+    }
 }
 
 .game-navicon {

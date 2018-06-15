@@ -16,6 +16,7 @@ namespace KIWebApp.Models
         public bool SimpleRadioEnabled { get; set; }
         public string SimpleRadioIPAddress { get; set; }
         public string Status { get; set; }
+        public string Map { get; set; }
         public string RestartTimeString { get; set; }
         public int RestartTime { get; set; }
         
@@ -43,6 +44,7 @@ namespace KIWebApp.Models
             RestartTime = SqlUtility.GetValueOrDefault(ref dr, "RestartTime", 0);
             RestartTimeString = SqlUtility.ConvertTimeTicksToStringInt(ref dr, "RestartTime");
             Status = SqlUtility.GetValueOrDefault(ref dr, "Status", "Offline");
+            Map = dr.Field<string>("Map");
         }
 
     }

@@ -84,11 +84,29 @@ DROP TABLE IF EXISTS `custom_menu_item`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `custom_menu_item` (
   `custom_menu_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `server_id` int(11) NOT NULL,
   `menu_name` varchar(30) NOT NULL,
   `icon_class` varchar(45) NOT NULL,
   `html_content` varchar(300) NOT NULL,
-  PRIMARY KEY (`custom_menu_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`custom_menu_item_id`),
+  KEY `fk_server_id_idx` (`server_id`),
+  CONSTRAINT `fk_custom_menu_item_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `map`
+--
+
+DROP TABLE IF EXISTS `map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `map` (
+  `map_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`map_id`),
+  UNIQUE KEY `map_id_UNIQUE` (`map_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,6 +122,23 @@ CREATE TABLE `meta` (
   `version_guid` varchar(128) NOT NULL,
   `rpt_last_updated` datetime DEFAULT NULL,
   PRIMARY KEY (`meta_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `online_players`
+--
+
+DROP TABLE IF EXISTS `online_players`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `online_players` (
+  `server_id` int(11) NOT NULL,
+  `ucid` varchar(128) NOT NULL,
+  UNIQUE KEY `ucid_UNIQUE` (`ucid`),
+  KEY `fk_server_id_idx` (`server_id`),
+  CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ucid` FOREIGN KEY (`ucid`) REFERENCES `player` (`ucid`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -356,8 +391,9 @@ DROP TABLE IF EXISTS `server`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `server` (
   `server_id` int(11) NOT NULL AUTO_INCREMENT,
+  `map_id` int(11) DEFAULT NULL,
   `name` varchar(128) NOT NULL,
-  `description` varchar(900) NOT NULL COMMENT 'server description displayed on website',
+  `description` varchar(2000) NOT NULL COMMENT 'server description displayed on website',
   `ip_address` varchar(40) NOT NULL,
   `simple_radio_enabled` bit(1) NOT NULL DEFAULT b'0',
   `simple_radio_ip_address` varchar(40) NOT NULL,
@@ -1147,6 +1183,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `websp_GetCustomMenuItems` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `websp_GetCustomMenuItems`(ServerID INT)
+BEGIN
+	SELECT c.menu_name AS MenuName,
+		   c.icon_class AS IconClass,
+           c.html_content AS HtmlContent
+	FROM custom_menu_item c
+    WHERE c.server_id = ServerID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `websp_GetGame` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1167,10 +1226,13 @@ BEGIN
            s.simple_radio_ip_address as SimpleRadioIPAddress,
            COUNT(op.ucid) as OnlinePlayerCount,
            s.restart_time as RestartTime,
-           s.status
+           s.status as Status,
+           m.name as Map
 	FROM server s
     LEFT JOIN online_players op
 		ON s.server_id = op.server_id
+	LEFT JOIN map m
+		ON s.map_id = m.map_id
     WHERE s.server_id = ServerID
     GROUP BY s.server_id, s.name;
 END ;;
@@ -1327,4 +1389,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-12  3:21:05
+-- Dump completed on 2018-06-14 22:43:57

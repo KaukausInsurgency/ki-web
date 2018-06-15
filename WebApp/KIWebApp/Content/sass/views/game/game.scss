@@ -7,6 +7,8 @@
 @import 'live-map/icons';
 @import 'live-map/online-players';
 
+@import 'dashboard';
+
 $server-description-font-pack: $primary-font-stack;
 
 .game-section {
@@ -20,13 +22,13 @@ $server-description-font-pack: $primary-font-stack;
 	@extend %block-float;
 	min-width:200px; 
 	flex: 1;
-	margin-left: 2%;
+	margin-left: 0%;
 	margin-right: 2%;
 	color: palette(dark-font, 'gray-nickel'); 
-	padding: 0.5em 0.5em;
+    padding: 0.5em;
 
 	// remove padding and margins as it causes this section to look misaligned vertically to the rest of the content
-	@media screen and (max-width: 860px) {
+	@media screen and (max-width: 1096px) {
 		margin-left: 0%;
 		margin-right: 0%;
 		padding: 0.5em 0em;

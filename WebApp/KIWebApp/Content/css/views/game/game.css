@@ -94,7 +94,10 @@
   width: 50px;
   /* Set the width of the sidebar */
   /*position: fixed;  Fixed Sidebar (stay in place on scroll) */
-  left: 650px;
+  left: 80%;
+  left: -webkit-calc(100% - 50px);
+  left: -moz-calc(100% - 50px);
+  left: calc(100% - 50px);
   top: 0px;
   background-color: #202020;
   /* Black */ }
@@ -288,6 +291,61 @@ table.online-players > tbody > tr:nth-child(even) td {
 
   table.online-players > caption {
     font-size: 0.8em; } }
+.dashboard-row {
+  margin-left: 1em;
+  margin-right: 1em; }
+
+.dash-columns-two {
+  min-width: 42px; }
+
+@media screen and (max-width: 1220px) {
+  .dash-columns-two {
+    float: none;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px; }
+
+  .dash-columns-four,
+  .dash-columns-three {
+    width: 50%; }
+    .dash-columns-four:nth-child(2)::after,
+    .dash-columns-three:nth-child(2)::after {
+      clear: left; }
+
+  .dashboard-row {
+    padding-top: 0px;
+    padding-bottom: 0px; }
+    .dashboard-row:first-of-type {
+      padding-top: 5px; }
+    .dashboard-row:last-of-type {
+      padding-bottom: 5px; } }
+@media screen and (max-width: 1096px) {
+  .dash-columns-two {
+    float: left;
+    width: 50%;
+    padding-top: 0px;
+    padding-bottom: 0px; }
+
+  .dash-columns-four {
+    width: 25%; }
+    .dash-columns-four:nth-child(2)::after {
+      clear: none; }
+
+  .dash-columns-three {
+    width: 33.33333333%; }
+    .dash-columns-three:nth-child(2)::after {
+      clear: none; }
+
+  .dashboard-row {
+    padding-top: 5px;
+    padding-bottom: 5px; }
+
+  .live-map-layout {
+    margin-top: 2em;
+    max-width: 1000px; }
+
+  .live-map {
+    max-width: 950px; } }
 .game-section {
   display: flex;
   justify-content: center;
@@ -297,11 +355,11 @@ table.online-players > tbody > tr:nth-child(even) td {
 .info-layout {
   min-width: 200px;
   flex: 1;
-  margin-left: 2%;
+  margin-left: 0%;
   margin-right: 2%;
   color: #CACAC4;
-  padding: 0.5em 0.5em; }
-  @media screen and (max-width: 860px) {
+  padding: 0.5em; }
+  @media screen and (max-width: 1096px) {
     .info-layout {
       margin-left: 0%;
       margin-right: 0%;
