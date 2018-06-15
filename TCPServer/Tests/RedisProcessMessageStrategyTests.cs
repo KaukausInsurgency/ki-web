@@ -52,7 +52,7 @@ namespace Tests
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockChannel["Sample:1"] == "[{\"Name\":\"DepotA\"},{\"Name\":\"DepotB\"},{\"Name\":\"DepotC\"}]");
+            Assert.That(mockdb.MockChannel["UT:1:Sample"] == "[{\"Name\":\"DepotA\"},{\"Name\":\"DepotB\"},{\"Name\":\"DepotC\"}]");
         }
 
 
@@ -68,7 +68,7 @@ namespace Tests
             Assert.That(response.Error == "");
             Assert.That(response.Action == "SampleCall");
             Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "Sample:1");
+            Assert.That((string)response.Data[0][0] == "UT:1:Sample");
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Tests
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
-            Assert.That(mockdb.MockChannel["Sample:1"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
+            Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
         }
 
 
@@ -95,7 +95,7 @@ namespace Tests
             Assert.That(response.Error == "");
             Assert.That(response.Action == "SampleCall");
             Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "Sample:1");
+            Assert.That((string)response.Data[0][0] == "UT:1:Sample");
         }
 
         [Test]

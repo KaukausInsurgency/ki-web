@@ -22,6 +22,7 @@ namespace TAWKI_TCPServer
         private List<string> _whitelist;
         private List<string> _supportedHTML;
         private Dictionary<string, string> _redisActionKeyPair;
+        private string _redisEnvironmentKey;
 
         public ConfigReader()
         {
@@ -40,6 +41,7 @@ namespace TAWKI_TCPServer
                 XmlNodeList upnpxml = xml.GetElementsByTagName("UseUPnP");
                 XmlNodeList actionkeysxml = xml.SelectNodes("/Config/RedisActionKeys/Pair");
                 XmlNodeList supportedHTMLxml = xml.GetElementsByTagName("SupportedHTML");
+                XmlNodeList redisEnvironmentxml = xml.GetElementsByTagName("RedisEnvironmentKey");
 
                 if (dbxml.Count == 0)
                     throw new Exception("Could not find <DBConnect> in config");
@@ -49,6 +51,8 @@ namespace TAWKI_TCPServer
                     throw new Exception("Could not find <MaxConnections> in config");
                 if (redisxml.Count == 0)
                     throw new Exception("Could not find <RedisDBConnect> in config");
+                if (redisEnvironmentxml.Count == 0)
+                    throw new Exception("Could not find <RedisEnvironmentKey> in config");
                 if (whitelistxml.Count == 0)
                     _useWhiteList = false;
                 else
@@ -87,6 +91,8 @@ namespace TAWKI_TCPServer
                 {
                     _supportedHTML = supportedHTMLxml[0].InnerText.Split(',').ToList<string>();
                 }
+
+                _redisEnvironmentKey = redisEnvironmentxml[0].InnerText;
 
                 _configReadSuccess = true;
             }
@@ -146,5 +152,7 @@ namespace TAWKI_TCPServer
         {
             get { return _redisActionKeyPair; }
         }
+
+        string IConfigReader.RedisEnvironmentKey => _redisEnvironmentKey;
     }
 }

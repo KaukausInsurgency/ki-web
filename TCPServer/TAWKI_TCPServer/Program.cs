@@ -73,6 +73,7 @@ namespace TAWKI_TCPServer
             {
                 test_redis_connection = ConnectionMultiplexer.Connect(cr.RedisDBConnect);
                 Console.WriteLine("Successful Connection to Redis Database");
+                Console.WriteLine("Redis Environment: " + cr.RedisEnvironmentKey);
             }
             catch (Exception ex)
             {

@@ -23,6 +23,9 @@ namespace KIWebApp
             bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
                 "~/Scripts/jquery.signalR-2.2.2.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/mustachejs").Include(
+                "~/Scripts/mustache.js/mustache.js"));
+
 
 
 

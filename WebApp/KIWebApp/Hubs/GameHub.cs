@@ -42,7 +42,7 @@ namespace KIWebApp.Hubs
                 {
                     logger.Info("Subscribe (serverID: " + serverID + ") - starting new Game Background Thread");
                     // Spin up a new background thread to poll the database for this game
-                    GLOBAL.BackgroundThreadWorkers.Add(serverID, new Asyncs.GameThreadWorker(serverID));
+                    GLOBAL.BackgroundThreadWorkers.Add(serverID, new Asyncs.GameThreadWorker(serverID, new WebAppSettings()));
                     GLOBAL.SignalRGameSessions.Add(serverID, 1);// add group and set its client number to 1
                 }
             }
@@ -62,7 +62,6 @@ namespace KIWebApp.Hubs
                     if (count == 1)//if group contains only 1client
                     {
                         logger.Info("Unsubscribe called (serverID: " + serverID + ") - Stopping Game Background Thread");
-                        GLOBAL.BackgroundThreadWorkers[serverID].Pause();
                         GLOBAL.BackgroundThreadWorkers[serverID].Dispose();
                         GLOBAL.BackgroundThreadWorkers.Remove(serverID);
                         GLOBAL.SignalRGameSessions.Remove(serverID);

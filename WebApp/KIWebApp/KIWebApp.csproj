@@ -406,6 +406,8 @@
     <Content Include="Content\css\vendor\tooltipster\tooltipster.bundle.min.css" />
     <Content Include="Content\css\vendor\tooltipster\tooltipster.main.css" />
     <Content Include="Content\css\vendor\tooltipster\tooltipster.main.min.css" />
+    <Content Include="Scripts\mustache.js\mustache.js" />
+    <Content Include="Scripts\mustache.js\mustache.min.js" />
     <Content Include="Scripts\shared\navigation.js" />
     <Content Include="Scripts\shared\shared.js" />
     <Content Include="Scripts\tooltipster\plugins\tooltipster\SVG\tooltipster-SVG.js" />
@@ -415,6 +417,7 @@
     <Content Include="Scripts\tooltipster\tooltipster.main.js" />
     <Content Include="Scripts\tooltipster\tooltipster.main.min.js" />
     <Content Include="Scripts\views\game\chat.js" />
+    <Content Include="Scripts\views\game\game-hub.js" />
     <Content Include="Scripts\views\game\game-navigation.js" />
     <Content Include="Scripts\views\game\gmaps.js" />
     <Content Include="Scripts\views\game\iconBuilder.js" />
@@ -422,6 +425,9 @@
     <Content Include="Scripts\views\game\notification.js" />
     <Content Include="Scripts\views\search\init.js" />
     <Content Include="Scripts\views\server\init.js" />
+    <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.html" />
+    <Content Include="Views\Servers\Templates\_ChatMessage.html" />
+    <Content Include="Views\Servers\Templates\_SideMissionInfoWindow.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

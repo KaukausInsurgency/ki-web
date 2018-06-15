@@ -61,8 +61,9 @@ namespace TAWKI_TCPServer.Implementations
                 // Verify the request format is valid
                 if (j["Action"] != null && j["BulkQuery"] != null && j["Data"] != null && j["Destination"] != null)
                 {
+                    string action = j["Action"];
                     // Simply ignore/drop the request if we need to throttle the connection
-                    if (!Throttler.ShouldThrottle(j["Action"]))
+                    if (!Throttler.ShouldThrottle(action))
                     {
                         ProtocolRequest request = Utility.CreateRequest(ref j, ((SocketClient)(sender)).Address);
                         IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, ProcessMessageStrategyFactory.GetSource(request.Destination));

@@ -19,6 +19,7 @@ namespace Tests.Mocks
         private List<string> whitelist;
         private List<string> html;
         private Dictionary<string, string> rediskeys;
+        private string redisEnvironmentKey;
 
         public MockConfigReader()
         {
@@ -32,6 +33,7 @@ namespace Tests.Mocks
             html = new List<string>();
             rediskeys = new Dictionary<string, string>();
             success = true;
+            redisEnvironmentKey = "UT";
         }
 
         public MockConfigReader(List<string> html, Dictionary<string,string> rediskeys)
@@ -46,6 +48,7 @@ namespace Tests.Mocks
             this.html = html;
             this.rediskeys = rediskeys;
             success = true;
+            redisEnvironmentKey = "UT";
         }
 
         int IConfigReader.PortNumber => port;
@@ -58,5 +61,6 @@ namespace Tests.Mocks
         List<string> IConfigReader.WhiteList => whitelist;
         List<string> IConfigReader.SupportedHTML => html;
         Dictionary<string, string> IConfigReader.RedisActionKeys => rediskeys;
+        string IConfigReader.RedisEnvironmentKey => redisEnvironmentKey;
     }
 }

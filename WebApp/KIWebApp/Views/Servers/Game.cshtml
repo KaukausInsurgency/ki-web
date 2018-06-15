@@ -116,6 +116,7 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/signalr")
+    @Scripts.Render("~/bundles/mustachejs")
     <script src="~/signalr/hubs"></script>
 
     <script type="text/javascript">
@@ -139,5 +140,5 @@
         c.add('Jojo', 0, 'Some scripted text');
         n.add('4:33 PM', 2, 'Scripted mission notification');
     </script>
-
+    <script src="~/Scripts/views/game/game-hub.js"></script>
 }

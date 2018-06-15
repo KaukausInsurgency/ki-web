@@ -128,12 +128,16 @@ namespace TAWKI_TCPServer.Implementations
             }
 
             string rediskey = Config.RedisActionKeys[request.Action];
-            string k = rediskey + ':' + pair.Key;
+            string k = Config.RedisEnvironmentKey + ":" + pair.Key + ":" + rediskey;
             string jdatastring = Newtonsoft.Json.JsonConvert.SerializeObject(pair.Value);
             IDatabase db = Connection.GetDatabase();
             
             long subs = db.Publish(k, jdatastring, CommandFlags.None);
             Logger.Log("Published data to channel: '" + k + "' - Subscribers listening: " + subs);
+
+            db.StringSet(k, jdatastring);
+            Logger.Log("Set data into key '" + k + "'");
+
             return new List<object> { k };
 
         }

@@ -1,6 +1,7 @@
 <Config>
 	<DBConnect>Server=127.0.0.1; Database=kaukasusinsurgency-api; Uid=KITestAcc; Pwd=test;</DBConnect>
 	<RedisDBConnect>localhost:16379</RedisDBConnect>
+	<RedisEnvironmentKey>KI</RedisEnvironmentKey>
 	<RedisActionKeys>
 		<Pair Action="AddOrUpdateCapturePoint" RedisKey="CP" />
 		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" />
