@@ -16,14 +16,5 @@ namespace KIWebApp.Models
         public string Lives { get; set; }
 
         public OnlinePlayerModel() { }
-
-        public OnlinePlayerModel(DataRow dr)
-        {
-            Lives = "";
-            if (dr["Lives"] != DBNull.Value && dr["Lives"] != null)
-            {
-                Lives = dr.Field<int>("Lives").ToString();
-            }
-        }
     }
 }

@@ -20,26 +20,9 @@ namespace KIWebApp.Models
         public int BlueUnits { get; set; }
         public int RedUnits { get; set; }
         public int MaxCapacity { get; set; }
-        public string Image { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         public CapturePointModel() { }
-
-        public CapturePointModel(DataRow dr)
-        {
-            /*
-            ID = dr.Field<int>("CapturePointID");
-            Type = dr.Field<string>("Type");
-            Name = dr.Field<string>("Name");
-            LatLong = dr.Field<string>("LatLong");
-            MGRS = dr.Field<string>("MGRS");
-            MaxCapacity = dr.Field<int>("MaxCapacity");
-            Status = dr.Field<string>("Status");
-            StatusChanged = dr.Field<ulong>("StatusChanged") == 1;  // for some reason MySql treats BIT(1) as ulong
-            BlueUnits = dr.Field<int>("BlueUnits");
-            RedUnits = dr.Field<int>("RedUnits");
-            Image = dr.Field<string>("ImagePath");
-            Text = SqlUtility.GetValueOrDefault(ref dr, "Text", "");
-            */
-        }
     }
 }
