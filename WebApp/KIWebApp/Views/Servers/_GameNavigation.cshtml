@@ -14,7 +14,7 @@
                 <i class="fas fa-address-book game-navicon"></i>Players
             </span>
         </div>
-        @Html.Partial("_OnlinePlayers", Model)
+        @Html.Partial("_OnlinePlayers", Model.OnlinePlayers)
     </div>
     @foreach (var item in @Model.CustomMenuItems)
     {

@@ -10,8 +10,8 @@ namespace KIWebApp.Models
     public class SideMissionModel
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Desc { get; set; }
+        public string TaskName { get; set; }
+        public string TaskDesc { get; set; }
         public string IconClass { get; set; }
         public string Status { get; set; }
         public bool StatusChanged { get; set; }

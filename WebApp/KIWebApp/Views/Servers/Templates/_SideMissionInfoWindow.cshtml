@@ -1,8 +1,17 @@
-﻿<div>
-    <strong>{{Name}}</strong><br />
-    Time Remaining: {{TimeRemaining}}<br />
-    Status: {{Status}}<br />
-    <strong>Lat Long: {{LatLong}}</strong><br />
-    <strong>MGRS: {{MGRS}}</strong><br /><br />
-    {{Desc}}
+﻿<div id="InfoWindowTemplateSM">
+    <div class="tooltip-title">Mission</div>
+    <div class="tooltip-content">
+        Name:<span class="tooltip-right-text">{{TaskName}}</span>
+        <br />
+        Time Remaining:<span class="tooltip-right-text">{{TimeRemaining}}</span>
+        <br />
+        Status:<span class="tooltip-right-text">{{Status}}</span>
+        <br />
+        Lat Long:<span class="tooltip-right-text">{{LatLong}}</span>
+        <br />
+        MGRS:<span class="tooltip-right-text">{{MGRS}}</span>
+        <br />
+        <br />
+        {{{TaskDesc}}}
+    </div>
 </div>

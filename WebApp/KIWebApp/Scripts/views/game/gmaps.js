@@ -262,143 +262,74 @@ function initGoogleMap() {
 			}
 		]
     };
-
-    function bindInfoWindow(marker, map, infowindow, html) {
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent(html);
-            infowindow.open(map, marker);
-        });
-    } 
 	
     map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-    DEPOTS = [];
-    CAPTUREPOINTS = [];
-    SIDEMISSIONS = [];
-
-    CPTemplate = document.getElementById('InfoWindowTemplateCP').innerHTML;
-    DepotTemplate = document.getElementById('InfoWindowTemplateDepot').innerHTML;
 
     $(MODEL.Depots).each(function (i) {
-        var id = 'Depot-' + this.ID;
-        var marker = new customMarker(
+        LiveMap.DEPOTS.push(new customMarker(
             new google.maps.LatLng(this.Latitude, this.Longitude),
             map,
             {
-                marker_id: id,
-                htmlContent: iconBuilder.depot(this.Status),
-                tooltip: 'Depot'
+                marker_id: 'Depot-' + this.ID,
+                htmlContent: iconBuilder.depot(this.Status)
             }
-        );
-        DEPOTS.push(marker);      
+        ));  
     });
-    
-    
 
     $(MODEL.CapturePoints).each(function (i) {
-        var marker = new customMarker(
+        LiveMap.CAPTUREPOINTS.push(new customMarker(
             new google.maps.LatLng(this.Latitude, this.Longitude),
             map,
             {
                 marker_id: 'CP-' + this.ID,
-                htmlContent: iconBuilder.create(this.Status, this.Type),
-                tooltip: 'Capture Point'
+                htmlContent: iconBuilder.create(this.Status, this.Type)
             }
-        );
-        CAPTUREPOINTS.push(marker);
+        ));
     });
 
     $(MODEL.Missions).each(function (i) {
-        SIDEMISSIONS.push(new customMarker(
+        LiveMap.SIDEMISSIONS.push(new customMarker(
             new google.maps.LatLng(this.Latitude, this.Longitude),
             map,
             {
                 marker_id: 'SM-' + this.ID,
-                htmlContent: iconBuilder.mission(this.IconClass),
-                tooltip: 'Capture Point'
+                htmlContent: iconBuilder.mission(this.IconClass)
             }
         ));
     });
 
 
 
-    // splits a string and converts it into a json object
-    function SplitStringIntoArrayTable(str, separator) {
-        var tablearray = [];
-        var rows = str.split("\n");
-        for (var i = 0; i < rows.length; i++) {
-            tablearray.push(rows[i].split(separator));
-        }
 
-        return tablearray;
-    }
+    google.maps.event.addListenerOnce(map, 'tilesloaded', postInitGoogleMap);
 
-    function GenerateTableHTMLString(arraytable) {
-        var table = '<table class="depot-resource-table">';
-        var tr = "";
-        for (var i = 0; i < arraytable.length; i++) {
-            if (i === 0) {
-                tr += '<thead><tr>';
-                for (var j = 0; j < arraytable[i].length; j++) {
-                    tr += '<td class="depot-resource-row">' + arraytable[i][j] + '</td>';
-                }
-                tr += '</tr></thead><tbody>';
-            }
-            else {
-                tr += '<tr>';
-                for (j = 0; j < arraytable[i].length; j++) {
-                    tr += '<td class="depot-resource-row">' + arraytable[i][j] + '</td>';
-                }
-                tr += '</tr>';
-            }
-        }
-
-        table += tr + "</tbody></table>";
-        return table;
-    }
-
-
-
-
-
-
-
-
-
-
-
-    google.maps.event.addListenerOnce(map, 'tilesloaded', fixMyPageOnce);
-
-    function fixMyPageOnce() {
+    function postInitGoogleMap() {
         $(MODEL.Depots).each(function (i) {
-            var id = 'Depot-' + this.ID;
-            var $dataSel = '[data-marker_id="' + id + '"]';
+            var $dataSel = LiveMap.createMarkerSelector('Depot', this.ID);
             KI.tooltipster($dataSel);
 
-            var arraytable = SplitStringIntoArrayTable(this.ResourceString, "|");
-            this.ResourceHtml = GenerateTableHTMLString(arraytable);
+            var arraytable = LiveMap.splitStringIntoArrayTable(this.ResourceString, "\n", "|");
+            this.ResourceHtml = LiveMap.generateResourceTable(arraytable);
             if (this.Capacity === -1 || this.Capacity === "-1")
             {
                 this.Capacity = 'infinite';
                 this.CurrentCapacity = 'infinite';
             }
-                
 
-            var instances = $.tooltipster.instances($dataSel);
-            var DepotModel = this;
-            $.each(instances, function (i, instance) {
-                instance.content(Mustache.render(DepotTemplate, DepotModel));
-            });
+            LiveMap.updateTooltipContent($dataSel, LiveMap.DepotTemplate, this);
         });
 
         $(MODEL.CapturePoints).each(function (i) {
-            var id = 'CP-' + this.ID;
-            var $dataSel = '[data-marker_id="' + id + '"]';
+            var $dataSel = LiveMap.createMarkerSelector('CP', this.ID);
             KI.tooltipster($dataSel);
-            var instances = $.tooltipster.instances($dataSel);
-            var CPModel = this;
-            $.each(instances, function (i, instance) {
-                instance.content(Mustache.render(CPTemplate, CPModel));
-            });
+            LiveMap.updateTooltipContent($dataSel, LiveMap.CPTemplate, this);
+        });
+
+        $(MODEL.Missions).each(function (i) {
+            var $dataSel = LiveMap.createMarkerSelector('SM', this.ID);
+            this.TimeRemaining = LiveMap.convertSecondsToTimeString(this.TimeRemaining);
+            KI.tooltipster($dataSel);
+            LiveMap.updateTooltipContent($dataSel, LiveMap.SMTemplate, this);
         });
         
     }

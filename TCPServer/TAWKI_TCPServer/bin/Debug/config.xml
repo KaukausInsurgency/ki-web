@@ -7,6 +7,7 @@
 		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" />
 		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" />
 		<Pair Action="AddOrUpdateChat" RedisKey="Chat" />
+		<Pair Action="AddOrUpdateOnlinePlayers" RedisKey="OP" />
 	</RedisActionKeys>
 	<SupportedHTML>p,h1,h2,h3,h4,h5,h6,br,b,strong,i,em,mark,small,del,ins,sub,sup</SupportedHTML>
 	<Port>9983</Port>

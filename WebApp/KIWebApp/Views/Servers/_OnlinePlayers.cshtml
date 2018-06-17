@@ -1,4 +1,4 @@
-﻿@model KIWebApp.Models.GameModel
+﻿@model List<KIWebApp.Models.OnlinePlayerModel>
 @{ Layout = null; }
 
 <div class="game-flyout-content">
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in @Model.OnlinePlayers)
+                @foreach (var item in @Model)
                 {
                     string factionClass = "online-players-neutral";
                     string faction = "Neutral";
@@ -39,7 +39,7 @@
                         factionClass = "online-players-blufor";
                         faction = "Blufor";
                     }
-                     <tr>
+                     <tr data-UCID="@item.UCID">
                         <td>
                             @if (!String.IsNullOrWhiteSpace(item.Role))
                             {

@@ -298,7 +298,8 @@ table.online-players > tbody > tr:nth-child(even) td {
   table.online-players > caption {
     font-size: 0.8em; } }
 .tooltipster-box {
-  min-width: 220px; }
+  min-width: 220px;
+  max-width: 250px; }
 
 .tooltip-title {
   display: block;

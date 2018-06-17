@@ -116,6 +116,7 @@
         @Html.Partial("~/Views/Servers/Templates/_DepotInfoWindow.cshtml");
         @Html.Partial("~/Views/Servers/Templates/_ChatMessage.cshtml");
         @Html.Partial("~/Views/Servers/Templates/_SideMissionInfoWindow.cshtml");
+        @Html.Partial("~/Views/Servers/Templates/_OnlinePlayersRow.cshtml");
     </div>
 </div>
 
@@ -132,6 +133,7 @@
 }
 
 @section postscripts {
+    <script src="~/Scripts/views/game/shared.js"></script>
     <script src="~/Scripts/views/game/game-navigation.js"></script>
     <script src="~/Scripts/views/game/chat.js"></script>
     <script src="~/Scripts/views/game/notification.js"></script>

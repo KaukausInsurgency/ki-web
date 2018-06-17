@@ -1,0 +1,22 @@
+﻿<div>
+    <table>
+        <thead>
+            <tr></tr>
+        </thead>
+        <!-- need to set the ID here, because dom cant render tr without the remaining table element structure-->
+        <tbody id="RowTemplateOP">
+            <tr data-UCID="{{UCID}}" class="js-updated-record">
+                <td>
+                    {{#IsRole}}
+                    <i class="fas fa-fighter-jet"></i>
+                    {{/IsRole}}
+                    {{Role}}
+                </td>
+                <td class="{{FactionClass}}">{{Name}}</td>
+                <td class="{{FactionClass}}">{{Faction}}</td>
+                <td>{{Lives}}</td>
+                <td>{{Ping}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -5,6 +5,8 @@
     var $Chat = $('#ingame-chat').kiChat();
     var $ChatNotif = $('#ingame-chat').kiNotif();
 
+    var $OPTable = $('#players-table tbody');
+
     GameHubProxy.client.UpdateCapturePoints = function (modelObj) {
         console.log("UpdateCapturePoints: " + JSON.stringify(modelObj));
     }
@@ -24,7 +26,39 @@
     }
 
     GameHubProxy.client.UpdateOnlinePlayers = function (modelObj) {
-        console.log("UpdateOnlinePlayers: " + JSON.stringify(modelObj));
+        $(modelObj).each(function (i) {
+            var sel = '[data-UCID="' + this.UCID + '"]';
+            var $tr = $(sel);
+            this.IsRole = !LiveMap.isStringNullOrWhiteSpace(this.Role);
+
+            var factionClass = "online-players-neutral";
+            var faction = "Neutral";
+            if (this.Side == 1) {
+                factionClass = "online-players-redfor";
+                faction = "Redfor";
+            }
+            else if (this.Side == 2) {
+                factionClass = "online-players-blufor";
+                faction = "Blufor";
+            }
+
+            this.Faction = faction;
+            this.FactionClass = factionClass;
+
+            // create the tr row
+            if ($tr.length === 0) {
+                $OPTable.append(Mustache.render(LiveMap.OPTemplate, this));
+            }
+            else {
+                $tr.replaceWith(Mustache.render(LiveMap.OPTemplate, this));
+            }         
+        });
+
+        // remove all rows that have not been marked with the .js-updated-record class
+        $('[data-UCID]:not(.js-updated-record)').remove();
+
+        // remove this class from all rows
+        $('[data-UCID]').removeClass('js-updated-record');
     }
 
     GameHubProxy.client.UpdateServer = function (modelObj) {

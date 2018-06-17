@@ -308,6 +308,7 @@
     <Content Include="Content\sass\views\game\_dashboard.scss" />
     <Content Include="Content\sass\views\game\live-map\_tooltip.scss" />
     <Content Include="Content\sass\views\game\live-map\_depot-resources.scss" />
+    <Content Include="Content\sass\vendor-extensions\_googlemaps.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
@@ -425,6 +426,7 @@
     <Content Include="Scripts\views\game\iconBuilder.js" />
     <Content Include="Scripts\views\game\live-map.js" />
     <Content Include="Scripts\views\game\notification.js" />
+    <Content Include="Scripts\views\game\shared.js" />
     <Content Include="Scripts\views\search\init.js" />
     <Content Include="Scripts\views\server\init.js" />
     <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.cshtml" />
@@ -461,6 +463,7 @@
     <Content Include="Views\Servers\Templates\_SideMissionInfoWindow.cshtml" />
     <Content Include="Views\Servers\Templates\_ChatMessage.cshtml" />
     <Content Include="Views\Servers\Templates\_DepotInfoWindow.cshtml" />
+    <Content Include="Views\Servers\Templates\_OnlinePlayersRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
