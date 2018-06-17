@@ -306,6 +306,8 @@
     <Content Include="Content\css\views\search\search.css.map" />
     <Content Include="Content\css\views\home\home.css.map" />
     <Content Include="Content\sass\views\game\_dashboard.scss" />
+    <Content Include="Content\sass\views\game\live-map\_tooltip.scss" />
+    <Content Include="Content\sass\views\game\live-map\_depot-resources.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
@@ -425,9 +427,7 @@
     <Content Include="Scripts\views\game\notification.js" />
     <Content Include="Scripts\views\search\init.js" />
     <Content Include="Scripts\views\server\init.js" />
-    <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.html" />
-    <Content Include="Views\Servers\Templates\_ChatMessage.html" />
-    <Content Include="Views\Servers\Templates\_SideMissionInfoWindow.html" />
+    <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -458,6 +458,9 @@
     <Content Include="Views\Servers\_Notifications.cshtml" />
     <Content Include="Views\Servers\_Chat.cshtml" />
     <Content Include="Views\Servers\_GameNavigation.cshtml" />
+    <Content Include="Views\Servers\Templates\_SideMissionInfoWindow.cshtml" />
+    <Content Include="Views\Servers\Templates\_ChatMessage.cshtml" />
+    <Content Include="Views\Servers\Templates\_DepotInfoWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

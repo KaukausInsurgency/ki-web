@@ -9,7 +9,7 @@ namespace KIWebApp.Classes
     {
         public static string BuildRedisKey<T>(string EnvironmentPrefix, string Key, T Id)
         {
-            return EnvironmentPrefix + ":" + Key + ":" + Id.ToString();
+            return EnvironmentPrefix + ":" + Id.ToString() + ":" + Key;
         }
     }
 }

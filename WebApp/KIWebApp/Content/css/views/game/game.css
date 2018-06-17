@@ -180,6 +180,12 @@
 .neutral-bg-icon {
   color: #4e4e4e; }
 
+.contested-bg-icon {
+  color: #9b9300; }
+
+.mission-bg-icon {
+  color: #599d15; }
+
 .icon-color {
   color: white; }
 
@@ -291,6 +297,47 @@ table.online-players > tbody > tr:nth-child(even) td {
 
   table.online-players > caption {
     font-size: 0.8em; } }
+.tooltipster-box {
+  min-width: 220px; }
+
+.tooltip-title {
+  display: block;
+  background: #4e4e4e;
+  background: -webkit-linear-gradient(-90deg, #4e4e4e, #373737);
+  background: -moz-linear-gradient(180deg, #4e4e4e, #373737);
+  background: linear-gradient(180deg, #4e4e4e, #373737);
+  color: #CACAC4;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1em;
+  line-height: 2em;
+  margin-top: -6px;
+  margin-left: -14px;
+  margin-right: -14px; }
+
+.tooltip-content {
+  padding-top: 5px;
+  font-size: 0.8em;
+  color: #ebebeb; }
+
+.tooltip-right-text {
+  float: right; }
+  .tooltip-right-text:after {
+    clear: right; }
+
+.depot-resource-table {
+  table-layout: fixed;
+  width: 200px; }
+
+table.depot-resource-table > thead > tr > td {
+  padding-bottom: 5px; }
+
+.depot-resource-row:nth-child(1) {
+  width: 80%; }
+
+.depot-resource-row:nth-child(2) {
+  width: 20%; }
+
 .dashboard-row {
   margin-left: 1em;
   margin-right: 1em; }

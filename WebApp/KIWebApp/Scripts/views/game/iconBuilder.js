@@ -12,13 +12,18 @@ iconBuilder = (function () {
         switch (side) {
             case 1:
                 return 'redfor-bg-icon';
-                break;
             case 2:
                 return 'blufor-bg-icon';
-                break;
+            case "Red":
+                return 'redfor-bg-icon';
+            case "Blue":
+                return 'blufor-bg-icon';
+            case "Mission":
+                return 'mission-bg-icon';
+            case "Contested":
+                return 'contested-bg-icon';
             default:
                 return 'neutral-bg-icon';
-                break;
         }
     }
 
@@ -30,8 +35,9 @@ iconBuilder = (function () {
         return iconClone;
     }
 
-    function create(side, type) {
+    function create(side, type, iconClass) {
         var icon = createIconBase(side);
+
         switch (String(type)) {
             case "AIRPORT":
                 icon.append(iconAirport);
@@ -45,6 +51,11 @@ iconBuilder = (function () {
             case "FARP":
                 icon.append(iconFARP);
                 break;
+            case "MISSION":
+                if (typeof iconClass !== "undefined")
+                {
+                    icon.append('<i class="' + iconClass + ' fa-stack-1x"></i>');    // side is actually the iconClass used by mission    
+                }                     
             default:
                 break;
         }
@@ -65,6 +76,9 @@ iconBuilder = (function () {
         },
         farp: function (side) {
             return create(side, "FARP");
+        },
+        mission: function (iconClass) {
+            return create("Mission", "MISSION", iconClass);
         }
     };
 })();

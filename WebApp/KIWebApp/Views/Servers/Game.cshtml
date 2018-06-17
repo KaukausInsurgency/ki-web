@@ -111,12 +111,19 @@
         </div>
     </section>
 
+    <div style="display: none">
+        @Html.Partial("~/Views/Servers/Templates/_CapturePointInfoWindow.cshtml");
+        @Html.Partial("~/Views/Servers/Templates/_DepotInfoWindow.cshtml");
+        @Html.Partial("~/Views/Servers/Templates/_ChatMessage.cshtml");
+        @Html.Partial("~/Views/Servers/Templates/_SideMissionInfoWindow.cshtml");
+    </div>
 </div>
 
 
 @section scripts {
     @Scripts.Render("~/bundles/signalr")
     @Scripts.Render("~/bundles/mustachejs")
+    @Scripts.Render("~/bundles/tooltipster")
     <script src="~/signalr/hubs"></script>
 
     <script type="text/javascript">

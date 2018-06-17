@@ -1,0 +1,16 @@
+﻿.depot-resource-table {
+    table-layout: fixed;
+    width: 200px;
+}
+
+table.depot-resource-table > thead > tr > td {
+    padding-bottom: 5px;
+}
+
+.depot-resource-row:nth-child(1) {
+    width: 80%;
+}
+
+.depot-resource-row:nth-child(2) {
+    width: 20%;
+}

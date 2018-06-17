@@ -10,6 +10,14 @@
     color: palette(game, 'neutral');
 }
 
+.contested-bg-icon {
+    color: palette(game, 'contested');
+}
+
+.mission-bg-icon {
+    color: palette(game, 'mission');
+}
+
 .icon-color {
     color: white;   // this color should never be used
 }

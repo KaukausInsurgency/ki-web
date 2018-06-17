@@ -3,6 +3,9 @@
         tooltipster: function(sel) {
             $(sel).tooltipster({
                 theme: 'tooltipster-borderless',
+                contentAsHTML: true,
+                trigger: 'click',
+                contentCloning: true,
                 functionPosition: function(instance, helper, position) {
                     var leftOffset = $('.prop-vnav').css('--min-width').trim().replace('px','');
                     position.coord.left = position.coord.left - leftOffset;
