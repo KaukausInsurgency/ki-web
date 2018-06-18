@@ -41,7 +41,12 @@ function initGoogleMap() {
 
 			var panes = this.getPanes();
 			panes.overlayImage.appendChild(div);
-		}
+        }
+        else {
+            // update the values passed in from the creation of the custom marker
+            div.innerHTML = this.args.htmlContent;
+            div.style.color = this.args.color;
+        }
 
 		var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
 

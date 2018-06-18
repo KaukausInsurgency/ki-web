@@ -48,5 +48,13 @@
             };
             head.appendChild(script);
         },
+
+        setDivText: function (sel, text) {
+            $(sel).contents().filter(function () {
+                return this.nodeType == 3
+            }).each(function () {
+                this.textContent = text;
+            });
+        }
     } 
 })(jQuery);

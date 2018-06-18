@@ -23,19 +23,19 @@
         <div class="info-layout dashboard-layout">
             <h2>Server</h2>
             <div class="progress-bar-layout">
-                <div class="progress-bar-title">Time Remaining: @Model.RestartTimeString</div>
+                <div id="RestartTimeString" class="progress-bar-title">Time Remaining: @Model.RestartTimeString</div>
                 <div class="progress-bar">
-                    <span style="width: @(((14400 - Model.RestartTime) / 14400.0) * 100)%"></span>
+                    <span id="RestartTimeProgress" style="width: @(((14400 - Model.RestartTime) / 14400.0) * 100)%"></span>
                 </div>
             </div>
 
             <div class="dashboard-row">
                 <div class="dash-columns-two">
-                    <div class="dash-header dash-header-large-font">@Model.Status</div>
+                    <div id="Status" class="dash-header dash-header-large-font">@Model.Status</div>
                     <div class="dash-header dash-header-small-font">Status</div>
                 </div>
                 <div class="dash-columns-two">
-                    <div class="dash-header dash-header-medium-font">@Model.Map</div>
+                    <div id="Map" class="dash-header dash-header-medium-font">@Model.Map</div>
                     <div class="dash-header dash-header-small-font">Map</div>
                 </div>
             </div>
@@ -54,19 +54,19 @@
             </div>
             <div class="dashboard-row">
                 <div class="dash-columns-four">
-                    <div class="dash-header dash-header-large-font">@Model.OnlinePlayersCount</div>
+                    <div id="OnlinePlayersCount" class="dash-header dash-header-large-font">@Model.OnlinePlayersCount</div>
                     <div class="dash-header dash-header-small-font">Online</div>
                 </div>
                 <div class="dash-columns-four">
-                    <div class="dash-header dash-header-large-font">@Model.RedforPlayersCount</div>
+                    <div id="RedforPlayersCount" class="dash-header dash-header-large-font">@Model.RedforPlayersCount</div>
                     <div class="dash-header dash-header-small-font">Red</div>
                 </div>
                 <div class="dash-columns-four">
-                    <div class="dash-header dash-header-large-font">@Model.BluforPlayersCount</div>
+                    <div id="BlueforPlayersCount" class="dash-header dash-header-large-font">@Model.BluforPlayersCount</div>
                     <div class="dash-header dash-header-small-font">Blue</div>
                 </div>
                 <div class="dash-columns-four">
-                    <div class="dash-header dash-header-large-font">@Model.NeutralPlayersCount</div>
+                    <div id="NeutralPlayersCount" class="dash-header dash-header-large-font">@Model.NeutralPlayersCount</div>
                     <div class="dash-header dash-header-small-font">Spectators</div>
                 </div>
             </div>
@@ -76,11 +76,11 @@
                     <div class="dash-header dash-header-small-font">Lives Configured</div>
                 </div>
                 <div class="dash-columns-three">
-                    <div class="dash-header dash-header-large-font">@Model.Depots.Count</div>
+                    <div id="Depots" class="dash-header dash-header-large-font">@Model.Depots.Count</div>
                     <div class="dash-header dash-header-small-font">Depots</div>
                 </div>
                 <div class="dash-columns-three">
-                    <div class="dash-header dash-header-large-font">@Model.CapturePoints.Count</div>
+                    <div id="CapturePoints" class="dash-header dash-header-large-font">@Model.CapturePoints.Count</div>
                     <div class="dash-header dash-header-small-font">Capture Points</div>
                 </div>
             </div>
