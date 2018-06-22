@@ -17,14 +17,36 @@
             {
                 mrk.args.htmlContent = iconBuilder.create(this.Status, this.Type)
                 mrk.draw();  
-            }
 
-            LiveMap.updateTooltipContent($dataSel, LiveMap.CPTemplate, this);
+                LiveMap.updateTooltipContent($dataSel, LiveMap.CPTemplate, this);
+            }
+            // there's techically a bug here as we're not checking to see if the server was restarted and whether any of the markers have been removed or newly added
+            // later we should add support to refresh all the markers on the map          
         });
     }
 
     GameHubProxy.client.UpdateDepots = function (modelObj) {
-        console.log("UpdateDepots: " + JSON.stringify(modelObj));
+        $(modelObj).each(function (i) {
+            var $dataSel = LiveMap.createMarkerSelector('Depot', this.ID);
+            var id = 'Depot-' + this.ID;
+            var mrk = LiveMap.DEPOTS.find(x => x.args.marker_id === id);
+
+            if (typeof mrk !== 'undefined') {
+                mrk.args.htmlContent = iconBuilder.depot(this.Status)
+                mrk.draw();
+
+                var arraytable = LiveMap.splitStringIntoArrayTable(this.ResourceString, "\n", "|");
+                this.ResourceHtml = LiveMap.generateResourceTable(arraytable);
+                if (this.Capacity === -1 || this.Capacity === "-1") {
+                    this.Capacity = 'infinite';
+                    this.CurrentCapacity = 'infinite';
+                }
+
+                LiveMap.updateTooltipContent($dataSel, LiveMap.DepotTemplate, this);
+            }
+            // there's techically a bug here as we're not checking to see if the server was restarted and whether any of the markers have been removed or newly added
+            // later we should add support to refresh all the markers on the map        
+        });
     }
 
     GameHubProxy.client.UpdateMissions = function (modelObj) {
@@ -53,12 +75,11 @@
                 KI.tooltipster($dataSel);
             }
 
-
+            // delete expired missions after 30 seconds
             if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
-
-                // TODO - this delete is not 100% functional yet
-                // delete expired missions after 30 seconds
+                
                 setTimeout(function () {
+                    // need to get the new index, as its possible the array might have been resized before this call
                     var removeIndex = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
                     var removedMarkers = [];
                     if (removeIndex > -1) {
