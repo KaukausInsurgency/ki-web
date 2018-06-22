@@ -1,5 +1,7 @@
+var customMarker; // global type
+
 function initGoogleMap() {
-	function customMarker(latlng, map, args) {
+	customMarker = function (latlng, map, args) {
 		this.latlng = latlng;
 		this.args = args;
 		this.setMap(map);

@@ -28,32 +28,64 @@
     }
 
     GameHubProxy.client.UpdateMissions = function (modelObj) {
-        $(modelObj).each(function (i) {
-            var $dataSel = LiveMap.createMarkerSelector('SM', this.ID);
-            var id = 'SM-' + this.ID;
+        $(modelObj).each(function (i) {   
             var timeLeftInSeconds = this.TimeRemaining;
             this.TimeRemaining = LiveMap.convertSecondsToTimeString(this.TimeRemaining);
 
-            if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
-                var mrk = LiveMap.SIDEMISSIONS.find(x => x.args.marker_id === id);
-                var index = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
-                // TODO - this delete is not 100% functional yet
-                // delete expired missions after 2 minutes
-                setTimeout(function () {
-                    if (index > -1) {
-                        LiveMap.SIDEMISSIONS.splice(index, 1);
-                    }
-                    mrk.setMap(null);
-                    delete mrk;
-                }, 3000);
-            }        
-            // TODO - Create new marker and add to list if does not exist in DOM
-            // TODO - when markers are initialized first time on page load, call this expire function too
+            var $dataSel = LiveMap.createMarkerSelector('SM', this.ID);      
+            var id = 'SM-' + this.ID;
+            var index = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
 
-            LiveMap.updateTooltipContent($dataSel, LiveMap.CPTemplate, this);
+            // new marker - create and initialize
+            if (index < 0) {
+                var mrk = new customMarker(
+                    new google.maps.LatLng(this.Latitude, this.Longitude),
+                    map,
+                    {
+                        marker_id: 'SM-' + this.ID,
+                        htmlContent: iconBuilder.mission(this.IconClass)
+                    }
+                );
+
+                mrk.draw();
+                LiveMap.SIDEMISSIONS.push(mrk);
+
+                KI.tooltipster($dataSel);
+            }
+
+
+            if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
+
+                // TODO - this delete is not 100% functional yet
+                // delete expired missions after 30 seconds
+                setTimeout(function () {
+                    var removeIndex = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
+                    var removedMarkers = [];
+                    if (removeIndex > -1) {
+                        removedMarkers = LiveMap.SIDEMISSIONS.splice(removeIndex, 1);
+                    }
+                    removedMarkers[0].setMap(null);
+                    delete removedMarkers[0];
+                }, 30000);
+            }        
+
+            LiveMap.updateTooltipContent($dataSel, LiveMap.SMTemplate, this);
+
+            $($dataSel).addClass('js-updated-marker');
         });
 
-        
+        // remove all rows that have not been marked as updated, and are orphaned markers
+        $('[data-marker_id^="SM-"]:not(.js-updated-marker)').each(function (i) {
+            var index = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === $(this).data('marker_id'));
+            if (index > -1) {
+                var removedMarkers = LiveMap.SIDEMISSIONS.splice(index, 1);
+                removedMarkers[0].setMap(null);
+                delete removedMarkers[0];  
+            }                  
+        });
+
+        // remove this class from all rows
+        $('[data-marker_id]').removeClass('js-updated-marker');   
     }
 
     GameHubProxy.client.UpdateChat = function (modelObj) {
