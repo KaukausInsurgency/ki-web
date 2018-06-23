@@ -3,6 +3,7 @@
         CPTemplate: document.getElementById('InfoWindowTemplateCP').innerHTML,
         DepotTemplate: document.getElementById('InfoWindowTemplateDepot').innerHTML,
         SMTemplate: document.getElementById('InfoWindowTemplateSM').innerHTML,
+        SMModalTemplate: document.getElementById('ModalTemplateSM').innerHTML,
         OPTemplate: document.getElementById('RowTemplateOP').innerHTML,
 
         createMarkerSelector: function (type, id) {
@@ -58,6 +59,37 @@
             $.each(instances, function (i, instance) {
                 instance.content(Mustache.render(mustacheTemplate, model));
             });
+        },
+
+        createModal: function (options, mustacheTemplate, model) {
+            $("#modal").iziModal({
+                title: options.title,
+                icon: options.icon,
+                iconText: options.iconText,
+                iconColor: options.iconColor,
+                width: options.width,
+                headerColor: '#e36209',      
+                background: '#474747'
+            });
+
+            $("#modal").iziModal('setContent', {
+                content: Mustache.render(mustacheTemplate, model),
+                default: true
+            });
+
+            $('#modal').iziModal('open', {
+                transition: 'fadeInDown'
+            });
+        },
+
+        testExecute: function () {
+            var m = MODEL.Missions[0];
+            m.ProgressBarWidth = ((14400 - 1200) / 14400.0) * 100
+            LiveMap.createModal({
+                title: m.TaskName,
+                icon: m.IconClass,
+                width: 400
+            }, LiveMap.SMModalTemplate, m);
         },
 
         DEPOTS: [],

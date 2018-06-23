@@ -1,0 +1,10 @@
+﻿.modal-content {
+    padding: 1em;
+    color: $primary-font-color;
+    @include linear-gradient(background, rgb(78, 78, 78), rgb(55,55,55));
+    font-size: 1em;
+}
+
+.modal-left-offset {
+    padding-left: 100px;
+}

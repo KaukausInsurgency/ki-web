@@ -7,6 +7,9 @@
   display: block;
   float: left; }
 
+.mission-window {
+  right: 0px; }
+
 .live-map-layout {
   max-width: 700px;
   width: 100%;
@@ -325,6 +328,18 @@ table.online-players > tbody > tr:nth-child(even) td {
   float: right; }
   .tooltip-right-text:after {
     clear: right; }
+
+.modal-content {
+  padding: 1em;
+  color: #CACAC4;
+  background: #4e4e4e;
+  background: -webkit-linear-gradient(-90deg, #4e4e4e, #373737);
+  background: -moz-linear-gradient(180deg, #4e4e4e, #373737);
+  background: linear-gradient(180deg, #4e4e4e, #373737);
+  font-size: 1em; }
+
+.modal-left-offset {
+  padding-left: 100px; }
 
 .depot-resource-table {
   table-layout: fixed;
