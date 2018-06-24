@@ -29,19 +29,17 @@ namespace TAWKI_TCPServer.Implementations
             }
         }
 
-        public static IProcessMessageStrategy Create(IConfigReader config, ILogger logger, EDbSource source)
+        public static IProcessMessageStrategy Create(IConfigReader config, ILogger logger, EDbSource source, IConnectionMultiplexer redisconn, IDbConnection dbconn)
         {
             switch (source)
             {
                 case EDbSource.MySQL:
                     {
-                        IDbConnection connection = new MySqlConnection(config.MySQLDBConnect);
-                        return new MySqlProcessMessageStrategy(connection, logger, config);
+                        return new MySqlProcessMessageStrategy(dbconn, logger, config);
                     }
                 case EDbSource.Redis:
                     {
-                        IConnectionMultiplexer connection = null;
-                        return new RedisProcessMessageStrategy(connection, logger, config);
+                        return new RedisProcessMessageStrategy(redisconn, logger, config);
                     }
                 default:
                     {

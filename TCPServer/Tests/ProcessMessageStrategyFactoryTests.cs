@@ -8,6 +8,7 @@ using TAWKI_TCPServer.Interfaces;
 using TAWKI_TCPServer.Implementations;
 using NUnit.Framework;
 using System.Data;
+using StackExchange.Redis;
 
 namespace Tests
 {
@@ -37,8 +38,10 @@ namespace Tests
         {
             IConfigReader config = new Mocks.MockConfigReader();
             ILogger logger = new Mocks.MockLogger();
-
-            Assert.IsInstanceOf(typeof(MySqlProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.MySQL));
+            IConnectionMultiplexer redisconn = new Mocks.MockConnectionMultiplexer(new Mocks.MockRedisSuccessBehaviour(),
+                                                                                   new Mocks.MockRedisPublishSuccessBehaviour());
+            IDbConnection dbconn = new Mocks.MockDBConnection();
+            Assert.IsInstanceOf(typeof(MySqlProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.MySQL, redisconn, dbconn));
         }
 
         [Test]
@@ -46,8 +49,11 @@ namespace Tests
         {
             IConfigReader config = new Mocks.MockConfigReader();
             ILogger logger = new Mocks.MockLogger();
+            IConnectionMultiplexer redisconn = new Mocks.MockConnectionMultiplexer(new Mocks.MockRedisSuccessBehaviour(),
+                                                                                   new Mocks.MockRedisPublishSuccessBehaviour());
+            IDbConnection dbconn = new Mocks.MockDBConnection();
 
-            Assert.IsInstanceOf(typeof(RedisProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.Redis));
+            Assert.IsInstanceOf(typeof(RedisProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.Redis, redisconn, dbconn));
         }
 
         [Test]
@@ -55,8 +61,11 @@ namespace Tests
         {
             IConfigReader config = new Mocks.MockConfigReader();
             ILogger logger = new Mocks.MockLogger();
+            IConnectionMultiplexer redisconn = new Mocks.MockConnectionMultiplexer(new Mocks.MockRedisSuccessBehaviour(),
+                                                                                   new Mocks.MockRedisPublishSuccessBehaviour());
+            IDbConnection dbconn = new Mocks.MockDBConnection();
 
-            Assert.IsInstanceOf(typeof(InvalidProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.Invalid));
+            Assert.IsInstanceOf(typeof(InvalidProcessMessageStrategy), ProcessMessageStrategyFactory.Create(config, logger, EDbSource.Invalid, redisconn, dbconn));
         }
     }
 }

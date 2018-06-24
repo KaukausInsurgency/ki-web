@@ -44,7 +44,7 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_RedisPublishBulk_Success()
+        public void ProcessMessage_RedisPublishBulkSingle_Success()
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(), 
@@ -53,11 +53,32 @@ namespace Tests
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
             Assert.That(mockdb.MockChannel["UT:1:Sample"] == "[{\"Name\":\"DepotA\"},{\"Name\":\"DepotB\"},{\"Name\":\"DepotC\"}]");
+            Assert.That(mockdb.MockChannelCount["UT:1:Sample"] == 1);
+        }
+
+        [Test]
+        public void ProcessMessage_RedisPublishBulkMulti_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true);
+
+            // Confirm that the data stored in the mock redis is correct
+            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
+
+            // should be the last item published
+            Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Name\":\"DepotC\"}", "Last published message is incorrect");
+            Assert.That(mockdb.MockChannelCount["UT:1:Sample"] == 3, "3 Messages must be published through Redis for this key");
+
+            Assert.That(mockdb.MockListStore["UT:1:Sample"].Count == 3);
+            Assert.That(mockdb.MockListStore["UT:1:Sample"][0] == "{\"Name\":\"DepotA\"}");
+            Assert.That(mockdb.MockListStore["UT:1:Sample"][1] == "{\"Name\":\"DepotB\"}");
+            Assert.That(mockdb.MockListStore["UT:1:Sample"][2] == "{\"Name\":\"DepotC\"}");
         }
 
 
         [Test]
-        public void ProcessMessage_BulkPublishResponse_Success()
+        public void ProcessMessage_BulkPublishSingleResponse_Success()
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
@@ -69,6 +90,22 @@ namespace Tests
             Assert.That(response.Action == "SampleCall");
             Assert.That(response.Data.Count == 1);
             Assert.That((string)response.Data[0][0] == "UT:1:Sample");
+        }
+
+        [Test]
+        public void ProcessMessage_BulkPublishMultiResponse_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true);
+
+            // Assert that the response object is correct
+            Assert.That(response.Result == true);
+            Assert.That(response.Error == "");
+            Assert.That(response.Action == "SampleCall");
+            Assert.That(response.Data.Count == 3);
+            foreach (List<object> r in response.Data)
+                Assert.That((string)r[0] == "UT:1:Sample");
         }
 
         [Test]

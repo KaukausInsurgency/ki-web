@@ -55,18 +55,8 @@ namespace TAWKI_TCPServer.Implementations
                     foreach (Dictionary<string, object> x in DataDictionary)
                     {
                         string error;
-                        List<object> results = PublishData(ref request, x.First(), out error);
-
-                        if (results == null)
-                        {
-                            response.Error = error;
-                            response.Result = false;
-                        }
-                        else
-                        {
-                            response.Data.Add(results);
-                            response.Result = true;
-                        }
+                        List<object> results = PublishData(ref request, x.First(), request.IsBulkQuery, out error);
+                        InitResponse(ref response, results, error);
                     }
 
                     response.Result = true;
@@ -93,31 +83,20 @@ namespace TAWKI_TCPServer.Implementations
                 try
                 {
                     string error;
-                    List<object> results = PublishData(ref request, DataDictionary.First(), out error);
-
-                    if (results == null)
-                    {
-                        response.Error = error;
-                        response.Result = false;
-                    }
-                    else
-                    {
-                        response.Data.Add(results);
-                        response.Result = true;
-                    }
+                    List<object> results = PublishData(ref request, DataDictionary.First(), request.IsBulkQuery, out error);
+                    InitResponse(ref response, results, error);
                 }
                 catch (Exception ex)
                 {
                     CatchException(ref ex, ref request, ref response);
                 }
-
             }
 
             return response;
 
         }
 
-        private List<object> PublishData(ref ProtocolRequest request, KeyValuePair<string, object> pair, out string error)
+        private List<object> PublishData(ref ProtocolRequest request, KeyValuePair<string, object> pair, bool bulkQuery, out string error)
         {
             error = "";
 
@@ -131,15 +110,37 @@ namespace TAWKI_TCPServer.Implementations
             string k = Config.RedisEnvironmentKey + ":" + pair.Key + ":" + rediskey;
             string jdatastring = Newtonsoft.Json.JsonConvert.SerializeObject(pair.Value);
             IDatabase db = Connection.GetDatabase();
-            
-            long subs = db.Publish(k, jdatastring, CommandFlags.None);
-            Logger.Log("Published data to channel: '" + k + "' - Subscribers listening: " + subs);
 
-            db.StringSet(k, jdatastring);
-            Logger.Log("Set data into key '" + k + "'");
+            if (bulkQuery)
+            {
+                db.ListRightPush(k, jdatastring);
+                Logger.Log("RPUSH data into key '" + k + "'");
+            }
+            else
+            {
+                db.StringSet(k, jdatastring);
+                Logger.Log("SET data into key '" + k + "'");
+            }        
+
+            long subs = db.Publish(k, jdatastring, CommandFlags.None);
+            Logger.Log("Published data to channel: '" + k + "' - Subscribers listening: " + subs);        
 
             return new List<object> { k };
 
+        }
+
+        private void InitResponse(ref ProtocolResponse response, List<object> results, string error)
+        {
+            if (results == null)
+            {
+                response.Error = error;
+                response.Result = false;
+            }
+            else
+            {
+                response.Data.Add(results);
+                response.Result = true;
+            }
         }
 
         private void CatchException(ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)

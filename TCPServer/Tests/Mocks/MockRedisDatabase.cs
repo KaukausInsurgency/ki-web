@@ -11,8 +11,10 @@ namespace Tests.Mocks
     class MockRedisDatabase : IDatabase
     {
         public Dictionary<RedisKey, RedisValue> MockDBStore;
+        public Dictionary<RedisKey, List<RedisValue>> MockListStore;
         public Dictionary<RedisKey, TimeSpan?> MockDBStoreLife;
         public Dictionary<RedisChannel, RedisValue> MockChannel;
+        public Dictionary<RedisChannel, int> MockChannelCount;
         int IDatabase.Database => 1;
         private IRedisExecuteBehaviour _redisBehaviour;
         private IRedisPublishBehaviour _redisPublishBehaviour;
@@ -23,20 +25,20 @@ namespace Tests.Mocks
             _redisPublishBehaviour = publish;
             MockDBStore = new Dictionary<RedisKey, RedisValue>();
             MockDBStoreLife = new Dictionary<RedisKey, TimeSpan?>();
+            MockListStore = new Dictionary<RedisKey, List<RedisValue>>();
             MockChannel = new Dictionary<RedisChannel, RedisValue>();
+            MockChannelCount = new Dictionary<RedisChannel, int>();
         }
 
         bool IDatabase.StringSet(RedisKey key, RedisValue value, TimeSpan? expiry, When when, CommandFlags flags)
-        {
-            
+        {        
             MockDBStore[key] = value;
             MockDBStoreLife[key] = expiry;
             return _redisBehaviour.Execute(key, value, expiry, when, flags); 
         }
 
         bool IDatabase.StringSet(KeyValuePair<RedisKey, RedisValue>[] values, When when, CommandFlags flags)
-        {
-            
+        {    
             foreach (KeyValuePair<RedisKey,RedisValue> pair in values)
             {              
                 MockDBStore[pair.Key] = pair.Value;
@@ -45,17 +47,44 @@ namespace Tests.Mocks
             return _redisBehaviour.Execute(values, when, flags);
         }
 
+        long IDatabase.ListRightPush(RedisKey key, RedisValue value, When when, CommandFlags flags)
+        {
+            if (!MockListStore.ContainsKey(key))
+                MockListStore[key] = new List<RedisValue>();
+
+            MockListStore[key].Add(value);
+
+            return MockListStore[key].Count;
+        }
+
+        long IDatabase.ListRightPush(RedisKey key, RedisValue[] values, CommandFlags flags)
+        {
+            if (!MockListStore.ContainsKey(key))
+                MockListStore[key] = new List<RedisValue>();
+
+            foreach (RedisValue v in values)
+                MockListStore[key].Add(v);
+
+            return MockListStore[key].Count;
+        }
+
         long IDatabase.Publish(RedisChannel channel, RedisValue message, CommandFlags flags)
         {
             MockChannel[channel] = message;
-            MockChannel[channel] = message;
+            if (MockChannelCount.ContainsKey(channel))
+                MockChannelCount[channel]++;
+            else
+                MockChannelCount[channel] = 1;
             return _redisPublishBehaviour.Execute(channel, message, flags);
         }
 
         Task<long> IDatabaseAsync.PublishAsync(RedisChannel channel, RedisValue message, CommandFlags flags)
         {
             MockChannel[channel] = message;
-            MockChannel[channel] = message;
+            if (MockChannelCount.ContainsKey(channel))
+                MockChannelCount[channel]++;
+            else
+                MockChannelCount[channel] = 1;
             return new Task<long>(() => _redisPublishBehaviour.Execute(channel, message, flags));
         }
 
@@ -694,16 +723,6 @@ namespace Tests.Mocks
         }
 
         Task<RedisValue> IDatabaseAsync.ListRightPopLeftPushAsync(RedisKey source, RedisKey destination, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        long IDatabase.ListRightPush(RedisKey key, RedisValue value, When when, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        long IDatabase.ListRightPush(RedisKey key, RedisValue[] values, CommandFlags flags)
         {
             throw new NotImplementedException();
         }

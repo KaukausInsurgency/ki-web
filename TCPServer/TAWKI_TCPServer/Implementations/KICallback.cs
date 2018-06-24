@@ -17,11 +17,15 @@ namespace TAWKI_TCPServer.Implementations
     {
         private ILogger Logger;
         private ThrottleMapper Throttler;
+        private IConnectionMultiplexer RedisConnection;
+        private IDbConnection DBConnection;
 
         public KICallback(ILogger Logger)
         {
             this.Logger = Logger;
             Throttler = new ThrottleMapper(new CurrentTime(), 5);
+            DBConnection = new MySqlConnection(GlobalConfig.GetConfig().MySQLDBConnect);
+            RedisConnection = null;
         }
 
         public void Invoke(ISynchronizeInvoke sync, Action action)
@@ -65,8 +69,16 @@ namespace TAWKI_TCPServer.Implementations
                     // Simply ignore/drop the request if we need to throttle the connection
                     if (!Throttler.ShouldThrottle(action))
                     {
+                        // if we have broken connections, send error and return
+                        if (!CheckRedisConnection() || !CheckDBConnection())
+                        {
+                            string jsonResponse = "{ \"Action\" : " + j["Action"] + ", \"Result\" : false, \"Error\" : \"Could not connect to Services\", \"Data\" : null }";
+                            ((SocketClient)(sender)).Write(jsonResponse);
+                            return;
+                        }
                         ProtocolRequest request = Utility.CreateRequest(ref j, ((SocketClient)(sender)).Address);
-                        IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, ProcessMessageStrategyFactory.GetSource(request.Destination));
+                        IProcessMessageStrategy processor = ProcessMessageStrategyFactory.Create(GlobalConfig.GetConfig(), Logger, 
+                            ProcessMessageStrategyFactory.GetSource(request.Destination), RedisConnection, DBConnection);
                         ProtocolResponse resp = processor.Process(request);
                         string jsonResp = JsonConvert.SerializeObject(resp);
                         ((SocketClient)(sender)).Write(jsonResp);
@@ -91,6 +103,49 @@ namespace TAWKI_TCPServer.Implementations
         void IIPCCallback.OnSend(object sender, IPCSendEventArgs e)
         {
             Logger.Log("Server Sent: " + e.data);
+        }
+
+        private bool CheckRedisConnection()
+        {
+            if (RedisConnection == null || !RedisConnection.IsConnected)
+            {
+                try
+                {
+                    RedisConnection = ConnectionMultiplexer.Connect(GlobalConfig.GetConfig().RedisDBConnect);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error - Could not connect to Redis DB - " + ex.Message);
+                    if (RedisConnection != null && RedisConnection.IsConnected)
+                        RedisConnection.Close();
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool CheckDBConnection()
+        {
+            if (DBConnection.State == ConnectionState.Open)
+                return true;
+            else
+            {
+                try
+                {
+                    DBConnection.Open();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error - Could not connect to MySql DB - " + ex.Message);
+                    if (DBConnection.State == ConnectionState.Open)
+                        DBConnection.Close();
+
+                    return false;
+                }
+                return true;
+            }
         }
     }
 }
