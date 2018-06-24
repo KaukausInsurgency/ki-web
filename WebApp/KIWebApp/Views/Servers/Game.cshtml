@@ -101,11 +101,9 @@
                     <span class="live-map-footer-span">Notifications</span>
                     @Html.Partial("_Notifications", Model)
                 </div>
-                <div class="live-map-footer-column glass-black">
+                <div id="ingame-missions" class="live-map-footer-column glass-black">
                     <i class="fas fa-address-book game-navicon live-map-footer-span"></i>
-                    <span class="live-map-footer-span">Missions
-                        <a class="notification">5</a>
-                    </span>
+                    <span class="live-map-footer-span">Missions</span>
                     @Html.Partial("_Missions", Model)
                 </div>
             </div>
@@ -141,18 +139,10 @@
     <script src="~/Scripts/views/game/shared.js"></script>
     <script src="~/Scripts/views/game/game-navigation.js"></script>
     <script src="~/Scripts/views/game/chat.js"></script>
-    <script src="~/Scripts/views/game/notification.js"></script>
     <script src="~/Scripts/views/game/live-map.js"></script>
     <script src="~/Scripts/views/game/iconBuilder.js"></script>
     <script src="~/Scripts/views/game/gmaps.js"></script>    
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYmQlCOtX05GriYZDAfgnTUL5mY4kjyYQ&callback=initGoogleMap"></script>
-    <script type="text/javascript">
-        var n = $('#ingame-notifications').kiChat();
-        var c = $('#ingame-chat').kiChat();
-
-        c.add('Jojo', 0, 'Some scripted text');
-        n.add('4:33 PM', 2, 'Scripted mission notification');
-    </script>
     <script src="~/Scripts/views/game/game-hub.js"></script>
 }

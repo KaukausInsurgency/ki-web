@@ -31,7 +31,7 @@ $chat-font-pack: $secondary-font-stack;
     font-size: .8em;
     line-height: 1.5;
     overflow-y: scroll;
-    height: 100%;
+    @include calc(height, 100%, '100% - 15px');
 
     &::-webkit-scrollbar {
         width: 10px;
@@ -87,6 +87,7 @@ $chat-font-pack: $secondary-font-stack;
     font-weight: 700;
 
     padding-top: 3px;
+    margin-bottom: 10px;
 }
 
 .chat-message {

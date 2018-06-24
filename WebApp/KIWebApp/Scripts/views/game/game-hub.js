@@ -3,8 +3,8 @@
     $.connection.hub.logging = true;
     var GameHubProxy = $.connection.gameHub;    // apparently first letter is lowercase (signalr converts this)
     var $Chat = $('#ingame-chat').kiChat();
-    var $ChatNotif = $('#ingame-chat').kiNotif();
-
+    var $Notifications = $('#ingame-notifications').kiChat();
+    var $Missions = $('#ingame-missions').kiChat();
     var $OPTable = $('#players-table tbody');
 
     GameHubProxy.client.UpdateCapturePoints = function (modelObj) {
@@ -73,10 +73,14 @@
                 LiveMap.SIDEMISSIONS.push(mrk);
 
                 KI.tooltipster($dataSel);
+
+                $Missions.add(this.TimeRemaining, 0, "New mission '" + this.TaskName + "' available (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
             }
 
             // delete expired missions after 30 seconds
             if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
+
+                $Missions.add(this.TimeRemaining, 0, "Time has run out for mission '" + this.TaskName + "' (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
                 
                 setTimeout(function () {
                     // need to get the new index, as its possible the array might have been resized before this call
@@ -110,9 +114,11 @@
     }
 
     GameHubProxy.client.UpdateChat = function (modelObj) {
-        console.log("UpdateChat: " + JSON.stringify(modelObj));
         $Chat.add(modelObj.Name, modelObj.Side, modelObj.Message);
-        $ChatNotif.incr();
+    }
+
+    GameHubProxy.client.UpdateNotifications = function (modelObj) {
+        $Notifications.add(modelObj.Time, 0, modelObj.Message);
     }
 
     GameHubProxy.client.UpdateOnlinePlayers = function (modelObj) {
