@@ -3,7 +3,6 @@
 @section styles {
     <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/views/game/game.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/css/iziModal.min.css" rel="stylesheet" />
 }
 
 @Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
@@ -113,6 +112,7 @@
 
     <div style="display: none">
         <div id="modal"></div>
+        <div id="error-modal"></div>
         @Html.Partial("~/Views/Servers/Templates/_CapturePointInfoWindow.cshtml")
         @Html.Partial("~/Views/Servers/Templates/_DepotInfoWindow.cshtml")
         @Html.Partial("~/Views/Servers/Templates/_ChatMessage.cshtml")
@@ -128,7 +128,6 @@
     @Scripts.Render("~/bundles/mustachejs")
     @Scripts.Render("~/bundles/tooltipster")
     <script src="~/signalr/hubs"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/js/iziModal.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         var MODEL = @Html.Raw(Json.Encode(Model));

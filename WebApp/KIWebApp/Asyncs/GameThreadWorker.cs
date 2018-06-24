@@ -60,26 +60,37 @@ namespace KIWebApp.Asyncs
                 }
                 catch (Exception ex)
                 {
-                    logger.Warn("Error creating Redis Connection - " + ex.Message);
-                    hub.Clients.Group(ServerID.ToString()).LostRedisConnection();
+                    logger.Error("Error creating Redis Connection - " + ex.Message);
+                    logger.Error(ex);
+                    hub.Clients.Group(ServerID.ToString()).OnServerError("An internal server error occurred");
                     return;
                 }
             }
 
-            dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(message.ToString());
-            string channelString = channel.ToString();
-            if (channelString.Contains(appSettings.RedisKeyCapturePoint))
-                hub.Clients.Group(ServerID.ToString()).UpdateCapturePoints(json);
-            else if (channelString.Contains(appSettings.RedisKeyDepot))
-                hub.Clients.Group(ServerID.ToString()).UpdateDepots(json);
-            else if (channelString.Contains(appSettings.RedisKeySideMission))
-                hub.Clients.Group(ServerID.ToString()).UpdateMissions(json);
-            else if (channelString.Contains(appSettings.RedisKeyChat))
-                hub.Clients.Group(ServerID.ToString()).UpdateChat(json);
-            else if (channelString.Contains(appSettings.RedisKeyOnlinePlayer))
-                hub.Clients.Group(ServerID.ToString()).UpdateOnlinePlayers(json);
-            else
-                hub.Clients.Group(ServerID.ToString()).UpdateServer(json);
+            try
+            {
+                dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(message.ToString());
+                string channelString = channel.ToString();
+                if (channelString.Contains(appSettings.RedisKeyCapturePoint))
+                    hub.Clients.Group(ServerID.ToString()).UpdateCapturePoints(json);
+                else if (channelString.Contains(appSettings.RedisKeyDepot))
+                    hub.Clients.Group(ServerID.ToString()).UpdateDepots(json);
+                else if (channelString.Contains(appSettings.RedisKeySideMission))
+                    hub.Clients.Group(ServerID.ToString()).UpdateMissions(json);
+                else if (channelString.Contains(appSettings.RedisKeyChat))
+                    hub.Clients.Group(ServerID.ToString()).UpdateChat(json);
+                else if (channelString.Contains(appSettings.RedisKeyOnlinePlayer))
+                    hub.Clients.Group(ServerID.ToString()).UpdateOnlinePlayers(json);
+                else
+                    hub.Clients.Group(ServerID.ToString()).UpdateServer(json);
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Error invoking SignalR callback - " + ex.Message);
+                logger.Error(ex);
+                hub.Clients.Group(ServerID.ToString()).OnServerError("An internal server error occurred");
+            }
+            
         }
     }
 }

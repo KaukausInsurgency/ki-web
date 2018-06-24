@@ -225,6 +225,7 @@
     <Compile Include="Classes\RedisUtility.cs" />
     <Compile Include="Classes\SqlUtility.cs" />
     <Compile Include="Classes\WebAppSettings.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Classes\IDAL.cs" />
@@ -467,6 +468,8 @@
     <Content Include="Views\Servers\Templates\_OnlinePlayersRow.cshtml" />
     <Content Include="Views\Servers\Templates\_SideMissionModal.cshtml" />
     <Content Include="Views\Servers\_Missions.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -494,7 +497,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>50475</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/KIWebApp</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

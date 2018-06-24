@@ -92,8 +92,31 @@
             }, LiveMap.SMModalTemplate, m);
         },
 
+        createErrorModal: function (error) {
+            var $modal = $('#error-modal');
+            // initialize modal
+            $modal.iziModal({
+                icon: 'fas fa-exclamation-triangle',
+                headerColor: '#BD5B5B',
+                width: 600,
+                transitionIn: 'fadeInUp',
+                transitionOut: 'fadeOutDown',
+                bottom: 0,
+                loop: true,
+                pauseOnHover: true
+            });
+
+            $modal.iziModal('setTitle', error);
+            //$("#modal").iziModal('setSubtitle', "SubTitle : " + Title);
+
+            if ($modal.css('display') === 'none')
+                $modal.iziModal('open');
+        },
+
         DEPOTS: [],
         CAPTUREPOINTS: [],
         SIDEMISSIONS: [],
     }
+
+    
 })(jQuery);

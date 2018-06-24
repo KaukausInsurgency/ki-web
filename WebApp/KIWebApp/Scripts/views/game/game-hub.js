@@ -171,6 +171,10 @@
         KI.setDivText('#Map', modelObj.Map);
     };
 
+    GameHubProxy.client.OnServerError = function (error) {
+        LiveMap.createErrorModal(error);
+    }
+
 
     $.connection.hub.start().done(function () {
 
@@ -184,7 +188,11 @@
     });
 
     $.connection.hub.error(function (error) {
-        console.log('SignalR error: ' + error)
+        LiveMap.createErrorModal("There was an error with the connection - please reload the page");
+    });
+
+    $.connection.hub.disconnected(function () {
+        LiveMap.createErrorModal("Lost connection to server - please reload the page");
     });
 
 })

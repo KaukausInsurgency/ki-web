@@ -11,6 +11,7 @@
           integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/css/iziModal.min.css" rel="stylesheet" />
     
     @Styles.Render("~/bundles/Content/shared")
     @RenderSection("styles", required: false)
@@ -18,7 +19,7 @@
 {
     <link href="~/Content/css/vendor/tooltipster/tooltipster.bundle.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/css/vendor/dynatable/jquery.dynatable.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/vendor/dynatable/jquery.dynatable.css" rel="stylesheet" type="text/css" />   
 }
 else
 {
@@ -26,7 +27,8 @@ else
     @Styles.Render("~/bundles/Content/dynatable")    
 }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/js/iziModal.min.js" type="text/javascript"></script>
     @Scripts.Render("~/bundles/signalr")
     @Scripts.Render("~/bundles/shared")
     @RenderSection("scripts", required: false)
@@ -49,6 +51,12 @@ else
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
             </form>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="error-modal">
+
         </div>
     </div>
 

@@ -15,6 +15,20 @@ namespace KIWebApp
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(MvcApplication));
+
+        public override void Init()
+        {
+            base.Init();
+            this.Error += Application_Error;
+        }
+
+        void Application_Error(object sender, EventArgs e)
+        {
+            var ex = Server.GetLastError();
+            logger.Error(ex);
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
