@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="Hubs\GameHub.cs" />
     <Compile Include="Models\CapturePointModel.cs" />
+    <Compile Include="Models\ChatModel.cs" />
     <Compile Include="Models\CustomMenuItemModel.cs" />
     <Compile Include="Models\HtmlContentSimpleModel.cs" />
     <Compile Include="Models\HtmlHeaderModel.cs" />
@@ -244,7 +245,6 @@
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />
     <Compile Include="Models\GameModel.cs" />
-    <Compile Include="Models\MarkerViewModel.cs" />
     <Compile Include="Models\OnlinePlayerModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Models\RptAirframeOverallStatsModel.cs" />

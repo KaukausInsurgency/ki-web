@@ -22,8 +22,6 @@ namespace KIWebApp.Classes
         List<OnlinePlayerModel> GetOnlinePlayers(int serverID, ref IConnectionMultiplexer conn);
         GameModel GetGame(int serverID);
         GameModel GetGame(int serverID, ref IDbConnection dbconn, ref IConnectionMultiplexer redisconn);
-        MarkerViewModel GetMarkers(int serverID);
-        MarkerViewModel GetMarkers(int serverID, ref IConnectionMultiplexer conn);
         ServerViewModel GetServerInfo(int serverID);
         ServerViewModel GetServerInfo(int serverID, ref IDbConnection conn);
         SearchResultsModel GetSearchResults(string query);
@@ -34,5 +32,7 @@ namespace KIWebApp.Classes
         List<PlayerModel> GetPlayerSearchResults(string query, ref IDbConnection conn);
         List<CustomMenuItemModel> GetCustomMenuItems(int serverID);
         List<CustomMenuItemModel> GetCustomMenuItems(int serverID, ref IDbConnection conn);
+        List<ChatModel> GetChatMessages(int serverID);
+        List<ChatModel> GetChatMessages(int serverID, ref IConnectionMultiplexer conn);
     }
 }

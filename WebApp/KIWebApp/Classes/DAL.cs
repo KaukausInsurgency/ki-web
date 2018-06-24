@@ -117,6 +117,7 @@ namespace KIWebApp.Classes
                     CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref redisconn),
                     Missions = ((IDAL)this).GetSideMissions(serverID, ref redisconn),
                     OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref redisconn),
+                    Chat = ((IDAL)this).GetChatMessages(serverID, ref redisconn),
                     CustomMenuItems = ((IDAL)this).GetCustomMenuItems(serverID, ref dbconn),
                 };
 
@@ -127,33 +128,6 @@ namespace KIWebApp.Classes
                 break;
             }
             return g;
-        }
-
-        MarkerViewModel IDAL.GetMarkers(int serverID)
-        {
-            IConnectionMultiplexer conn = null;
-            try
-            {
-                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
-                return ((IDAL)this).GetMarkers(serverID, ref conn);
-            }
-            finally
-            {
-                if (conn != null && conn.IsConnected)
-                    conn.Close();
-            }
-        }
-
-        MarkerViewModel IDAL.GetMarkers(int serverID, ref IConnectionMultiplexer conn)
-        {
-            MarkerViewModel mm = new MarkerViewModel()
-            {
-                Depots = ((IDAL)this).GetDepots(serverID, ref conn),
-                CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref conn),
-                Missions = ((IDAL)this).GetSideMissions(serverID, ref conn)
-            };
-
-            return mm;
         }
 
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID)
@@ -351,7 +325,7 @@ namespace KIWebApp.Classes
         {
             if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
                 conn.Open();
-      
+
             IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_SERVER_INFO,
                      new Dictionary<string, object>() { { "ServerID", serverID } });
             DataTable dt = SqlUtility.Execute(cmd);
@@ -367,24 +341,6 @@ namespace KIWebApp.Classes
                 break;
             }
             return s;
-        }
-
-
-        private ReturnT GetModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
-        {
-            IDatabase db = conn.GetDatabase();
-            RedisValue v = db.StringGet(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID));
-
-            if (v.IsNullOrEmpty && !v.HasValue)
-            {
-                return new ReturnT();
-            }
-            else
-            {
-                ReturnT model = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(v);
-
-                return model;
-            }
         }
 
         List<CustomMenuItemModel> IDAL.GetCustomMenuItems(int serverID)
@@ -419,6 +375,67 @@ namespace KIWebApp.Classes
                 model.Add(new CustomMenuItemModel(dr));
 
             return model;
+        }
+
+        List<ChatModel> IDAL.GetChatMessages(int serverID)
+        {
+            IConnectionMultiplexer conn = null;
+            try
+            {
+                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
+                return ((IDAL)this).GetChatMessages(serverID, ref conn);
+            }
+            finally
+            {
+                if (conn != null && conn.IsConnected)
+                    conn.Close();
+            }
+        }
+
+        List<ChatModel> IDAL.GetChatMessages(int serverID, ref IConnectionMultiplexer conn)
+        {
+            return LRangeModelCollection<int, ChatModel>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyChat);
+        }
+
+
+
+        private ReturnT GetModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
+        {
+            IDatabase db = conn.GetDatabase();
+            RedisValue v = db.StringGet(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID));
+
+            if (v.IsNullOrEmpty && !v.HasValue)
+            {
+                return new ReturnT();
+            }
+            else
+            {
+                ReturnT model = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(v);
+
+                return model;
+            }
+        }
+
+        private List<ReturnT> LRangeModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
+        {
+            List<ReturnT> model = new List<ReturnT>();
+
+            IDatabase db = conn.GetDatabase();
+            RedisValue[] v = db.ListRange(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID), 0, -1);
+
+            if (v == null || v.Length == 0)
+            {
+                return model;
+            }
+            else
+            {
+                foreach (RedisValue val in v)
+                {
+                    model.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(val));
+                }
+
+                return model;
+            }
         }
     }
 }

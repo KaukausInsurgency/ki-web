@@ -24,6 +24,7 @@ namespace KIWebApp.Models
         public List<CapturePointModel> CapturePoints { get; set; }
         public List<OnlinePlayerModel> OnlinePlayers { get; set; }
         public List<SideMissionModel> Missions { get; set; }
+        public List<ChatModel> Chat { get; set; }
         public List<CustomMenuItemModel> CustomMenuItems { get; set; }
 
         // these properties are set post construction since they depend on OnlinePlayers model being constructed

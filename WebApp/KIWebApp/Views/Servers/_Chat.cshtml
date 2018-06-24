@@ -3,9 +3,22 @@
 <div class="chat-window live-map-footer-content">
     <div class="chat-title">In-Game Chat</div>
     <div class="chat-message-body">
-        <div class="chat-message">
-            <span class="chat-username chat-redfor">Player 1</span>
-            <span class="chat-body"> : Some Sample Redfor test to be tested out on a screen</span>
-        </div>
+        @foreach (var item in @Model.Chat)
+        {
+            string factionClass = "chat-neutral";
+            if (item.Side == 1)
+            {
+                factionClass = "chat-redfor";
+            }
+            else if (item.Side == 2)
+            {
+                factionClass = "chat-blufor";
+            }
+            <div class="chat-message">
+                <span class="chat-username @factionClass">@item.Name</span>
+                <span class="chat-body"> : @item.Message</span>
+            </div>
+        }
+        
     </div>
 </div>
