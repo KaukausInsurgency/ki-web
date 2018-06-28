@@ -177,6 +177,33 @@ BEGIN
 	SET Version = "4be0bd54461842c23a1da692ec236a1f736f70cc";
   END IF;
   
+  -- VERSION 0.80
+  IF Version = "4be0bd54461842c23a1da692ec236a1f736f70cc" THEN
+    INSERT INTO ki_upgrade_log VALUES ("Database Version is 0.80 - Upgrading to 0.90");
+	
+	-- Added time stamp columns to connection log tables
+	ALTER TABLE `raw_connection_log` 
+	ADD COLUMN `time` DATETIME(0) NOT NULL AFTER `real_time`;
+
+	ALTER TABLE `backup_connection_log` 
+	ADD COLUMN `time` DATETIME(0) NOT NULL AFTER `real_time`;
+	
+	-- Added new reporting table for player online activity
+	CREATE TABLE `rpt_player_online_activity` (
+	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
+	  `ucid` VARCHAR(128) NOT NULL,
+	  `date` DATE NOT NULL,
+	  `total_game_time` BIGINT(32) NOT NULL DEFAULT 0,
+	  PRIMARY KEY (`id`));
+
+	
+	-- insert data
+    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
+    VALUES (1, "0.90", "--------", NULL);
+    
+    INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.90");
+	SET Version = ""--------",";
+  END IF;
   
   SELECT * FROM ki_upgrade_log;
 
