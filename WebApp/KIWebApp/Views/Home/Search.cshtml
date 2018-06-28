@@ -17,7 +17,9 @@
     <p class="error" data-bind="text: error"></p>
     <div data-url-search-players-ajax="@Url.Action("SearchPlayers", "Home")"
          data-url-search-servers-ajax="@Url.Action("SearchServers", "Home")"
-         data-url-game="@Url.Action("Game", "Servers")"></div>
+         data-url-game="@Url.Action("Game", "Servers")"
+         data-url-player-statistics="@Url.Action("PlayerStats", "Statistics")"
+         data-url-server-statistics="@Url.Action("ServerStats", "Statistics")"></div>
 
     <div class="search-menu">
         <nav class="menu">

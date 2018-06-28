@@ -16,7 +16,7 @@
     <AssemblyName>KIWebApp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -431,6 +431,9 @@
     <Content Include="Scripts\views\game\shared.js" />
     <Content Include="Scripts\views\search\init.js" />
     <Content Include="Scripts\views\server\init.js" />
+    <Content Include="Scripts\views\statistics\airframe\init-charts.js" />
+    <Content Include="Scripts\views\statistics\charts-themes.js" />
+    <Content Include="Scripts\views\statistics\player\init-charts.js" />
     <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -499,7 +502,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50475</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/KIWebApp</IISUrl>
+          <IISUrl>http://localhost:50475/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

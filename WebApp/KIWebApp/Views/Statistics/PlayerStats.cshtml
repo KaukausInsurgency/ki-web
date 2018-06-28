@@ -1,123 +1,228 @@
 ﻿@model KIWebApp.Models.RptPlayerOverallStatsModel
 
-@{
-    ViewBag.Title = "PlayerStats";
+@section styles {
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/css/views/statistics/player-statistics.css" rel="stylesheet" type="text/css">
 }
 
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-stats",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
 
-<div class="dash-row">
-    <h2 class="dark-gray-font dash-main-title">Overall Statistics For @Model.PlayerName</h2>
-</div>
-
-<div class="dash-background-color">
-    <hr class="dash-background-lighter-color" />
-    <div class="dash-row">
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.TotalGameTime</div>
-            <div class="dash-header dash-header-small-font">Total Hours</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.TakeOffs</div>
-            <div class="dash-header dash-header-small-font">Take Offs</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.Landings</div>
-            <div class="dash-header dash-header-small-font">Landings</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.Kills</div>
-            <div class="dash-header dash-header-small-font">Kills</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.Deaths</div>
-            <div class="dash-header dash-header-small-font">Deaths</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.Ejects</div>
-            <div class="dash-header dash-header-small-font">Ejects</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.DepotResupplies</div>
-            <div class="dash-header dash-header-small-font">Depot Resupplies</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.CargoUnpacked</div>
-            <div class="dash-header dash-header-small-font">Cargo Unpacked</div>
-        </div>
-    </div>
-    <div class="dash-row">
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.SlingLoadHooks</div>
-            <div class="dash-header dash-header-small-font">Slingload Hooks</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.SlingLoadUnhooks</div>
-            <div class="dash-header dash-header-small-font">Slingload Unhooks</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.TransportMounts</div>
-            <div class="dash-header dash-header-small-font">Transport Pickups</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.TransportDismounts</div>
-            <div class="dash-header dash-header-small-font">Transport Drop Offs</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.KillDeathEjectRatio</div>
-            <div class="dash-header dash-header-small-font">Kill / Death Eject Ratio</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@Model.PlayerLives</div>
-            <div class="dash-header dash-header-small-font">Current Lives</div>
-        </div>
-        <div class="dash-columns-eight">
-            <div class="dash-header dash-header-large-font">@(Model.PlayerBanned? "Yes" : "No")</div>
-            <div class="dash-header dash-header-small-font">Banned</div>
-        </div>
-    </div>
-    <hr />
-</div>
-<div class="dash-background-lighter-color">
-    <div class="dash-row">
-        <div id="last-session" class="linechart"></div>
-        <div id="last-5-sessions" class="linechart"></div>
-    </div>
-    <div class="dash-row">
-        <div style="width: 52%; float:left; position:relative;">
-            <div>
-                <div class="piechart" id="airframe-chart"></div>
-                <div class="piechart" id="score-chart"></div>
+<div class="main">
+    <h2 class="dashboard-main-title">Overall Statistics For @Model.PlayerName</h2>
+    <div class="dashboard-layout">
+        <div class="dashboard-row">
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-medium-font">@Model.TotalGameTime</div>
+                <div class="dash-header dash-header-small-font">Total Hours</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.TakeOffs</div>
+                <div class="dash-header dash-header-small-font">Take Offs</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.Landings</div>
+                <div class="dash-header dash-header-small-font">Landings</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.Kills</div>
+                <div class="dash-header dash-header-small-font">Kills</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">1</div>
+                <div class="dash-header dash-header-small-font">Friendly Kills</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.Deaths</div>
+                <div class="dash-header dash-header-small-font">Deaths</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.Ejects</div>
+                <div class="dash-header dash-header-small-font">Ejects</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.KillDeathEjectRatio</div>
+                <div class="dash-header dash-header-small-font">Kill / Death Eject Ratio</div>
             </div>
         </div>
-        <div style="width: 48%; float:left; position:relative;">
-            <div>
-                <h3 class="dark-gray-font">Stats</h3>
+        <div class="dashboard-row">
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.SlingLoadHooks</div>
+                <div class="dash-header dash-header-small-font">Slingload Hooks</div>
             </div>
-            <div class="dash-columns-three" id="sortie-success" style="height: 190px;"></div>
-            <div class="dash-columns-three" id="sling-success" style="height: 190px;"></div>
-            <div class="dash-columns-three" id="transport-success" style="height: 190px;"></div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.SlingLoadUnhooks</div>
+                <div class="dash-header dash-header-small-font">Slingload Unhooks</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.TransportMounts</div>
+                <div class="dash-header dash-header-small-font">Transport Pickups</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.TransportDismounts</div>
+                <div class="dash-header dash-header-small-font">Transport Drop Offs</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.DepotResupplies</div>
+                <div class="dash-header dash-header-small-font">Depot Resupplies</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.CargoUnpacked</div>
+                <div class="dash-header dash-header-small-font">Cargo Unpacked</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@Model.PlayerLives</div>
+                <div class="dash-header dash-header-small-font">Current Lives</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">@(Model.PlayerBanned ? "Yes" : "No")</div>
+                <div class="dash-header dash-header-small-font">Banned</div>
+            </div>
         </div>
+    </div>
+    <div class="clearfloat">
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Total Kills</h2>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">24</div>
+                    <div class="dash-header dash-header-small-font">Air</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">12</div>
+                    <div class="dash-header dash-header-small-font">Helicopter</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">44</div>
+                    <div class="dash-header dash-header-small-font">Ground</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">4</div>
+                    <div class="dash-header dash-header-small-font">Ship</div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Sortie</h2>
+
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-medium-font">03:45:23</div>
+                    <div class="dash-header dash-header-small-font">Longest</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">14</div>
+                    <div class="dash-header dash-header-small-font">Most Kills</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">22</div>
+                    <div class="dash-header dash-header-small-font">Most Hits Taken</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chart-layout">
+        <div class="chart-row">
+            <div id="hc-score-over-time"></div>
+        </div>
+        <div class="chart-row">
+            <div id="hc-total-sorties"></div>
+        </div>
+        <div class="chart-row">
+            <div id="hc-last-session"></div>
+            <div id="hc-last-5-sessions"></div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-layout-piecharts">
+                <div class="chart-background">
+                    <div id="hc-airframes-pie"></div>
+                    <div id="hc-score-pie"></div>
+                </div>
+            </div>
+            <div class="chart-layout-gauges">
+                <div class="chart-background">
+                    <h3>Stats</h3>
+                    <div id="hc-sortie-success"></div>
+                    <div id="hc-sling-success"></div>
+                    <div id="hc-transport-success"></div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div id="hc-online-activity"></div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-columns-2">
+                <h2 class="stats-table-title">Airframes</h2>
+                <div class="stats-table-layout right-margin-inner">
+                    <table id="airframe-table" class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Top</th>
+                                <th>Time</th>
+                                <th>Sorties</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="AirframeID" style="display:none;">1</div>
+                                    <b>Mi-8</b>
+                                </td>
+                                <td>1%</td>
+                                <td>22:25:34</td>
+                                <td>10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-columns-2">
+                <h2 class="stats-table-title left-margin-inner">Top 5 Servers</h2>
+                <div class="stats-table-layout left-margin-inner">
+                    <table id="favorite-servers-table" class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Sorties</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="ServerID" style="display:none;">1</div>
+                                    <b>Mock Gamers 24/7 KI Server</b>
+                                </td>
+                                <td>14:25:34</td>
+                                <td>48</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 
 
 
-
-@section scripts {
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+@section postscripts {
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/dynatable")
-    @Scripts.Render("~/bundles/app")
-    @Styles.Render("~/bundles/Content/statistics")
-    @Scripts.Render("~/bundles/statistics")
+    <script src="~/Scripts/views/statistics/charts-themes.js"></script>
+    <script src="~/Scripts/views/statistics/player/init-charts.js"></script>
     <script type="text/javascript">
         var model = @Html.Raw(Json.Encode(Model));
     </script>
 }
-
-<script type="text/javascript">
-</script>
