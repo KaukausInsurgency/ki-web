@@ -805,25 +805,7 @@ $(document).ready(function () {
             {
                 showInLegend: false,
                 name: "Time",
-                data: [
-                    [Date.UTC(2018, 0, 14), 8420000],
-                    [Date.UTC(2018, 0, 20), 7834000],
-                    [Date.UTC(2018, 1, 2), 5834000],
-                    [Date.UTC(2018, 1, 4), 7233000],
-                    [Date.UTC(2018, 1, 26), 1400000],
-                    [Date.UTC(2018, 2, 3), 3000000],
-                    [Date.UTC(2018, 2, 4), 6430000],
-                    [Date.UTC(2018, 4, 25), 5000000],
-                    [Date.UTC(2018, 4, 26), 200000],
-                    [Date.UTC(2018, 4, 27), 3400000],
-                    [Date.UTC(2018, 4, 28), 7642000],
-                    [Date.UTC(2018, 4, 29), 0],
-                    [Date.UTC(2018, 4, 30), 0],
-                    [Date.UTC(2018, 4, 31), 5300000],
-                    [Date.UTC(2018, 5, 1), 900000],
-                    [Date.UTC(2018, 5, 2), 9813000],
-                    [Date.UTC(2018, 5, 3), 303000]
-                ]
+                data: model.OnlineActivity.Series
             }
         ],
 

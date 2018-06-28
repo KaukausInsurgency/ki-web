@@ -220,6 +220,7 @@
     <Compile Include="Asyncs\GameThreadWorker.cs" />
     <Compile Include="Classes\DAL.cs" />
     <Compile Include="Classes\DAL_Rpt.cs" />
+    <Compile Include="Classes\DateTimeJavaScript.cs" />
     <Compile Include="Classes\IAppSettings.cs" />
     <Compile Include="Classes\IDAL_Rpt.cs" />
     <Compile Include="Classes\RedisUtility.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="Models\HtmlHeaderModel.cs" />
     <Compile Include="Models\HtmlContentIFrameModel.cs" />
     <Compile Include="Models\IHtmlContentModel.cs" />
+    <Compile Include="Models\RptPlayerOnlineActivity.cs" />
     <Compile Include="Models\RptSessionEventsDataModel.cs" />
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />

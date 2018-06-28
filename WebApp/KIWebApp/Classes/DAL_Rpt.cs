@@ -14,6 +14,7 @@ namespace KIWebApp.Classes
         private const string SP_TOP_AIRFRAME_SERIES = "rptsp_GetTopAirframeSeries";
         private const string SP_LAST_SESSION_SERIES = "rptsp_GetLastSessionSeries";
         private const string SP_LAST_X_SESSIONS_SERIES = "rptsp_GetLast5SessionsBarGraph";
+        private const string SP_PLAYER_ONLINE_ACTIVITY = "rptsp_GetOnlineActivity";
 
         private string _DBConnection;
 
@@ -123,6 +124,7 @@ namespace KIWebApp.Classes
             playerstats.TopAirframesSeries = ((IDAL_Rpt)this).GetTopAirframeSeries(ucid, ref conn);
             playerstats.LastSessionSeries = ((IDAL_Rpt)this).GetLastSessionSeries(ucid, ref conn);
             playerstats.LastXSessionsEventsSeries = ((IDAL_Rpt)this).GetLastSetSessions(ucid, ref conn);
+            playerstats.OnlineActivity = ((IDAL_Rpt)this).GetPlayerOnlineActivity(ucid, ref conn);
             return playerstats;
         }
 
@@ -297,6 +299,45 @@ namespace KIWebApp.Classes
             }
 
             return session_series;
+        }
+
+        RptPlayerOnlineActivity IDAL_Rpt.GetPlayerOnlineActivity(string ucid)
+        {
+            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            try
+            {
+                conn.Open();
+                return ((IDAL_Rpt)this).GetPlayerOnlineActivity(ucid, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        RptPlayerOnlineActivity IDAL_Rpt.GetPlayerOnlineActivity(string ucid, ref MySqlConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+            RptPlayerOnlineActivity model = new RptPlayerOnlineActivity();
+            MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_PLAYER_ONLINE_ACTIVITY)
+            {
+                Connection = conn,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new MySqlParameter("UCID", ucid));
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                object[] array = { DateTimeJavaScript.ToJavaScriptMilliseconds(dr.Field<DateTime>("Date")), dr.Field<long>("TotalTime") * 1000 };
+                // highcharts treats the number as milliseconds - need to multiply by 1000 to convert seconds to milliseconds
+                model.Series.Add(array);
+            }
+
+            return model;
         }
     }
 }

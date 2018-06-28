@@ -23,5 +23,8 @@ namespace KIWebApp.Classes
 
         List<RptSessionEventsDataModel> GetLastSetSessions(string ucid);
         List<RptSessionEventsDataModel> GetLastSetSessions(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
+
+        RptPlayerOnlineActivity GetPlayerOnlineActivity(string ucid);
+        RptPlayerOnlineActivity GetPlayerOnlineActivity(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
     }
 }
