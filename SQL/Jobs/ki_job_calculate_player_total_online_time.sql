@@ -1,7 +1,10 @@
+-- STAGE 1 - PREPARING THE DATA
+
+
 -- create a temporary table to process online time
 DROP TEMPORARY TABLE IF EXISTS temp_connect_pairs;
 CREATE TEMPORARY TABLE temp_connect_pairs 
-(ucid varchar(128), server_id int, session_id int, ci_id int, ci_type varchar(20), ci_time bigint, co_id int, co_type varchar(20), co_time bigint); 
+(ucid varchar(128), server_id int, session_id int, ci_id int, ci_type varchar(20), ci_time bigint, ci_date datetime(0), co_id int, co_type varchar(20), co_time bigint, co_date datetime(0)); 
 
 -- mysql limitation - you cannot reference a temporary table more than once in the same query, and we need this in order
 -- to remove duplicate rows that might be generated from the insert query
@@ -16,10 +19,12 @@ SELECT
   l1.session_id AS session_id,
   l1.id AS ci_id,
   l1.type AS ci_type,
-  l1.real_time AS ci_time,
+  l1.real_time AS ci_time,	-- Time captured from in game
+  l1.time AS ci_date,	-- Real Date Time Stamp of when the event occurred
   l2.id AS co_id,
   l2.type AS co_type,
-  l2.real_time AS co_time
+  l2.real_time AS co_time,
+  l2.time AS co_date
 FROM
   raw_connection_log l1 
 LEFT JOIN raw_connection_log l2 
@@ -70,6 +75,18 @@ INNER JOIN session s
 WHERE tcp.co_time IS NULL AND s.real_time_end IS NULL AND s.last_heartbeat IS NULL;
 
 
+-- online activity prep table
+DROP TEMPORARY TABLE IF EXISTS temp_date_activity;
+CREATE TEMPORARY TABLE temp_date_activity 
+(ucid varchar(128), date datetime(0), game_time bigint); 
+
+INSERT INTO temp_date_activity
+SELECT t.ucid, DATE(t.ci_date), SUM(t.co_time - t.ci_time) AS SumTimeDiff
+FROM temp_connect_pairs t
+GROUP BY t.ucid, DATE(t.ci_date);
+
+-- END OF STAGE 1 - Preparing the Data
+
 
 -- insert new player records into the stats table
 INSERT INTO rpt_overall_stats (ucid)
@@ -112,6 +129,25 @@ SET s.avg_online_time = (s.avg_online_time * s.num_connects + l.SumTimeDiff) / (
 	s.num_connects = s.num_connects + l.GrpCount
 WHERE l.UCID IS NOT NULL;
 
+
+
+-- update existing date records of online activity
+UPDATE rpt_player_online_activity AS rpt 
+LEFT JOIN temp_date_activity t
+	ON t.ucid = rpt.ucid AND DATE(t.date) = DATE(rpt.date)
+    SET rpt.total_game_time = rpt.total_game_time + t.game_time;
+    
+    
+-- insert new date records for online activity
+INSERT INTO rpt_player_online_activity (ucid, date, total_game_time)
+SELECT t.ucid, t.date, t.game_time
+FROM temp_date_activity t
+LEFT JOIN rpt_player_online_activity rpt
+	ON t.ucid = rpt.ucid AND DATE(t.date) = DATE(rpt.date)
+WHERE rpt.date IS NULL;
+
+DROP TEMPORARY TABLE IF EXISTS temp_date_activity;
+
 -- Backup the data then purge the raw table
 
 -- backing up all connection events
@@ -128,7 +164,7 @@ FROM raw_connection_log rcl
 INNER JOIN temp_connect_pairs tcp
 	ON rcl.id = tcp.co_id;
 
--- deleting records from raw table
+-- deleting records from raw table that were processed as part of the temp table
 DELETE rcl.* FROM raw_connection_log rcl
 INNER JOIN temp_connect_pairs tcp
 	ON rcl.id = tcp.ci_id OR rcl.id = tcp.co_id;

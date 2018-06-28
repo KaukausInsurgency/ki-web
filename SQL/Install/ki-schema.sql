@@ -33,6 +33,7 @@ CREATE TABLE `backup_connection_log` (
   `ip_address` varchar(20) NOT NULL,
   `game_time` bigint(32) NOT NULL,
   `real_time` bigint(32) NOT NULL,
+  `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=584 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -175,6 +176,7 @@ CREATE TABLE `raw_connection_log` (
   `ip_address` varchar(20) NOT NULL,
   `game_time` bigint(32) NOT NULL,
   `real_time` bigint(32) NOT NULL,
+  `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -362,6 +364,22 @@ CREATE TABLE `rpt_overall_stats` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `rpt_player_online_activity`
+--
+
+DROP TABLE IF EXISTS `rpt_player_online_activity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rpt_player_online_activity` (
+  `id` bigint(32) NOT NULL AUTO_INCREMENT,
+  `ucid` varchar(128) NOT NULL,
+  `date` date NOT NULL,
+  `total_game_time` bigint(32) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `rpt_player_session_series`
 --
 
@@ -480,4 +498,4 @@ CREATE TABLE `weapon` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-14 22:30:07
+-- Dump completed on 2018-06-28  0:23:03
