@@ -242,6 +242,7 @@
     <Compile Include="Models\HtmlHeaderModel.cs" />
     <Compile Include="Models\HtmlContentIFrameModel.cs" />
     <Compile Include="Models\IHtmlContentModel.cs" />
+    <Compile Include="Models\RptPlayerBestSortieStatsModel.cs" />
     <Compile Include="Models\RptPlayerOnlineActivityModel.cs" />
     <Compile Include="Models\RptScoreOverTimeModel.cs" />
     <Compile Include="Models\RptScoreOverTimePlotModel.cs" />

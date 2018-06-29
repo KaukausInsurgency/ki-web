@@ -32,5 +32,8 @@ namespace KIWebApp.Classes
 
         List<RptScoreOverTimeModel> GetScoreOverTime(string ucid);
         List<RptScoreOverTimeModel> GetScoreOverTime(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
+
+        RptPlayerBestSortieStatsModel GetBestSortieStats(string ucid);
+        RptPlayerBestSortieStatsModel GetBestSortieStats(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
     }
 }

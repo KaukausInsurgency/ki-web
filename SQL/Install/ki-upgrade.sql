@@ -203,7 +203,7 @@ BEGIN
 	SET NEW.time = NOW();
 	
 	-- Added new reporting table for player online activity
-	CREATE TABLE `rpt_player_online_activity` (
+	CREATE TABLE IF NOT EXISTS `rpt_player_online_activity` (
 	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
 	  `ucid` VARCHAR(128) NOT NULL,
 	  `date` DATE NOT NULL,
@@ -232,7 +232,7 @@ BEGIN
 	WHERE date IS NULL OR date = '0000-00-00';
 	
 	-- Added new reporting table for sorties over time 
-	CREATE TABLE `rpt_sorties_over_time` (
+	CREATE TABLE IF NOT EXISTS `rpt_sorties_over_time` (
 	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
 	  `ucid` VARCHAR(128) NOT NULL,
 	  `airframe` VARCHAR(45) NOT NULL,
@@ -244,6 +244,11 @@ BEGIN
 	  `transport` INT NOT NULL DEFAULT 0,
 	  `resupplies` INT NOT NULL DEFAULT 0,
 	  PRIMARY KEY (`id`));
+	  
+	-- Added new column to count number of hits taken in a sortie
+	ALTER TABLE `rpt_airframe_sortie` 
+	ADD COLUMN `hits_received` INT(11) NOT NULL AFTER `cargo_unhooked`;
+
 	
 	-- insert data
     INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)

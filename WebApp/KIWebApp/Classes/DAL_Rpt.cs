@@ -17,6 +17,7 @@ namespace KIWebApp.Classes
         private const string SP_PLAYER_ONLINE_ACTIVITY = "rptsp_GetOnlineActivity";
         private const string SP_SORTIES_OVER_TIME = "rptsp_GetSortiesOverTime";
         private const string SP_SCORE_OVER_TIME = "rptsp_GetScoreOverTime";
+        private const string SP_BEST_SORTIE_STATS = "rptsp_GetPlayerBestSortieStats";
 
         private string _DBConnection;
 
@@ -123,6 +124,7 @@ namespace KIWebApp.Classes
                 break;
             }
 
+            playerstats.BestSortieStats = ((IDAL_Rpt)this).GetBestSortieStats(ucid, ref conn);
             playerstats.TopAirframesSeries = ((IDAL_Rpt)this).GetTopAirframeSeries(ucid, ref conn);
             playerstats.LastSessionSeries = ((IDAL_Rpt)this).GetLastSessionSeries(ucid, ref conn);
             playerstats.LastXSessionsEventsSeries = ((IDAL_Rpt)this).GetLastSetSessions(ucid, ref conn);
@@ -440,6 +442,46 @@ namespace KIWebApp.Classes
                 model[1].Data.Add(new RptScoreOverTimePlotModel(dr, "SlingLoads"));
                 model[2].Data.Add(new RptScoreOverTimePlotModel(dr, "Transport"));
                 model[3].Data.Add(new RptScoreOverTimePlotModel(dr, "Resupplies"));
+            }
+
+            return model;
+        }
+
+        RptPlayerBestSortieStatsModel IDAL_Rpt.GetBestSortieStats(string ucid)
+        {
+            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            try
+            {
+                conn.Open();
+                return ((IDAL_Rpt)this).GetBestSortieStats(ucid, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        RptPlayerBestSortieStatsModel IDAL_Rpt.GetBestSortieStats(string ucid, ref MySqlConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            RptPlayerBestSortieStatsModel model = null;
+
+            MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_BEST_SORTIE_STATS)
+            {
+                Connection = conn,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new MySqlParameter("UCID", ucid));
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                model = new RptPlayerBestSortieStatsModel(dr);
+                break;
             }
 
             return model;

@@ -275,6 +275,7 @@ CREATE TABLE `rpt_airframe_sortie` (
   `depot_resupply` int(11) NOT NULL,
   `cargo_hooked` int(11) NOT NULL,
   `cargo_unhooked` int(11) NOT NULL,
+  `hits_received` int(11) NOT NULL,
   PRIMARY KEY (`sortie_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -522,4 +523,4 @@ CREATE TABLE `weapon` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-29 14:28:34
+-- Dump completed on 2018-06-29 19:46:49

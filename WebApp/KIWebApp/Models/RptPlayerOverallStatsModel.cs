@@ -23,6 +23,8 @@ namespace KIWebApp.Models
         public int DepotResupplies { get; set; }
         public int CargoUnpacked { get; set; }
 
+        public RptPlayerBestSortieStatsModel BestSortieStats;
+
         public decimal? SortieSuccessRatio { get; set; }
         public decimal? SlingLoadSuccessRatio { get; set; }
         public decimal? KillDeathEjectRatio { get; set; }
