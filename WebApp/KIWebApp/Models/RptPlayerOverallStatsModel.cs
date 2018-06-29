@@ -31,6 +31,8 @@ namespace KIWebApp.Models
         public List<RptTopAirframeSeriesModel> TopAirframesSeries { get; set; }
         public List<RptSessionSeriesModel> LastSessionSeries { get; set; }
         public List<RptSessionEventsDataModel> LastXSessionsEventsSeries { get; set; }
-        public RptPlayerOnlineActivity OnlineActivity { get; set; }
+        public RptPlayerOnlineActivityModel OnlineActivity { get; set; }
+        public List<RptSortiesOverTimeModel> SortiesOverTime { get; set; }
+        public List<RptScoreOverTimeModel> ScoreOverTime { get; set; }
     }
 }

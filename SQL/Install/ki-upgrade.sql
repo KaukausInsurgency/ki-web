@@ -188,6 +188,20 @@ BEGIN
 	ALTER TABLE `backup_connection_log` 
 	ADD COLUMN `time` DATETIME(0) NOT NULL AFTER `real_time`;
 	
+	-- Update all date stamps with a default value of 2018-01-01 12:00:00
+	UPDATE raw_connection_log 
+	SET time = '2018-01-01 12:00:00'
+	WHERE time IS NULL OR time = '0000-00-00 00:00:00';
+	
+	UPDATE backup_connection_log 
+	SET time = '2018-01-01 12:00:00'
+	WHERE time IS NULL OR time = '0000-00-00 00:00:00';
+	
+	-- Added trigger to auto set the current date/time on new records
+	CREATE TRIGGER `trg_raw_connection_log_current_time` BEFORE INSERT ON  `raw_connection_log` 
+	FOR EACH ROW 
+	SET NEW.time = NOW();
+	
 	-- Added new reporting table for player online activity
 	CREATE TABLE `rpt_player_online_activity` (
 	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
@@ -195,7 +209,41 @@ BEGIN
 	  `date` DATE NOT NULL,
 	  `total_game_time` BIGINT(32) NOT NULL DEFAULT 0,
 	  PRIMARY KEY (`id`));
+	  
+	-- Added date stamp columns to gameevents log tables
+	ALTER TABLE `raw_gameevents_log` 
+	ADD COLUMN `date` DATE NOT NULL AFTER `ucid`;
+	
+	ALTER TABLE `backup_gameevents_log` 
+	ADD COLUMN `date` DATE NOT NULL AFTER `ucid`;
+	
+	-- Added trigger to auto insert the current date on new records
+	CREATE TRIGGER `trg_raw_gameevents_log_current_time` BEFORE INSERT ON  `raw_gameevents_log` 
+	FOR EACH ROW 
+	SET NEW.date = CURDATE();
 
+	-- Update all date stamps with a default value of 2018-01-01
+	UPDATE raw_gameevents_log 
+	SET date = '2018-01-01'
+	WHERE date IS NULL OR date = '0000-00-00';
+	
+	UPDATE backup_gameevents_log 
+	SET date = '2018-01-01'
+	WHERE date IS NULL OR date = '0000-00-00';
+	
+	-- Added new reporting table for sorties over time 
+	CREATE TABLE `rpt_sorties_over_time` (
+	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
+	  `ucid` VARCHAR(128) NOT NULL,
+	  `airframe` VARCHAR(45) NOT NULL,
+	  `date` DATE NOT NULL,
+	  `sorties` INT NOT NULL DEFAULT 0,
+	  `kills` INT NOT NULL DEFAULT 0,
+	  `deaths` INT NOT NULL DEFAULT 0,
+	  `slingloads` INT NOT NULL DEFAULT 0,
+	  `transport` INT NOT NULL DEFAULT 0,
+	  `resupplies` INT NOT NULL DEFAULT 0,
+	  PRIMARY KEY (`id`));
 	
 	-- insert data
     INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)

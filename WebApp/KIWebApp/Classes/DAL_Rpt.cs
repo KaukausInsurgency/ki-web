@@ -15,6 +15,8 @@ namespace KIWebApp.Classes
         private const string SP_LAST_SESSION_SERIES = "rptsp_GetLastSessionSeries";
         private const string SP_LAST_X_SESSIONS_SERIES = "rptsp_GetLast5SessionsBarGraph";
         private const string SP_PLAYER_ONLINE_ACTIVITY = "rptsp_GetOnlineActivity";
+        private const string SP_SORTIES_OVER_TIME = "rptsp_GetSortiesOverTime";
+        private const string SP_SCORE_OVER_TIME = "rptsp_GetScoreOverTime";
 
         private string _DBConnection;
 
@@ -125,6 +127,8 @@ namespace KIWebApp.Classes
             playerstats.LastSessionSeries = ((IDAL_Rpt)this).GetLastSessionSeries(ucid, ref conn);
             playerstats.LastXSessionsEventsSeries = ((IDAL_Rpt)this).GetLastSetSessions(ucid, ref conn);
             playerstats.OnlineActivity = ((IDAL_Rpt)this).GetPlayerOnlineActivity(ucid, ref conn);
+            playerstats.SortiesOverTime = ((IDAL_Rpt)this).GetSortiesOverTime(ucid, ref conn);
+            playerstats.ScoreOverTime = ((IDAL_Rpt)this).GetScoreOverTime(ucid, ref conn);
             return playerstats;
         }
 
@@ -301,7 +305,7 @@ namespace KIWebApp.Classes
             return session_series;
         }
 
-        RptPlayerOnlineActivity IDAL_Rpt.GetPlayerOnlineActivity(string ucid)
+        RptPlayerOnlineActivityModel IDAL_Rpt.GetPlayerOnlineActivity(string ucid)
         {
             MySqlConnection conn = new MySqlConnection(_DBConnection);
             try
@@ -315,11 +319,11 @@ namespace KIWebApp.Classes
             }
         }
 
-        RptPlayerOnlineActivity IDAL_Rpt.GetPlayerOnlineActivity(string ucid, ref MySqlConnection conn)
+        RptPlayerOnlineActivityModel IDAL_Rpt.GetPlayerOnlineActivity(string ucid, ref MySqlConnection conn)
         {
             if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
                 conn.Open();
-            RptPlayerOnlineActivity model = new RptPlayerOnlineActivity();
+            RptPlayerOnlineActivityModel model = new RptPlayerOnlineActivityModel();
             MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_PLAYER_ONLINE_ACTIVITY)
             {
                 Connection = conn,
@@ -335,6 +339,107 @@ namespace KIWebApp.Classes
                 object[] array = { DateTimeJavaScript.ToJavaScriptMilliseconds(dr.Field<DateTime>("Date")), dr.Field<long>("TotalTime") * 1000 };
                 // highcharts treats the number as milliseconds - need to multiply by 1000 to convert seconds to milliseconds
                 model.Series.Add(array);
+            }
+
+            return model;
+        }
+
+        List<RptSortiesOverTimeModel> IDAL_Rpt.GetSortiesOverTime(string ucid)
+        {
+            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            try
+            {
+                conn.Open();
+                return ((IDAL_Rpt)this).GetSortiesOverTime(ucid, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        List<RptSortiesOverTimeModel> IDAL_Rpt.GetSortiesOverTime(string ucid, ref MySqlConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            List<RptSortiesOverTimeModel> model = new List<RptSortiesOverTimeModel>();
+            MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_SORTIES_OVER_TIME)
+            {
+                Connection = conn,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new MySqlParameter("UCID", ucid));
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+
+            int CurrentIndex = -1;
+            string CurrentAirframe = "";
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                string airframe = dr.Field<string>("Airframe");
+                if (airframe != CurrentAirframe)
+                {
+                    model.Add(new RptSortiesOverTimeModel());
+                    CurrentIndex++;
+                    CurrentAirframe = airframe;
+                    model[CurrentIndex].Airframe = airframe;
+
+                    if (airframe == "TOTAL")
+                        model[CurrentIndex].ChartType = "spline";
+                }
+
+                model[CurrentIndex].Data.Add(new RptSortiesOverTimePlotModel(dr));
+            }
+
+            return model;
+        }
+
+        List<RptScoreOverTimeModel> IDAL_Rpt.GetScoreOverTime(string ucid)
+        {
+            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            try
+            {
+                conn.Open();
+                return ((IDAL_Rpt)this).GetScoreOverTime(ucid, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        List<RptScoreOverTimeModel> IDAL_Rpt.GetScoreOverTime(string ucid, ref MySqlConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            List<RptScoreOverTimeModel> model = new List<RptScoreOverTimeModel>();
+            MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_SCORE_OVER_TIME)
+            {
+                Connection = conn,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new MySqlParameter("UCID", ucid));
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+
+            Dictionary<string, int> HashIndex = new Dictionary<string, int>();
+
+            model.Add(new RptScoreOverTimeModel("Kills"));
+            model.Add(new RptScoreOverTimeModel("Slingloads"));
+            model.Add(new RptScoreOverTimeModel("Transport"));
+            model.Add(new RptScoreOverTimeModel("Resupplies"));
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                model[0].Data.Add(new RptScoreOverTimePlotModel(dr, "Kills"));
+                model[1].Data.Add(new RptScoreOverTimePlotModel(dr, "SlingLoads"));
+                model[2].Data.Add(new RptScoreOverTimePlotModel(dr, "Transport"));
+                model[3].Data.Add(new RptScoreOverTimePlotModel(dr, "Resupplies"));
             }
 
             return model;

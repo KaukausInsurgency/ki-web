@@ -53,6 +53,7 @@ CREATE TABLE `backup_gameevents_log` (
   `session_id` bigint(32) NOT NULL,
   `sortie_id` bigint(32) DEFAULT NULL,
   `ucid` varchar(128) DEFAULT NULL,
+  `date` date NOT NULL,
   `event` varchar(45) NOT NULL,
   `player_name` varchar(128) NOT NULL,
   `player_side` int(11) DEFAULT NULL,
@@ -180,7 +181,7 @@ CREATE TABLE `raw_connection_log` (
   `real_time` bigint(32) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -213,6 +214,7 @@ CREATE TABLE `raw_gameevents_log` (
   `session_id` bigint(32) NOT NULL,
   `sortie_id` bigint(32) DEFAULT NULL,
   `ucid` varchar(128) DEFAULT NULL,
+  `date` date NOT NULL,
   `event` varchar(45) NOT NULL,
   `player_name` varchar(128) NOT NULL,
   `player_side` int(11) DEFAULT NULL,
@@ -415,6 +417,28 @@ CREATE TABLE `rpt_player_session_series` (
   KEY `fk_session_idx` (`session_id`),
   CONSTRAINT `fk_session` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1303 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `rpt_sorties_over_time`
+--
+
+DROP TABLE IF EXISTS `rpt_sorties_over_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rpt_sorties_over_time` (
+  `id` bigint(32) NOT NULL AUTO_INCREMENT,
+  `ucid` varchar(128) NOT NULL,
+  `airframe` varchar(45) NOT NULL,
+  `date` date NOT NULL,
+  `sorties` int(11) NOT NULL DEFAULT '0',
+  `kills` int(11) NOT NULL DEFAULT '0',
+  `deaths` int(11) NOT NULL DEFAULT '0',
+  `slingloads` int(11) NOT NULL DEFAULT '0',
+  `transport` int(11) NOT NULL DEFAULT '0',
+  `resupplies` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1130,6 +1154,65 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `rptsp_GetScoreOverTime` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `rptsp_GetScoreOverTime`(IN UCID VARCHAR(128))
+BEGIN
+	SELECT 
+        r.date AS Date,
+        r.kills AS Kills,
+        r.slingloads AS SlingLoads,
+        r.transport AS Transport,
+        r.resupplies AS Resupplies
+	FROM rpt_sorties_over_time r
+    WHERE r.ucid = UCID AND r.airframe = 'TOTAL'
+    ORDER BY r.date;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `rptsp_GetSortiesOverTime` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `rptsp_GetSortiesOverTime`(IN UCID VARCHAR(128))
+BEGIN
+	SELECT 
+		r.airframe AS Airframe,
+        r.date AS Date,
+        r.sorties AS Sorties,
+        r.kills AS Kills,
+        r.deaths AS Deaths
+	FROM rpt_sorties_over_time r
+    WHERE r.ucid = UCID
+    ORDER BY 
+		CASE 
+			WHEN r.airframe="TOTAL" THEN 0
+			ELSE 1 
+		END,
+        r.airframe, r.date;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `rptsp_GetTopAirframeSeries` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1448,4 +1531,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-28  0:22:28
+-- Dump completed on 2018-06-29 14:18:55

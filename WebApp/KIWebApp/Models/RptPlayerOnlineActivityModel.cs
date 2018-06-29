@@ -5,10 +5,10 @@ using System.Web;
 
 namespace KIWebApp.Models
 {
-    public class RptPlayerOnlineActivity
+    public class RptPlayerOnlineActivityModel
     {
         public List<object[]> Series { get; set; }
-        public RptPlayerOnlineActivity()
+        public RptPlayerOnlineActivityModel()
         {
             Series = new List<object[]>();
         }

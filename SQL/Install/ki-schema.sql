@@ -51,6 +51,7 @@ CREATE TABLE `backup_gameevents_log` (
   `session_id` bigint(32) NOT NULL,
   `sortie_id` bigint(32) DEFAULT NULL,
   `ucid` varchar(128) DEFAULT NULL,
+  `date` date NOT NULL,
   `event` varchar(45) NOT NULL,
   `player_name` varchar(128) NOT NULL,
   `player_side` int(11) DEFAULT NULL,
@@ -178,7 +179,7 @@ CREATE TABLE `raw_connection_log` (
   `real_time` bigint(32) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,6 +195,7 @@ CREATE TABLE `raw_gameevents_log` (
   `session_id` bigint(32) NOT NULL,
   `sortie_id` bigint(32) DEFAULT NULL,
   `ucid` varchar(128) DEFAULT NULL,
+  `date` date NOT NULL,
   `event` varchar(45) NOT NULL,
   `player_name` varchar(128) NOT NULL,
   `player_side` int(11) DEFAULT NULL,
@@ -399,6 +401,28 @@ CREATE TABLE `rpt_player_session_series` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `rpt_sorties_over_time`
+--
+
+DROP TABLE IF EXISTS `rpt_sorties_over_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rpt_sorties_over_time` (
+  `id` bigint(32) NOT NULL AUTO_INCREMENT,
+  `ucid` varchar(128) NOT NULL,
+  `airframe` varchar(45) NOT NULL,
+  `date` date NOT NULL,
+  `sorties` int(11) NOT NULL DEFAULT '0',
+  `kills` int(11) NOT NULL DEFAULT '0',
+  `deaths` int(11) NOT NULL DEFAULT '0',
+  `slingloads` int(11) NOT NULL DEFAULT '0',
+  `transport` int(11) NOT NULL DEFAULT '0',
+  `resupplies` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `server`
 --
 
@@ -498,4 +522,4 @@ CREATE TABLE `weapon` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-28  0:23:03
+-- Dump completed on 2018-06-29 14:28:34

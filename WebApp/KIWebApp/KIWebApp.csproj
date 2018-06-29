@@ -242,7 +242,9 @@
     <Compile Include="Models\HtmlHeaderModel.cs" />
     <Compile Include="Models\HtmlContentIFrameModel.cs" />
     <Compile Include="Models\IHtmlContentModel.cs" />
-    <Compile Include="Models\RptPlayerOnlineActivity.cs" />
+    <Compile Include="Models\RptPlayerOnlineActivityModel.cs" />
+    <Compile Include="Models\RptScoreOverTimeModel.cs" />
+    <Compile Include="Models\RptScoreOverTimePlotModel.cs" />
     <Compile Include="Models\RptSessionEventsDataModel.cs" />
     <Compile Include="Models\RptSessionDataPlotModel.cs" />
     <Compile Include="Models\DepotModel.cs" />
@@ -252,6 +254,8 @@
     <Compile Include="Models\RptAirframeOverallStatsModel.cs" />
     <Compile Include="Models\RptPlayerOverallStatsModel.cs" />
     <Compile Include="Models\RptSessionSeriesModel.cs" />
+    <Compile Include="Models\RptSortiesOverTimeModel.cs" />
+    <Compile Include="Models\RptSortiesOverTimePlotModel.cs" />
     <Compile Include="Models\RptTopAirframeSeriesModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SearchResultsModel.cs" />

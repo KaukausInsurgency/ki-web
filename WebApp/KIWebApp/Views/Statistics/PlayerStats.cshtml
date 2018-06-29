@@ -223,6 +223,6 @@
     <script src="~/Scripts/views/statistics/charts-themes.js"></script>
     <script src="~/Scripts/views/statistics/player/init-charts.js"></script>
     <script type="text/javascript">
-        var model = @Html.Raw(Json.Encode(Model));
+        var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     </script>
 }
