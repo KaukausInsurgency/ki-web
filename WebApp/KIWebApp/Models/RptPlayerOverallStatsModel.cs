@@ -7,6 +7,7 @@ namespace KIWebApp.Models
 {
     public class RptPlayerOverallStatsModel
     {
+        public string UCID { get; set; }
         public string PlayerName { get; set; }
         public int PlayerLives { get; set; }
         public bool PlayerBanned { get; set; }
@@ -40,5 +41,6 @@ namespace KIWebApp.Models
         public RptPlayerOnlineActivityModel OnlineActivity { get; set; }
         public List<RptSortiesOverTimeModel> SortiesOverTime { get; set; }
         public List<RptScoreOverTimeModel> ScoreOverTime { get; set; }
+        public List<RptAirframeBasicStatsModel> Airframes { get; set; }
     }
 }

@@ -14,6 +14,10 @@
 })
 
 <div class="main">
+    <div data-url-game="@Url.Action("Game", "Servers")"
+         data-url-airframe-statistics="@Url.Action("AirframeStats", "Statistics")"
+         data-url-server-statistics="@Url.Action("ServerStats", "Statistics")"
+         data-ucid="@Model.UCID"></div>
     <h2 class="dashboard-main-title">Overall Statistics For @Model.PlayerName</h2>
     <div class="dashboard-layout">
         <div class="dashboard-row">
@@ -157,32 +161,7 @@
             <div id="hc-online-activity"></div>
         </div>
         <div class="chart-row">
-            <div class="chart-columns-2">
-                <h2 class="stats-table-title">Airframes</h2>
-                <div class="stats-table-layout right-margin-inner">
-                    <table id="airframe-table" class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Top</th>
-                                <th>Time</th>
-                                <th>Sorties</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="AirframeID" style="display:none;">1</div>
-                                    <b>Mi-8</b>
-                                </td>
-                                <td>1%</td>
-                                <td>22:25:34</td>
-                                <td>10</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @Html.Partial("_Airframes", Model)
             <div class="chart-columns-2">
                 <h2 class="stats-table-title left-margin-inner">Top 5 Servers</h2>
                 <div class="stats-table-layout left-margin-inner">
@@ -222,6 +201,7 @@
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="~/Scripts/views/statistics/charts-themes.js"></script>
     <script src="~/Scripts/views/statistics/player/init-charts.js"></script>
+    <script src="~/Scripts/views/statistics/player/init.js"></script>
     <script type="text/javascript">
         var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     </script>

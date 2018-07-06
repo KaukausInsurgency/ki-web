@@ -18,6 +18,7 @@ namespace KIWebApp.Classes
         private const string SP_SORTIES_OVER_TIME = "rptsp_GetSortiesOverTime";
         private const string SP_SCORE_OVER_TIME = "rptsp_GetScoreOverTime";
         private const string SP_BEST_SORTIE_STATS = "rptsp_GetPlayerBestSortieStats";
+        private const string SP_PLAYER_AIRFRAME_STATS_BASIC = "rptsp_GetPlayerAirframeStatsBasic";
 
         private string _DBConnection;
 
@@ -118,10 +119,10 @@ namespace KIWebApp.Classes
                 playerstats.CargoUnpacked = dr.Field<int>("CargoUnpacked");
 
                 // for some reason mysql likes to cast all SUM(x) as long even on an INT column :(
-                playerstats.GroundKills = Convert.ToInt32(dr.Field<long>("GroundKills")); 
-                playerstats.ShipKills = Convert.ToInt32(dr.Field<long>("ShipKills"));
-                playerstats.HelicopterKills = Convert.ToInt32(dr.Field<long>("HelicopterKills"));
-                playerstats.AirKills = Convert.ToInt32(dr.Field<long>("AirKills"));
+                playerstats.GroundKills = Convert.ToInt32(dr.Field<decimal>("GroundKills")); 
+                playerstats.ShipKills = Convert.ToInt32(dr.Field<decimal>("ShipKills"));
+                playerstats.HelicopterKills = Convert.ToInt32(dr.Field<decimal>("HelicopterKills"));
+                playerstats.AirKills = Convert.ToInt32(dr.Field<decimal>("AirKills"));
 
                 playerstats.SortieSuccessRatio = sortiesuccessratio;
                 playerstats.SlingLoadSuccessRatio = slingloadsuccessratio;
@@ -129,6 +130,7 @@ namespace KIWebApp.Classes
                 playerstats.TransportSuccessRatio = transportratio;      
                 break;
             }
+            playerstats.UCID = ucid;
 
             playerstats.BestSortieStats = ((IDAL_Rpt)this).GetBestSortieStats(ucid, ref conn);
             playerstats.TopAirframesSeries = ((IDAL_Rpt)this).GetTopAirframeSeries(ucid, ref conn);
@@ -137,6 +139,7 @@ namespace KIWebApp.Classes
             playerstats.OnlineActivity = ((IDAL_Rpt)this).GetPlayerOnlineActivity(ucid, ref conn);
             playerstats.SortiesOverTime = ((IDAL_Rpt)this).GetSortiesOverTime(ucid, ref conn);
             playerstats.ScoreOverTime = ((IDAL_Rpt)this).GetScoreOverTime(ucid, ref conn);
+            playerstats.Airframes = ((IDAL_Rpt)this).GetBasicAirframeStats(ucid, ref conn);
             return playerstats;
         }
 
@@ -488,6 +491,45 @@ namespace KIWebApp.Classes
             {
                 model = new RptPlayerBestSortieStatsModel(dr);
                 break;
+            }
+
+            return model;
+        }
+
+        List<RptAirframeBasicStatsModel> IDAL_Rpt.GetBasicAirframeStats(string ucid)
+        {
+            MySqlConnection conn = new MySqlConnection(_DBConnection);
+            try
+            {
+                conn.Open();
+                return ((IDAL_Rpt)this).GetBasicAirframeStats(ucid, ref conn);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        List<RptAirframeBasicStatsModel> IDAL_Rpt.GetBasicAirframeStats(string ucid, ref MySqlConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            List<RptAirframeBasicStatsModel> model = new List<RptAirframeBasicStatsModel>();
+
+            MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(SP_PLAYER_AIRFRAME_STATS_BASIC)
+            {
+                Connection = conn,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new MySqlParameter("UCID", ucid));
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                model.Add(new RptAirframeBasicStatsModel(dr));
             }
 
             return model;

@@ -1,0 +1,30 @@
+﻿@model KIWebApp.Models.RptPlayerOverallStatsModel
+
+<div class="chart-columns-2">
+    <h2 class="stats-table-title">Airframes</h2>
+    <div class="stats-table-layout right-margin-inner">
+        <table id="airframe-table" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Top</th>
+                    <th>Time</th>
+                    <th>Sorties</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model.Airframes)
+                {
+                <tr class="js-clickable-airframe">
+                    <td>
+                        <b class="js-airframe-name">@item.Airframe</b>
+                    </td>
+                    <td>@item.Top</td>
+                    <td>@item.Time</td>
+                    <td>@item.Sorties</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -38,5 +38,10 @@ namespace KIWebApp.Controllers
         {
             return View(rptdal.GetOverallPlayerStats(playerUCID));
         }
+
+        public ActionResult AirframeStats(string playerUCID, string airframe)
+        {
+            return View();
+        }
     }
 }

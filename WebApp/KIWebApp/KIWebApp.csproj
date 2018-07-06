@@ -242,6 +242,7 @@
     <Compile Include="Models\HtmlHeaderModel.cs" />
     <Compile Include="Models\HtmlContentIFrameModel.cs" />
     <Compile Include="Models\IHtmlContentModel.cs" />
+    <Compile Include="Models\RptAirframeBasicStatsModel.cs" />
     <Compile Include="Models\RptPlayerBestSortieStatsModel.cs" />
     <Compile Include="Models\RptPlayerOnlineActivityModel.cs" />
     <Compile Include="Models\RptScoreOverTimeModel.cs" />
@@ -441,6 +442,7 @@
     <Content Include="Scripts\views\statistics\airframe\init-charts.js" />
     <Content Include="Scripts\views\statistics\charts-themes.js" />
     <Content Include="Scripts\views\statistics\player\init-charts.js" />
+    <Content Include="Scripts\views\statistics\player\init.js" />
     <Content Include="Views\Servers\Templates\_CapturePointInfoWindow.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -480,6 +482,8 @@
     <Content Include="Views\Servers\_Missions.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Statistics\_Airframes.cshtml" />
+    <Content Include="Views\Statistics\AirframeStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

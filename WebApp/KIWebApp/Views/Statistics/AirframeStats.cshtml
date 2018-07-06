@@ -1,0 +1,257 @@
+﻿@section styles {
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/css/views/statistics/airframe-statistics.css" rel="stylesheet" type="text/css">
+}
+
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-stats",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
+<div class="main">
+    <h2 class="dashboard-main-title">SamplePlayer - Sample Airframe Stats (Coming Soon)</h2>
+    <div class="dashboard-layout">
+        <div class="dashboard-row">
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-medium-font">23:21:22</div>
+                <div class="dash-header dash-header-small-font">Total Hours</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">22</div>
+                <div class="dash-header dash-header-small-font">Take Offs</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">22</div>
+                <div class="dash-header dash-header-small-font">Landings</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">41</div>
+                <div class="dash-header dash-header-small-font">Kills</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">1</div>
+                <div class="dash-header dash-header-small-font">Friendly Kills</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">0</div>
+                <div class="dash-header dash-header-small-font">Deaths</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">0</div>
+                <div class="dash-header dash-header-small-font">Ejects</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">41.00</div>
+                <div class="dash-header dash-header-small-font">Kill / Death Eject Ratio</div>
+            </div>
+        </div>
+        <div class="dashboard-row">
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">6</div>
+                <div class="dash-header dash-header-small-font">Slingload Hooks</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">4</div>
+                <div class="dash-header dash-header-small-font">Slingload Unhooks</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">9</div>
+                <div class="dash-header dash-header-small-font">Transport Pickups</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">9</div>
+                <div class="dash-header dash-header-small-font">Transport Drop Offs</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">0</div>
+                <div class="dash-header dash-header-small-font">Depot Resupplies</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">3</div>
+                <div class="dash-header dash-header-small-font">Cargo Unpacked</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-large-font">0</div>
+                <div class="dash-header dash-header-small-font">Aerial Refuelings</div>
+            </div>
+            <div class="dash-columns-eight">
+                <div class="dash-header dash-header-medium-font">Mar 12 2018</div>
+                <div class="dash-header dash-header-small-font">Last Flown</div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfloat">
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Kills</h2>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">3</div>
+                    <div class="dash-header dash-header-small-font">Air</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">2</div>
+                    <div class="dash-header dash-header-small-font">Helicopter</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">30</div>
+                    <div class="dash-header dash-header-small-font">Ground</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">1</div>
+                    <div class="dash-header dash-header-small-font">Ship</div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Deaths</h2>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">1</div>
+                    <div class="dash-header dash-header-small-font">Air</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">0</div>
+                    <div class="dash-header dash-header-small-font">Helicopter</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">2</div>
+                    <div class="dash-header dash-header-small-font">Ground</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">1</div>
+                    <div class="dash-header dash-header-small-font">Ship</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfloat">
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Sortie Records</h2>
+
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-medium-font">04:20:12</div>
+                    <div class="dash-header dash-header-small-font">Longest Flight</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">30</div>
+                    <div class="dash-header dash-header-small-font">Most Kills</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-large-font">12</div>
+                    <div class="dash-header dash-header-small-font">Most Hits Taken</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div class="dash-header dash-header-medium-font">5000 m</div>
+                    <div class="dash-header dash-header-small-font">Highest Altitude</div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-layout dashboard-background-columns-2">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Sortie Average</h2>
+
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-medium-font">03:45:23</div>
+                    <div class="dash-header dash-header-small-font">Average Time</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">5</div>
+                    <div class="dash-header dash-header-small-font">Average Kills</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">90%</div>
+                    <div class="dash-header dash-header-small-font">Success</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chart-layout">
+        <div class="chart-row">
+            <div id="hc-last-sortie"></div>
+            <div id="hc-last-5-sorties"></div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-layout-graphs">
+                <div id="hc-deaths-by-type-bar"></div>
+            </div>
+            <div class="chart-layout-graphs">
+                <div id="hc-kills-by-type-bar"></div>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div id="hc-deaths-by-unit-top-10-bar"></div>
+        </div>
+        <div class="chart-row">
+            <div id="hc-kills-by-unit-top-10-bar"></div>
+        </div>
+    </div>
+
+
+    <div class="clearfloat">
+        <div class="dashboard-layout">
+            <div class="dashboard-row">
+                <h2 class="dashboard-section-heading">Weapons</h2>
+
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-medium-font">140</div>
+                    <div class="dash-header dash-header-small-font">Missiles Fired</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">72</div>
+                    <div class="dash-header dash-header-small-font">Missile Kills</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">200</div>
+                    <div class="dash-header dash-header-small-font">Rockets Fired</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">12</div>
+                    <div class="dash-header dash-header-small-font">Rocket Kills</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-medium-font">40</div>
+                    <div class="dash-header dash-header-small-font">Bombs Dropped</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">12</div>
+                    <div class="dash-header dash-header-small-font">Bomb Kills</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">40</div>
+                    <div class="dash-header dash-header-small-font">Guns Fired</div>
+                </div>
+                <div class="dash-columns-eight">
+                    <div class="dash-header dash-header-large-font">12</div>
+                    <div class="dash-header dash-header-small-font">Gun Kills</div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-background">
+                <h3>Accuracy</h3>
+                <div id="hc-missile-accuracy"></div>
+                <div id="hc-rocket-accuracy"></div>
+                <div id="hc-bomb-accuracy"></div>
+                <div id="hc-gun-accuracy"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section postscripts {
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="~/Scripts/views/statistics/charts-themes.js"></script>
+    <script src="~/Scripts/views/statistics/airframe/init-charts.js"></script>
+}

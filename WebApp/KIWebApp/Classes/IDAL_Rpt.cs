@@ -35,5 +35,8 @@ namespace KIWebApp.Classes
 
         RptPlayerBestSortieStatsModel GetBestSortieStats(string ucid);
         RptPlayerBestSortieStatsModel GetBestSortieStats(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
+
+        List<RptAirframeBasicStatsModel> GetBasicAirframeStats(string ucid);
+        List<RptAirframeBasicStatsModel> GetBasicAirframeStats(string ucid, ref MySql.Data.MySqlClient.MySqlConnection conn);
     }
 }
