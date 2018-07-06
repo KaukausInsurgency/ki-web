@@ -117,6 +117,12 @@ namespace KIWebApp.Classes
                 playerstats.DepotResupplies = dr.Field<int>("DepotResupplies");
                 playerstats.CargoUnpacked = dr.Field<int>("CargoUnpacked");
 
+                // for some reason mysql likes to cast all SUM(x) as long even on an INT column :(
+                playerstats.GroundKills = Convert.ToInt32(dr.Field<long>("GroundKills")); 
+                playerstats.ShipKills = Convert.ToInt32(dr.Field<long>("ShipKills"));
+                playerstats.HelicopterKills = Convert.ToInt32(dr.Field<long>("HelicopterKills"));
+                playerstats.AirKills = Convert.ToInt32(dr.Field<long>("AirKills"));
+
                 playerstats.SortieSuccessRatio = sortiesuccessratio;
                 playerstats.SlingLoadSuccessRatio = slingloadsuccessratio;
                 playerstats.KillDeathEjectRatio = killdeathejectratio;

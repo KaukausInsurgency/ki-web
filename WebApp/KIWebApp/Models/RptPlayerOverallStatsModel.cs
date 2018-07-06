@@ -22,6 +22,10 @@ namespace KIWebApp.Models
         public int TransportDismounts { get; set; }
         public int DepotResupplies { get; set; }
         public int CargoUnpacked { get; set; }
+        public int GroundKills { get; set; }
+        public int ShipKills { get; set; }
+        public int HelicopterKills { get; set; }
+        public int AirKills { get; set; }
 
         public RptPlayerBestSortieStatsModel BestSortieStats;
 

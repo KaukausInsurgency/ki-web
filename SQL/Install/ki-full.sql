@@ -415,7 +415,7 @@ CREATE TABLE `rpt_player_online_activity` (
   `date` date NOT NULL,
   `total_game_time` bigint(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -456,7 +456,7 @@ CREATE TABLE `rpt_sorties_over_time` (
   `transport` int(11) NOT NULL DEFAULT '0',
   `resupplies` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1189,7 +1189,27 @@ BEGIN
         landings / takeoffs AS SortieSuccessRatio,
         slingload_unhooks / slingload_hooks AS SlingLoadSuccessRatio,
         kills / CASE WHEN (deaths + ejects) = 0 THEN 1 ELSE (deaths + ejects) END AS KillDeathEjectRatio,
-        transport_dismounts / transport_mounts AS TransportSuccessRatio
+        transport_dismounts / transport_mounts AS TransportSuccessRatio,
+        (
+			SELECT COALESCE(SUM(rpt.kills), 0)
+            FROM rpt_airframe_kd rpt
+            WHERE rpt.ucid = UCID AND rpt.name = 'GROUND'
+        ) AS GroundKills,
+        (
+			SELECT COALESCE(SUM(rpt.kills), 0)
+            FROM rpt_airframe_kd rpt
+            WHERE rpt.ucid = UCID AND rpt.name = 'SHIP'
+        ) AS ShipKills,
+        (
+			SELECT COALESCE(SUM(rpt.kills), 0)
+            FROM rpt_airframe_kd rpt
+            WHERE rpt.ucid = UCID AND rpt.name = 'HELICOPTER'
+        ) AS HelicopterKills,
+        (
+			SELECT COALESCE(SUM(rpt.kills), 0)
+            FROM rpt_airframe_kd rpt
+            WHERE rpt.ucid = UCID AND rpt.name = 'AIR'
+        ) AS AirKills
 	FROM rpt_overall_stats r
     INNER JOIN player p
     ON r.ucid = p.ucid
@@ -1577,4 +1597,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-29 19:46:19
+-- Dump completed on 2018-07-06  4:28:32
