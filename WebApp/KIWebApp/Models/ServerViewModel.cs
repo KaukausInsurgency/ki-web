@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KIWebApp.Classes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,19 +11,14 @@ namespace KIWebApp.Models
     {
         public int ServerID { get; set; }
         public string Status { get; set; }
-        public string RestartTime { get; set; }
+        public string RestartTimeString { get; set; }
+        public int RestartTime { get; set; }
 
         public ServerViewModel(DataRow dr, int serverID)
         {
-            if (dr["RestartTime"] == DBNull.Value || dr["RestartTime"] == null)
-                RestartTime = new TimeSpan(0, 0, 0).ToString();
-            else
-                RestartTime = new TimeSpan(TimeSpan.TicksPerSecond * dr.Field<int>("RestartTime")).ToString();
-
-            Status = "Offline";
-            if (dr["Status"] != DBNull.Value && dr["Status"] != null)
-                Status = dr.Field<string>("Status");
-
+            RestartTimeString = SqlUtility.ConvertTimeTicksToStringInt(ref dr, "RestartTime");
+            RestartTime = SqlUtility.GetValueOrDefault<int>(ref dr, "RestartTime", 0);
+            Status = SqlUtility.GetValueOrDefault<string>(ref dr, "Status", "Offline");
             ServerID = serverID;
         }
     }

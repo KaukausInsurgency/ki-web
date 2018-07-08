@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 using KIWebApp.Classes;
 using MySql.Data.MySqlClient;
 using StackExchange.Redis;
+using System.Data;
 
 namespace KIWebApp.Asyncs
 {
@@ -20,8 +21,10 @@ namespace KIWebApp.Asyncs
         private ISubscriber sub;
         private IDatabase redisDB;
         private IAppSettings appSettings;
-        private MySqlConnection MySqlConnection;
-        private ConnectionMultiplexer RedisConnection;
+        private IDbConnection MySqlConnection;
+        private IConnectionMultiplexer RedisConnection;
+        private System.Threading.Timer timer_poll_server;
+        private const int POLL_SERVER_PERIOD = 30000;
         public int ServerID { get; private set; }
 
         public GameThreadWorker(int serverID, IAppSettings appSettings)
@@ -37,6 +40,23 @@ namespace KIWebApp.Asyncs
             this.appSettings = appSettings;
             sub = RedisConnection.GetSubscriber();
             sub.Subscribe(new RedisChannel(appSettings.RedisEnvironmentPrefix + ":" + this.ServerID.ToString() + ":*", RedisChannel.PatternMode.Pattern), this.OnRedisSubscription);
+            timer_poll_server = new System.Threading.Timer(this.UpdateServer, null, 0, POLL_SERVER_PERIOD);
+        }
+
+        // constructor used in unit tests ONLY
+        public GameThreadWorker(int serverID, IAppSettings appSettings, IHubContext hub, IDAL dal, IDbConnection dbconn, IConnectionMultiplexer redisconn)
+        {
+            this.ServerID = ServerID;
+            this.appSettings = appSettings;
+            this.hub = hub;
+            this.dal = dal;
+            this.MySqlConnection = dbconn;
+            this.RedisConnection = redisconn;
+            redisDB = RedisConnection.GetDatabase();
+            sub = RedisConnection.GetSubscriber();
+            sub.Subscribe(new RedisChannel(this.appSettings.RedisEnvironmentPrefix + ":" + this.ServerID.ToString() + ":*", RedisChannel.PatternMode.Pattern), this.OnRedisSubscription);
+            timer_poll_server = new System.Threading.Timer(this.UpdateServer, null, 0, POLL_SERVER_PERIOD);
+            timer_poll_server.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         public void Dispose()
@@ -45,6 +65,7 @@ namespace KIWebApp.Asyncs
             sub.UnsubscribeAll(CommandFlags.None);
             MySqlConnection.Close();
             RedisConnection.Close();
+            timer_poll_server.Dispose();
         }
 
         private void OnRedisSubscription(RedisChannel channel, RedisValue message)
@@ -81,8 +102,6 @@ namespace KIWebApp.Asyncs
                     hub.Clients.Group(ServerID.ToString()).UpdateChat(json);
                 else if (channelString.Contains(appSettings.RedisKeyOnlinePlayer))
                     hub.Clients.Group(ServerID.ToString()).UpdateOnlinePlayers(json);
-                else
-                    hub.Clients.Group(ServerID.ToString()).UpdateServer(json);
             }
             catch (Exception ex)
             {
@@ -91,6 +110,11 @@ namespace KIWebApp.Asyncs
                 hub.Clients.Group(ServerID.ToString()).OnServerError("An internal server error occurred");
             }
             
+        }
+
+        private void UpdateServer(object state)
+        {
+            hub.Clients.Group(ServerID.ToString()).UpdateServer(dal.GetServerInfo(this.ServerID));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Tests
             ServerViewModel model = new ServerViewModel(CreateMockDataRow(), 1);
             Assert.That(model.ServerID == 1);
             Assert.That(model.Status == "Online");
-            Assert.That(model.RestartTime == "00:05:00");
+            Assert.That(model.RestartTimeString == "00:05:00");
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace Tests
             DataRow dr = CreateMockDataRow();
             dr["RestartTime"] = DBNull.Value;
             ServerViewModel model = new ServerViewModel(dr, 1);
-            Assert.That(model.RestartTime == "00:00:00");
+            Assert.That(model.RestartTimeString == "00:00:00");
         }
 
         [Test]

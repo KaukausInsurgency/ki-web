@@ -168,7 +168,6 @@
         $('#RestartTimeProgress').css('width', restartTime + '%');
         KI.setDivText('#RestartTimeString', 'Time Remaining: ' + modelObj.RestartTimeString);
         KI.setDivText('#Status', modelObj.Status);
-        KI.setDivText('#Map', modelObj.Map);
     };
 
     GameHubProxy.client.OnServerError = function (error) {
