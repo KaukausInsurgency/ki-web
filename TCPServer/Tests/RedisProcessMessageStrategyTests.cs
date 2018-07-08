@@ -120,6 +120,22 @@ namespace Tests
             Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Name\":\"CapturePointA\",\"ServerID\":1}");
         }
 
+        [Test]
+        public void ProcessMessage_RedisPublishSingleNull_Success()
+        {
+            IConnectionMultiplexer conn = null;
+            ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
+                JTokenType.Object, "{'1':{'Name':-9999,'ServerID':1}}", false);
+
+            // Confirm that the data stored in the mock redis is correct
+            MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
+            Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Name\":null,\"ServerID\":1}");
+
+            dynamic JsonObject =
+                    Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(mockdb.MockChannel["UT:1:Sample"]);
+
+            Assert.That(JsonObject.Name == null);
+        }
 
         [Test]
         public void ProcessMessage_SinglePublishResponse_Success()

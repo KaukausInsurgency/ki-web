@@ -44,6 +44,9 @@ namespace TAWKI_TCPServer.Implementations
                 }
             }
 
+            // parse out all lua nulls and convert to real nulls
+            request.Data = Utility.ParseLuaNullsFromString(request.Data);
+
             if (request.IsBulkQuery)
             {
                 // now deserialize this string into a list of dictionaries for parsing

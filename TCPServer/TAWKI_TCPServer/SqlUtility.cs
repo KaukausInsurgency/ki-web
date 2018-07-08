@@ -21,7 +21,7 @@ namespace TAWKI_TCPServer
                 var parameter = cmd.CreateParameter();
                 parameter.ParameterName = kv.Key;
 
-                if (kv.Value.GetType() == typeof(Int64) && (Int64)kv.Value == LUANULL)
+                if (kv.Value == null || (kv.Value.GetType() == typeof(Int64) && (Int64)kv.Value == LUANULL))
                     parameter.Value = null;
                 else
                     parameter.Value = kv.Value;

@@ -38,7 +38,6 @@ namespace Tests
         }
 
         [Test]
-        [Ignore("Real Nulls not supported")]
         public void CreateCommand_RealNull_Success()
         {
             IDbCommand cmd = SqlUtility.CreateCommand(new Mocks.MockDBConnection(), "MockCommand", new Dictionary<string, object>() { { "param1", null } });

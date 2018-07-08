@@ -48,5 +48,10 @@ namespace TAWKI_TCPServer
 
             return shtml;
         }
+
+        public static string ParseLuaNullsFromString(string lua)
+        {
+            return lua.Replace(":-9999", ":null");
+        }
     }
 }

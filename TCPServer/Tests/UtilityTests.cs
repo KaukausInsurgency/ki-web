@@ -87,5 +87,13 @@ namespace Tests
             string shtml = Utility.SanitizeHTML(html, ref config);
             Assert.That(shtml == html);
         }
+
+        [Test]
+        public void ParseLuaNulls_Success()
+        {
+            string luajson = "{'Data':-9999,'Data2':9999,'Data3':'String'}";
+            Assert.That(!Utility.ParseLuaNullsFromString(luajson).Contains("-9999"));
+            Assert.That(Utility.ParseLuaNullsFromString(luajson).Contains("null"));
+        }
     }
 }
