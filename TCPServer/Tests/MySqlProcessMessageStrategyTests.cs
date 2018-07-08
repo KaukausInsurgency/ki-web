@@ -16,6 +16,43 @@ namespace Tests
     [TestFixture]
     class MySqlProcessMessageStrategyTests
     {
+        [Test]
+        public void ProcessMessage_GetServerInvalidVersion_Success()
+        {
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            ProtocolRequest request = CreateMockProtocolRequest("GetOrAddServer", "{ 'ServerName':'Dev Kaukasus Insurgency Server','Version':'INVALID'}");
+            ProtocolResponse response = strategy.Process(request);
+
+            Assert.That(response.Result == false);
+            Assert.That(response.Error == "Version mismatch - you are running an older version of KI - the latest version is [0.90] - Please update to the latest version");
+            Assert.That(response.Action == "GetOrAddServer");
+            Assert.That(response.Data.Count == 0);
+        }
+
+        [Test]
+        public void ProcessMessage_GetServerNoVersion_Success()
+        {
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            ProtocolResponse response = strategy.Process(CreateMockProtocolRequest("GetOrAddServer", "{'ServerName':'Dev Kaukasus Insurgency Server'}"));
+
+            Assert.That(response.Result == false);
+            Assert.That(response.Error == "Version mismatch - you are running an older version of KI - the latest version is [0.90] - Please update to the latest version");
+            Assert.That(response.Action == "GetOrAddServer");
+            Assert.That(response.Data.Count == 0);
+        }
+
+        [Test]
+        public void ProcessMessage_GetServerValidVersion_Success()
+        {
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
+            ProtocolResponse response = strategy.Process(CreateMockProtocolRequest("GetOrAddServer", "{'ServerName':'Dev Kaukasus Insurgency Server','Version':'6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD'}"));
+
+            Assert.That(response.Result == true);
+            Assert.That(response.Error == "");
+            Assert.That(response.Action == "GetOrAddServer");
+            Assert.That((int)response.Data[0][0] == 1);
+        }
+
         // While this test does not exercise the real behaviour (ie a SQLException would be thrown when trying to call
         // the stored procedure because the argument 'Description' was not found, we are just checking here that no
         // exception is being thrown and that the system handles the call correctly
@@ -23,18 +60,7 @@ namespace Tests
         public void ProcessMessage_GetServerNoHTMLDescription_Success()
         {
             IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "GetOrAddServer",
-                Destination = "MYSQL",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'ServerName':'Dev Kaukasus Insurgency Server'}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
+            ProtocolResponse response = strategy.Process(CreateMockProtocolRequest("GetOrAddServer", "{'ServerName':'Dev Kaukasus Insurgency Server','Version':'6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD'}"));
 
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
@@ -46,18 +72,7 @@ namespace Tests
         public void ProcessMessage_GetServerWithHTMLDescription_Success()
         {
             IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection());
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "GetOrAddServer",
-                Destination = "MYSQL",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'ServerName':'Dev Kaukasus Insurgency Server','Description':'Hello World <p></p>'}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
+            ProtocolResponse response = strategy.Process(CreateMockProtocolRequest("GetOrAddServer", "{'ServerName':'Dev Kaukasus Insurgency Server','Version':'6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD','Description':'Hello World <p></p>'}"));
 
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
@@ -69,21 +84,10 @@ namespace Tests
         public void ProcessMessage_SampleCallException_Success()
         {
             IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(new Mocks.MockDBConnection(new MockMySqlThrowExceptionBehaviour()));
-
-            ProtocolRequest request = new ProtocolRequest
-            {
-                Action = "SampleCall",
-                Destination = "MYSQL",
-                IsBulkQuery = false,
-                IPAddress = "127.0.0.1",
-                Type = Newtonsoft.Json.Linq.JTokenType.Object,
-                Data = "{'Param1':'Test','Param2':'Hello World <p></p>'}"
-            };
-
-            ProtocolResponse response = strategy.Process(request);
+            ProtocolResponse response = strategy.Process(CreateMockProtocolRequest("SampleCall", "{'Param1':'Test','Param2':'Hello World <p></p>'}"));
 
             Assert.That(response.Result == false);
-            Assert.That(response.Error == ("Error executing query against MySQL (Action: " + request.Action + ") - A sample exception has occurred"));
+            Assert.That(response.Error == ("Error executing query against MySQL (Action: SampleCall) - A sample exception has occurred"));
             Assert.That(response.Action == "SampleCall");
             Assert.That(response.Data.Count == 0);
         }
@@ -217,6 +221,20 @@ namespace Tests
         private IProcessMessageStrategy CreateMySqlProcessStrategyWithMocks(IDbConnection conn)
         {
             return new MySqlProcessMessageStrategy(conn, new Mocks.MockLogger(), new Mocks.MockConfigReader());
+        }
+
+        private ProtocolRequest CreateMockProtocolRequest(string action, string data)
+        {
+            ProtocolRequest request = new ProtocolRequest
+            {
+                Action = action,
+                Destination = "MYSQL",
+                IsBulkQuery = false,
+                IPAddress = "127.0.0.1",
+                Type = Newtonsoft.Json.Linq.JTokenType.Object,
+                Data = data
+            };
+            return request;
         }
     }
 }

@@ -19,5 +19,7 @@ namespace TAWKI_TCPServer.Interfaces
         List<string> SupportedHTML { get; }
         Dictionary<string, string> RedisActionKeys { get; }
         string RedisEnvironmentKey { get; }
+        string Version { get; }
+        string VersionKey { get; }
     }
 }

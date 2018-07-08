@@ -90,6 +90,22 @@ namespace TAWKI_TCPServer.Implementations
                             return response;
                         }
                     }
+
+                    // Check the API version that the game is using
+                    if (DataDictionary.ContainsKey("Version") && DataDictionary["Version"].ToString() != Config.VersionKey)
+                    {
+                        Logger.Log("Client Version Mismatch (Expected: " + Config.VersionKey + ", Got: " + DataDictionary["Version"] + ")");
+                        response.Error = "Version mismatch - you are running an older version of KI - the latest version is [" + Config.Version + "] - Please update to the latest version";
+                        response.Result = false;
+                        return response;
+                    }
+                    else if (!DataDictionary.ContainsKey("Version"))
+                    {
+                        Logger.Log("Client Version Mismatch - Client did not provide version information");
+                        response.Error = "Version mismatch - you are running an older version of KI - the latest version is [" + Config.Version + "] - Please update to the latest version";
+                        response.Result = false;
+                        return response;
+                    }
                 }
 
                 try

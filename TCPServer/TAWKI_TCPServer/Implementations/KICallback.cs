@@ -83,6 +83,10 @@ namespace TAWKI_TCPServer.Implementations
                         string jsonResp = JsonConvert.SerializeObject(resp);
                         ((SocketClient)(sender)).Write(jsonResp);
                     }          
+                    else
+                    {
+                        Logger.Log("Too many requests - throttling request");
+                    }
                 }
                 else
                 {

@@ -20,6 +20,8 @@ namespace Tests.Mocks
         private List<string> html;
         private Dictionary<string, string> rediskeys;
         private string redisEnvironmentKey;
+        private string version;
+        private string versionKey;
 
         public MockConfigReader()
         {
@@ -34,6 +36,8 @@ namespace Tests.Mocks
             rediskeys = new Dictionary<string, string>();
             success = true;
             redisEnvironmentKey = "UT";
+            version = "0.90";
+            versionKey = "6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD";
         }
 
         public MockConfigReader(List<string> html, Dictionary<string,string> rediskeys)
@@ -49,6 +53,8 @@ namespace Tests.Mocks
             this.rediskeys = rediskeys;
             success = true;
             redisEnvironmentKey = "UT";
+            version = "0.90";
+            versionKey = "6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD";
         }
 
         int IConfigReader.PortNumber => port;
@@ -62,5 +68,7 @@ namespace Tests.Mocks
         List<string> IConfigReader.SupportedHTML => html;
         Dictionary<string, string> IConfigReader.RedisActionKeys => rediskeys;
         string IConfigReader.RedisEnvironmentKey => redisEnvironmentKey;
+        string IConfigReader.Version => version;
+        string IConfigReader.VersionKey => versionKey;
     }
 }
