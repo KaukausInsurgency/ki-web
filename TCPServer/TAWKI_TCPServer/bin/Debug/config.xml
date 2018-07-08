@@ -13,4 +13,6 @@
 	<Port>9983</Port>
 	<MaxConnections>4</MaxConnections>
 	<WhiteList>192.168.1.254;::ffff:127.0.0.1</WhiteList>
+	<Version>0.90</Version>
+	<VersionKey>AAAA</VersionKey>
 </Config>
