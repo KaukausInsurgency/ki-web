@@ -52,12 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DALTests.cs" />
+    <Compile Include="DateTimeJavaScriptTests.cs" />
+    <Compile Include="GameThreadWorkerTests.cs" />
     <Compile Include="Interfaces\IExecuteReader.cs" />
     <Compile Include="Mocks\ExecuteReaderNoAction.cs" />
     <Compile Include="Mocks\MockDBCommand.cs" />
     <Compile Include="Mocks\MockDBConnection.cs" />
     <Compile Include="PlayerModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisUtilityTests.cs" />
     <Compile Include="ServerModelTests.cs" />
     <Compile Include="ServerViewModelTests.cs" />
     <Compile Include="SqlUtilityTests.cs" />

@@ -8,7 +8,7 @@ using Tests.Interfaces;
 
 namespace Tests.Mocks
 {
-    class ExecuteReaderNoAction : Tests.Interfaces.IExecuteReader
+    class ExecuteReaderNoAction : IExecuteReader
     {
         IDataReader IExecuteReader.Execute()
         {

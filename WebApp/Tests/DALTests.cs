@@ -11,9 +11,9 @@ namespace Tests
     public class DALTests
     {
         [Test]
-        public void Test()
+        public void Dal_Test_Success()
         {
-            Assert.That(1 == 1);
+            Assert.That(1 != 1);
         }
     }
 }
