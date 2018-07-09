@@ -876,14 +876,9 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateSession`(
 		ServerID INT,
         RealTimeStart BIGINT,
-        GameTimeStart BIGINT,
-        RefreshMissionData BOOL
+        GameTimeStart BIGINT
     )
 BEGIN
-	IF RefreshMissionData THEN
-		DELETE FROM capture_point WHERE server_id = ServerID;
-        DELETE FROM depot WHERE server_id = ServerID;
-	END IF;
 	DELETE FROM online_players WHERE server_id = ServerID;
     UPDATE server SET status = "Online" WHERE server_id = ServerID;
 	INSERT INTO session (server_id, start, real_time_start, game_time_start)
@@ -975,7 +970,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrAddServer`(
         IN Description VARCHAR(900),
         IN SimpleRadioEnabled BOOL,
         IN SimpleRadioIP VARCHAR(40),
-        IN IP VARCHAR(30)
+        IN IP VARCHAR(30),
+        IN Version VARCHAR(60) -- dead parameter (not used in mysql) - here because we version check in TCP Server
     )
 BEGIN
 	IF ((SELECT EXISTS (SELECT 1 FROM server WHERE server.ip_address = IP)) = 1) THEN
@@ -1392,22 +1388,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePlayer`(
-	ServerID INT,
 	UCID VARCHAR(128),
     Name VARCHAR(128),
-    Role VARCHAR(45),
-    Lives INT,
-    Side INT,
-    Ping INT
+    Lives INT
 )
 BEGIN
 	UPDATE player
     SET player.lives = Lives, player.name = Name
     WHERE player.ucid = UCID;
-    
-    UPDATE online_players
-    SET online_players.role = Role, online_players.side = Side, online_players.ping = Ping
-    WHERE online_players.server_id = ServerID AND online_players.ucid = UCID;
     
     SELECT UCID;
 END ;;
@@ -1622,4 +1610,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-06  5:22:23
+-- Dump completed on 2018-07-09  1:59:55
