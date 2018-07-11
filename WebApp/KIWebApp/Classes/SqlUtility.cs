@@ -78,7 +78,7 @@ namespace KIWebApp.Classes
             return ((long)(ts.TotalHours)).ToString("D2") + ":" + ts.ToString(@"mm\:ss");
         }
 
-        public static T GetValueOrDefault<T>(ref DataRow dr, string field, T defaultValue)
+        public static T GetValueOrDefault<T>(DataRow dr, string field, T defaultValue)
         {
             if (dr[field] == DBNull.Value || dr[field] == null)
                 return defaultValue;

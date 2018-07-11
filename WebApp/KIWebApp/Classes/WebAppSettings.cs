@@ -11,7 +11,6 @@ namespace KIWebApp.Classes
         string IAppSettings.RedisKeyDepot => System.Configuration.ConfigurationManager.AppSettings["RedisKeyDepot"];
         string IAppSettings.RedisKeySideMission => System.Configuration.ConfigurationManager.AppSettings["RedisKeySideMission"];
         string IAppSettings.RedisKeyChat => System.Configuration.ConfigurationManager.AppSettings["RedisKeyChat"];
-        string IAppSettings.RedisKeyOnlinePlayer => System.Configuration.ConfigurationManager.AppSettings["RedisKeyOnlinePlayer"];
         string IAppSettings.RedisEnvironmentPrefix => System.Configuration.ConfigurationManager.AppSettings["RedisEnvironmentPrefix"];
     }
 }

@@ -11,7 +11,6 @@ namespace KIWebApp.Classes
         string RedisKeyDepot { get; }
         string RedisKeySideMission { get; }
         string RedisKeyChat { get; }
-        string RedisKeyOnlinePlayer { get; }
         string RedisEnvironmentPrefix { get; }
     }
 }

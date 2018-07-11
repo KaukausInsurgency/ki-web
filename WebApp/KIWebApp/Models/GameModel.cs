@@ -42,9 +42,9 @@ namespace KIWebApp.Models
             SimpleRadioEnabled = dr.Field<ulong>("SimpleRadioEnabled") == 1;
             SimpleRadioIPAddress = dr.Field<string>("SimpleRadioIPAddress");
             OnlinePlayersCount = Convert.ToInt32(dr.Field<long>("OnlinePlayerCount"));
-            RestartTime = SqlUtility.GetValueOrDefault(ref dr, "RestartTime", 0);
+            RestartTime = SqlUtility.GetValueOrDefault(dr, "RestartTime", 0);
             RestartTimeString = SqlUtility.ConvertTimeTicksToStringInt(ref dr, "RestartTime");
-            Status = SqlUtility.GetValueOrDefault(ref dr, "Status", "Offline");
+            Status = SqlUtility.GetValueOrDefault(dr, "Status", "Offline");
             Map = dr.Field<string>("Map");
         }
 

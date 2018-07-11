@@ -17,8 +17,8 @@ namespace KIWebApp.Models
         public ServerViewModel(DataRow dr, int serverID)
         {
             RestartTimeString = SqlUtility.ConvertTimeTicksToStringInt(ref dr, "RestartTime");
-            RestartTime = SqlUtility.GetValueOrDefault<int>(ref dr, "RestartTime", 0);
-            Status = SqlUtility.GetValueOrDefault<string>(ref dr, "Status", "Offline");
+            RestartTime = SqlUtility.GetValueOrDefault<int>(dr, "RestartTime", 0);
+            Status = SqlUtility.GetValueOrDefault<string>(dr, "Status", "Offline");
             ServerID = serverID;
         }
     }

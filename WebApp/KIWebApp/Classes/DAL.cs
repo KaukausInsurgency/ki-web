@@ -13,6 +13,7 @@ namespace KIWebApp.Classes
     public class DAL : IDAL
     {
         private const string SP_GET_SERVERS = "websp_GetServersList";
+        private const string SP_GET_ONLINEPLAYERS = "websp_GetOnlinePlayers";
         private const string SP_GET_GAME = "websp_GetGame";
         private const string SP_SEARCH_TOTALS = "websp_SearchTotals";
         private const string SP_SEARCH_PLAYERS = "websp_SearchPlayers";
@@ -116,7 +117,7 @@ namespace KIWebApp.Classes
                     Depots = ((IDAL)this).GetDepots(serverID, ref redisconn),
                     CapturePoints = ((IDAL)this).GetCapturePoints(serverID, ref redisconn),
                     Missions = ((IDAL)this).GetSideMissions(serverID, ref redisconn),
-                    OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref redisconn),
+                    OnlinePlayers = ((IDAL)this).GetOnlinePlayers(serverID, ref dbconn),
                     Chat = ((IDAL)this).GetChatMessages(serverID, ref redisconn),
                     CustomMenuItems = ((IDAL)this).GetCustomMenuItems(serverID, ref dbconn),
                 };
@@ -132,23 +133,44 @@ namespace KIWebApp.Classes
 
         List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID)
         {
-            IConnectionMultiplexer conn = null;
+            IDbConnection conn = new MySqlConnection(_DBMySQLConnectionString);
             try
             {
-                conn = ConnectionMultiplexer.Connect(_DBRedisConnectionString);
+                conn.Open();
                 return ((IDAL)this).GetOnlinePlayers(serverID, ref conn);
             }
             finally
             {
-                if (conn != null && conn.IsConnected)
-                    conn.Close();
+                conn.Close();
             }
         }
 
 
-        List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID, ref IConnectionMultiplexer conn)
+        List<OnlinePlayerModel> IDAL.GetOnlinePlayers(int serverID, ref IDbConnection conn)
         {
-            return GetModelCollection<int, List<OnlinePlayerModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyOnlinePlayer);                
+            if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
+                conn.Open();
+
+            List<OnlinePlayerModel> players = new List<OnlinePlayerModel>();
+
+            IDbCommand cmd = SqlUtility.CreateCommand(conn, SP_GET_ONLINEPLAYERS,
+                new Dictionary<string, object>() { { "ServerID", serverID } });
+            DataTable dt = SqlUtility.Execute(cmd);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                OnlinePlayerModel player = new OnlinePlayerModel
+                {
+                    UCID = dr.Field<string>("UCID"),
+                    Name = dr.Field<string>("Name"),
+                    Role = dr.Field<string>("Role"),
+                    Side = dr.Field<int>("Side"),
+                    Ping = dr.Field<string>("Ping"),
+                    Lives = SqlUtility.GetValueOrDefault(dr, "Lives", "")
+                };
+                players.Add(player);
+            }
+            return players;
         }
 
         List<ServerModel> IDAL.GetServers()

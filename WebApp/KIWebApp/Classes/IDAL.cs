@@ -19,7 +19,7 @@ namespace KIWebApp.Classes
         List<SideMissionModel> GetSideMissions(int serverID);
         List<SideMissionModel> GetSideMissions(int serverID, ref IConnectionMultiplexer conn);
         List<OnlinePlayerModel> GetOnlinePlayers(int serverID);
-        List<OnlinePlayerModel> GetOnlinePlayers(int serverID, ref IConnectionMultiplexer conn);
+        List<OnlinePlayerModel> GetOnlinePlayers(int serverID, ref IDbConnection conn);
         GameModel GetGame(int serverID);
         GameModel GetGame(int serverID, ref IDbConnection dbconn, ref IConnectionMultiplexer redisconn);
         ServerViewModel GetServerInfo(int serverID);

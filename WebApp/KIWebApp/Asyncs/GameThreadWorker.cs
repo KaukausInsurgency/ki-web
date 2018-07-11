@@ -24,7 +24,9 @@ namespace KIWebApp.Asyncs
         private IDbConnection MySqlConnection;
         private IConnectionMultiplexer RedisConnection;
         private System.Threading.Timer timer_poll_server;
+        private System.Threading.Timer timer_poll_onlineplayers;
         private const int POLL_SERVER_PERIOD = 30000;
+        private const int POLL_ONLINEPLAYERS_PERIOD = 10000;
         public int ServerID { get; private set; }
 
         public GameThreadWorker(int serverID, IAppSettings appSettings)
@@ -41,6 +43,7 @@ namespace KIWebApp.Asyncs
             sub = RedisConnection.GetSubscriber();
             sub.Subscribe(new RedisChannel(appSettings.RedisEnvironmentPrefix + ":" + this.ServerID.ToString() + ":*", RedisChannel.PatternMode.Pattern), this.OnRedisSubscription);
             timer_poll_server = new System.Threading.Timer(this.UpdateServer, null, 0, POLL_SERVER_PERIOD);
+            timer_poll_onlineplayers = new Timer(this.UpdateOnlinePlayers, null, 0, POLL_ONLINEPLAYERS_PERIOD);
         }
 
         // constructor used in unit tests ONLY
@@ -66,6 +69,7 @@ namespace KIWebApp.Asyncs
             MySqlConnection.Close();
             RedisConnection.Close();
             timer_poll_server.Dispose();
+            timer_poll_onlineplayers.Dispose();
         }
 
         private void OnRedisSubscription(RedisChannel channel, RedisValue message)
@@ -100,8 +104,6 @@ namespace KIWebApp.Asyncs
                     hub.Clients.Group(ServerID.ToString()).UpdateMissions(json);
                 else if (channelString.Contains(appSettings.RedisKeyChat))
                     hub.Clients.Group(ServerID.ToString()).UpdateChat(json);
-                else if (channelString.Contains(appSettings.RedisKeyOnlinePlayer))
-                    hub.Clients.Group(ServerID.ToString()).UpdateOnlinePlayers(json);
             }
             catch (Exception ex)
             {
@@ -115,6 +117,11 @@ namespace KIWebApp.Asyncs
         private void UpdateServer(object state)
         {
             hub.Clients.Group(ServerID.ToString()).UpdateServer(dal.GetServerInfo(this.ServerID));
+        }
+
+        private void UpdateOnlinePlayers(object state)
+        {
+            hub.Clients.Group(ServerID.ToString()).UpdateOnlinePlayers(dal.GetOnlinePlayers(this.ServerID));
         }
     }
 }

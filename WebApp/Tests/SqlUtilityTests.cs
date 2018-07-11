@@ -59,7 +59,7 @@ namespace Tests
             DataRow row = table.NewRow();
             row.ItemArray = new object[] { 300 };    // 25 hours, 5 minutes, 30 seconds
 
-            Assert.That(SqlUtility.GetValueOrDefault(ref row, "Time", 300) == 300);
+            Assert.That(SqlUtility.GetValueOrDefault(row, "Time", 300) == 300);
             
         }
 
@@ -70,7 +70,7 @@ namespace Tests
             table.Columns.Add("Time", typeof(int));
             DataRow row = table.NewRow();
 
-            Assert.That(SqlUtility.GetValueOrDefault(ref row, "Time", 300) == 300);
+            Assert.That(SqlUtility.GetValueOrDefault(row, "Time", 300) == 300);
 
         }
 
