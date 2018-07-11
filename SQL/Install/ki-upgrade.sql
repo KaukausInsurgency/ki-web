@@ -147,7 +147,6 @@ BEGIN
 	-- This data was moved to Redis, no longer stored in MySql
 	DROP TABLE IF EXISTS capture_point;
 	DROP TABLE IF EXISTS depot;
-	DROP TABLE IF EXISTS online_players;
 	DROP TABLE IF EXISTS side_mission;
 	
 	-- DCS Map Names table 
@@ -157,17 +156,6 @@ BEGIN
 	  PRIMARY KEY (`map_id`),
 	  UNIQUE KEY `map_id_UNIQUE` (`map_id`)
 	) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-	
-	-- Re Added Online Players but in a different scheme
-	CREATE TABLE IF NOT EXISTS online_players (
-	  `server_id` int(11) NOT NULL,
-	  `ucid` varchar(128) NOT NULL,
-	  UNIQUE KEY `ucid_UNIQUE` (`ucid`),
-	  KEY `fk_server_id_idx` (`server_id`),
-	  CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	  CONSTRAINT `fk_ucid` FOREIGN KEY (`ucid`) REFERENCES `player` (`ucid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
   
 	-- insert data
     INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)

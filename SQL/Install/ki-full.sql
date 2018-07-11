@@ -137,10 +137,10 @@ DROP TABLE IF EXISTS `online_players`;
 CREATE TABLE `online_players` (
   `server_id` int(11) NOT NULL,
   `ucid` varchar(128) NOT NULL,
-  UNIQUE KEY `ucid_UNIQUE` (`ucid`),
-  KEY `fk_server_id_idx` (`server_id`),
-  CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ucid` FOREIGN KEY (`ucid`) REFERENCES `player` (`ucid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `name` varchar(128) NOT NULL,
+  `role` varchar(45) NOT NULL,
+  `side` int(10) NOT NULL,
+  `ping` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -181,7 +181,7 @@ CREATE TABLE `raw_connection_log` (
   `real_time` bigint(32) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1388,14 +1388,22 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePlayer`(
+	ServerID INT,
 	UCID VARCHAR(128),
     Name VARCHAR(128),
-    Lives INT
+    Role VARCHAR(45),
+    Lives INT,
+    Side INT,
+    Ping INT
 )
 BEGIN
 	UPDATE player
     SET player.lives = Lives, player.name = Name
     WHERE player.ucid = UCID;
+    
+    UPDATE online_players
+    SET online_players.role = Role, online_players.side = Side, online_players.ping = Ping
+    WHERE online_players.server_id = ServerID AND online_players.ucid = UCID;
     
     SELECT UCID;
 END ;;
@@ -1610,4 +1618,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-09  1:59:55
+-- Dump completed on 2018-07-10 23:45:38

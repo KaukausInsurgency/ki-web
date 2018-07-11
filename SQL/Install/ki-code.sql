@@ -853,14 +853,22 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePlayer`(
+	ServerID INT,
 	UCID VARCHAR(128),
     Name VARCHAR(128),
-    Lives INT
+    Role VARCHAR(45),
+    Lives INT,
+    Side INT,
+    Ping INT
 )
 BEGIN
 	UPDATE player
     SET player.lives = Lives, player.name = Name
     WHERE player.ucid = UCID;
+    
+    UPDATE online_players
+    SET online_players.role = Role, online_players.side = Side, online_players.ping = Ping
+    WHERE online_players.server_id = ServerID AND online_players.ucid = UCID;
     
     SELECT UCID;
 END ;;
@@ -1075,4 +1083,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-09  2:00:08
+-- Dump completed on 2018-07-10 23:55:51

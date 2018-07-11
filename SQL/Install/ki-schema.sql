@@ -135,10 +135,10 @@ DROP TABLE IF EXISTS `online_players`;
 CREATE TABLE `online_players` (
   `server_id` int(11) NOT NULL,
   `ucid` varchar(128) NOT NULL,
-  UNIQUE KEY `ucid_UNIQUE` (`ucid`),
-  KEY `fk_server_id_idx` (`server_id`),
-  CONSTRAINT `fk_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ucid` FOREIGN KEY (`ucid`) REFERENCES `player` (`ucid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `name` varchar(128) NOT NULL,
+  `role` varchar(45) NOT NULL,
+  `side` int(10) NOT NULL,
+  `ping` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,7 +179,7 @@ CREATE TABLE `raw_connection_log` (
   `real_time` bigint(32) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +379,7 @@ CREATE TABLE `rpt_player_online_activity` (
   `date` date NOT NULL,
   `total_game_time` bigint(32) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -420,7 +420,7 @@ CREATE TABLE `rpt_sorties_over_time` (
   `transport` int(11) NOT NULL DEFAULT '0',
   `resupplies` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -523,4 +523,4 @@ CREATE TABLE `weapon` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-29 19:46:49
+-- Dump completed on 2018-07-10 23:55:38
