@@ -23,7 +23,7 @@ namespace TAWKI_TCPServer.Implementations
         public KICallback(ILogger Logger)
         {
             this.Logger = Logger;
-            Throttler = new ThrottleMapper(new CurrentTime(), 1);
+            Throttler = new ThrottleMapper(new CurrentTime(), GlobalConfig.GetConfig().ActionThrottle);
             DBConnection = new MySqlConnection(GlobalConfig.GetConfig().MySQLDBConnect);
             RedisConnection = null;
         }

@@ -22,6 +22,7 @@ namespace TAWKI_TCPServer
         private List<string> _whitelist;
         private List<string> _supportedHTML;
         private Dictionary<string, string> _redisActionKeyPair;
+        private Dictionary<string, long> _actionThrottle;
         private string _redisEnvironmentKey;
         private string _version;
         private string _versionKey;
@@ -32,6 +33,7 @@ namespace TAWKI_TCPServer
             XmlDocument xml = new XmlDocument();
             _redisActionKeyPair = new Dictionary<string, string>();
             _supportedHTML = new List<string>();
+            _actionThrottle = new Dictionary<string, long>();
             try
             {
                 xml.Load(_configPath);
@@ -46,6 +48,7 @@ namespace TAWKI_TCPServer
                 XmlNodeList redisEnvironmentxml = xml.GetElementsByTagName("RedisEnvironmentKey");
                 XmlNodeList versionxml = xml.GetElementsByTagName("Version");
                 XmlNodeList versionkeyxml = xml.GetElementsByTagName("VersionKey");
+                XmlNodeList actionthrottlexml = xml.SelectNodes("/Config/Throttle/Action");
 
                 if (dbxml.Count == 0)
                     throw new Exception("Could not find <DBConnect> in config");
@@ -95,6 +98,21 @@ namespace TAWKI_TCPServer
                     }
                 }
 
+                if (actionthrottlexml.Count > 0)
+                {
+                    foreach (XmlNode x in actionthrottlexml)
+                    {
+                        if (x.Attributes["Name"] != null && x.Attributes["MinSeconds"] != null)
+                        {
+                            _actionThrottle.Add(x.Attributes["Name"].Value, Convert.ToInt64(x.Attributes["MinSeconds"].Value));
+                        }
+                        else
+                        {
+                            throw new Exception("<Throttle><Action> - xml malformed (missing attribute 'Name' or 'MinSeconds'");
+                        }
+                    }
+                }
+
                 if (supportedHTMLxml.Count > 0)
                 {
                     _supportedHTML = supportedHTMLxml[0].InnerText.Split(',').ToList<string>();
@@ -113,60 +131,19 @@ namespace TAWKI_TCPServer
             }
         }
 
-        int IConfigReader.PortNumber
-        {
-            get { return _portNumber; }
-        }
-
-        int IConfigReader.MaxConnections
-        {
-            get { return _maxConnections; }
-        }
-
-        string IConfigReader.MySQLDBConnect
-        {
-            get { return _MySQLDBConnect; }
-        }
-
-        string IConfigReader.RedisDBConnect
-        {
-            get { return _RedisDBConnect; }
-        }
-
-        bool IConfigReader.ConfigReadSuccess
-        {
-            get { return _configReadSuccess; }
-        }
-
-        bool IConfigReader.UseUPnP
-        {
-            get { return _useUPnP; }
-        }
-
-        bool IConfigReader.UseWhiteList
-        {
-            get { return _useWhiteList; }
-        }
-
-        List<string> IConfigReader.WhiteList
-        {
-            get { return _whitelist; }
-        }
-
-        List<string> IConfigReader.SupportedHTML
-        {
-            get { return _supportedHTML; }
-        }
-
-        Dictionary<string, string> IConfigReader.RedisActionKeys
-        {
-            get { return _redisActionKeyPair; }
-        }
-
+        int IConfigReader.PortNumber => _portNumber;
+        int IConfigReader.MaxConnections => _maxConnections;
+        string IConfigReader.MySQLDBConnect => _MySQLDBConnect;
+        string IConfigReader.RedisDBConnect => _RedisDBConnect;
+        bool IConfigReader.ConfigReadSuccess => _configReadSuccess;
+        bool IConfigReader.UseUPnP => _useUPnP;
+        bool IConfigReader.UseWhiteList => _useWhiteList;
+        List<string> IConfigReader.WhiteList => _whitelist;
+        List<string> IConfigReader.SupportedHTML => _supportedHTML;
+        Dictionary<string, string> IConfigReader.RedisActionKeys => _redisActionKeyPair;
         string IConfigReader.RedisEnvironmentKey => _redisEnvironmentKey;
-
         string IConfigReader.Version => _version;
-
         string IConfigReader.VersionKey => _versionKey;
+        Dictionary<string, long> IConfigReader.ActionThrottle => _actionThrottle;
     }
 }

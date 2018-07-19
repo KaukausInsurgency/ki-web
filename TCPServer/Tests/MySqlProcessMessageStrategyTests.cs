@@ -218,6 +218,19 @@ namespace Tests
             Assert.That(response.Data.Count == 1);
         }
 
+        [Test]
+        public void ProcessMessage_ConnectionOpenOnlyCalledOnce_Success()
+        {
+            IDbConnection conn = new Mocks.MockDBConnection();
+            IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(conn);
+
+            // call twice
+            strategy.Process(CreateMockProtocolRequest("SampleCall", "{'Param1':'Test','Param2':'Hello World <p></p>'}"));
+            strategy.Process(CreateMockProtocolRequest("SampleCall2", "{'Param1':'Test','Param2':'Hello World <p></p>'}"));
+
+            Assert.That(((Mocks.MockDBConnection)(conn)).OpenCalled == 1);
+        }
+
         private IProcessMessageStrategy CreateMySqlProcessStrategyWithMocks(IDbConnection conn)
         {
             return new MySqlProcessMessageStrategy(conn, new Mocks.MockLogger(), new Mocks.MockConfigReader());

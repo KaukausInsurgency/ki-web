@@ -11,6 +11,7 @@ namespace Tests.Mocks
     class MockDBConnection : IDbConnection
     {
         private string _conn;
+        public int OpenCalled { get; private set; }
         private ConnectionState _state;
         string IDbConnection.ConnectionString { get => _conn; set => _conn = value; }
         private IExecuteReader _executeReader;
@@ -18,11 +19,13 @@ namespace Tests.Mocks
         public MockDBConnection()
         {
             _executeReader = null;
+            OpenCalled = 0;
         }
 
         public MockDBConnection(IExecuteReader executeReader)
         {
             _executeReader = executeReader;
+            OpenCalled = 0;
         }
 
         int IDbConnection.ConnectionTimeout => 60;
@@ -62,6 +65,7 @@ namespace Tests.Mocks
         void IDbConnection.Open()
         {
             _state = ConnectionState.Open;
+            OpenCalled++;
         }
 
         #region IDisposable Support

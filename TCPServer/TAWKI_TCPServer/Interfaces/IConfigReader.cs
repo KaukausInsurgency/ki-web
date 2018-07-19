@@ -21,5 +21,6 @@ namespace TAWKI_TCPServer.Interfaces
         string RedisEnvironmentKey { get; }
         string Version { get; }
         string VersionKey { get; }
+        Dictionary<string, long> ActionThrottle { get; }
     }
 }
