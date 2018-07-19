@@ -35,28 +35,31 @@ namespace TAWKI_TCPServer.Implementations
 
                 try
                 {
-                    Connection.Open();
-                    foreach (var d in DataDictionary)
+                    if (CheckConnection())
                     {
-                        IDbCommand cmd = SqlUtility.CreateCommand(Connection, request.Action, d);
-                        List<object> results = SqlUtility.InvokeCommand(cmd, out string error);
-
-                        response.Error += error;
-                        if (results != null)
+                        foreach (var d in DataDictionary)
                         {
-                            response.Data.Add(results);
+                            IDbCommand cmd = SqlUtility.CreateCommand(Connection, request.Action, d);
+                            List<object> results = SqlUtility.InvokeCommand(cmd, out string error);
+
+                            response.Error += error;
+                            if (results != null)
+                            {
+                                response.Data.Add(results);
+                            }
                         }
+                        response.Result = true;
                     }
-                    Connection.Close();
-                    response.Result = true;
+                    else
+                    {
+                        response.Result = false;
+                        response.Error = "Could not connect to MYSQL instance";
+                    }  
                 }
                 catch (Exception ex)
                 {
                     CatchException(ref ex, ref request, ref response);
-                }
-                finally
-                {
-                    FinallyMySQL(ref Connection);
+                    CloseConnection();
                 }
             }
             else
@@ -110,33 +113,59 @@ namespace TAWKI_TCPServer.Implementations
 
                 try
                 {
-                    Connection.Open();
+                    if (CheckConnection())
+                    { 
+                        IDbCommand cmd = SqlUtility.CreateCommand(Connection, request.Action, DataDictionary);
+                        List<object> results = SqlUtility.InvokeCommand(cmd, out string error);
 
-                    IDbCommand cmd = SqlUtility.CreateCommand(Connection, request.Action, DataDictionary);
-                    List<object> results = SqlUtility.InvokeCommand(cmd, out string error);
-
-                    response.Error += error;
-                    if (results != null)
-                    {
-                        response.Data.Add(results);
+                        response.Error += error;
+                        if (results != null)
+                        {
+                            response.Data.Add(results);
+                        }
+                        response.Result = true;
                     }
-
-                    Connection.Close();
-                    response.Result = true;
+                    else
+                    {
+                        response.Result = false;
+                        response.Error = "Could not connect to MYSQL instance";
+                    }
                 }
                 catch (Exception ex)
                 {
                     CatchException(ref ex, ref request, ref response);
+                    CloseConnection();
                 }
-                finally
-                {
-                    FinallyMySQL(ref Connection);
-                }
+            }
+            return response;
+        }
 
+        private bool CheckConnection()
+        {
+            if (Connection == null)
+            {
+                Logger.Log("Error - Could not connect to MySql DB - Connection is Null");
+                return false;
             }
 
-            return response;
+            if (Connection.State == ConnectionState.Open)
+                return true;
+            else
+            {
+                try
+                {
+                    Connection.Open();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error - Could not connect to MySql DB - " + ex.Message);
+                    if (Connection.State == ConnectionState.Open)
+                        Connection.Close();
 
+                    return false;
+                }
+                return true;
+            }
         }
 
         private void CatchException(ref Exception ex, ref ProtocolRequest request, ref ProtocolResponse response)
@@ -145,11 +174,11 @@ namespace TAWKI_TCPServer.Implementations
             response.Error = "Error executing query against MySQL (Action: " + request.Action + ") - " + ex.Message;
         }
 
-        private void FinallyMySQL(ref IDbConnection conn)
+        private void CloseConnection()
         {
-            if (conn != null)
-                if (conn.State == System.Data.ConnectionState.Open || conn.State == System.Data.ConnectionState.Connecting)
-                    conn.Close();
+            if (Connection != null)
+                if (Connection.State == System.Data.ConnectionState.Open || Connection.State == System.Data.ConnectionState.Connecting)
+                    Connection.Close();
         }
     }
 }
