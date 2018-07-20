@@ -58,7 +58,10 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchException(ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);                    
+                }
+                finally
+                {
                     CloseConnection();
                 }
             }
@@ -133,7 +136,10 @@ namespace TAWKI_TCPServer.Implementations
                 }
                 catch (Exception ex)
                 {
-                    CatchException(ref ex, ref request, ref response);
+                    CatchException(ref ex, ref request, ref response);                
+                }
+                finally
+                {
                     CloseConnection();
                 }
             }

@@ -219,7 +219,7 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_ConnectionOpenOnlyCalledOnce_Success()
+        public void ProcessMessage_ConnectionOpenCalledTwice_Success()
         {
             IDbConnection conn = new Mocks.MockDBConnection();
             IProcessMessageStrategy strategy = CreateMySqlProcessStrategyWithMocks(conn);
@@ -228,7 +228,7 @@ namespace Tests
             strategy.Process(CreateMockProtocolRequest("SampleCall", "{'Param1':'Test','Param2':'Hello World <p></p>'}"));
             strategy.Process(CreateMockProtocolRequest("SampleCall2", "{'Param1':'Test','Param2':'Hello World <p></p>'}"));
 
-            Assert.That(((Mocks.MockDBConnection)(conn)).OpenCalled == 1);
+            Assert.That(((Mocks.MockDBConnection)(conn)).OpenCalled == 2);
         }
 
         private IProcessMessageStrategy CreateMySqlProcessStrategyWithMocks(IDbConnection conn)

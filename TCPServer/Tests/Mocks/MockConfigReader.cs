@@ -70,5 +70,6 @@ namespace Tests.Mocks
         string IConfigReader.RedisEnvironmentKey => redisEnvironmentKey;
         string IConfigReader.Version => version;
         string IConfigReader.VersionKey => versionKey;
+        Dictionary<string, long> IConfigReader.ActionThrottle => new Dictionary<string, long>();
     }
 }
