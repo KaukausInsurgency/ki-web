@@ -166,7 +166,7 @@ namespace KIWebApp.Classes
                     Role = dr.Field<string>("Role"),
                     Side = dr.Field<int>("Side"),
                     Ping = dr.Field<string>("Ping"),
-                    Lives = SqlUtility.GetValueOrDefault(dr, "Lives", "")
+                    Lives = SqlUtility.GetValueOrDefault<int>(dr, "Lives", 0).ToString()
                 };
                 players.Add(player);
             }
