@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAWKI_TCPServer;
 using TAWKI_TCPServer.Interfaces;
 
 namespace Tests.Mocks
@@ -18,7 +19,7 @@ namespace Tests.Mocks
         private bool usewhitelist;
         private List<string> whitelist;
         private List<string> html;
-        private Dictionary<string, string> rediskeys;
+        private Dictionary<string, RedisAction> rediskeys;
         private string redisEnvironmentKey;
         private string version;
         private string versionKey;
@@ -33,14 +34,14 @@ namespace Tests.Mocks
             usewhitelist = false;
             whitelist = new List<string>();
             html = new List<string>();
-            rediskeys = new Dictionary<string, string>();
+            rediskeys = new Dictionary<string, RedisAction>();
             success = true;
             redisEnvironmentKey = "UT";
             version = "0.90";
             versionKey = "6A257BB3-A5EA-4FF7-81D9-B56228BAF1BD";
         }
 
-        public MockConfigReader(List<string> html, Dictionary<string,string> rediskeys)
+        public MockConfigReader(List<string> html, Dictionary<string, RedisAction> rediskeys)
         {
             port = 9000;
             maxconn = 4;
@@ -66,7 +67,7 @@ namespace Tests.Mocks
         bool IConfigReader.UseWhiteList => usewhitelist;
         List<string> IConfigReader.WhiteList => whitelist;
         List<string> IConfigReader.SupportedHTML => html;
-        Dictionary<string, string> IConfigReader.RedisActionKeys => rediskeys;
+        Dictionary<string, RedisAction> IConfigReader.RedisActionKeys => rediskeys;
         string IConfigReader.RedisEnvironmentKey => redisEnvironmentKey;
         string IConfigReader.Version => version;
         string IConfigReader.VersionKey => versionKey;

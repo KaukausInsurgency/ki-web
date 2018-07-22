@@ -74,6 +74,7 @@
     <Compile Include="MySqlProcessMessageStrategyTests.cs" />
     <Compile Include="ProcessMessageStrategyFactoryTests.cs" />
     <Compile Include="RedisProcessMessageStrategyTests.cs" />
+    <Compile Include="RedisUtilityTests.cs" />
     <Compile Include="SqlUtilityTests.cs" />
     <Compile Include="Mocks\MockConfigReader.cs" />
     <Compile Include="Mocks\MockDBCommand.cs" />

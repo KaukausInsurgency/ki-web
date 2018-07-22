@@ -73,7 +73,7 @@ namespace Tests
         [Test]
         public void SanitizeHtml_Some_Success()
         {
-            IConfigReader config = new Mocks.MockConfigReader(new List<string>() { "p", "l" }, new Dictionary<string, string>());
+            IConfigReader config = new Mocks.MockConfigReader(new List<string>() { "p", "l" }, new Dictionary<string, RedisAction>());
             string html = "<p><l><something attr='' /></p>this is not sanitized";
             string shtml = Utility.SanitizeHTML(html, ref config);
             Assert.That(shtml == "<p><l>&lt;something attr=&#39;&#39; /&gt;</p>this is not sanitized");
@@ -82,7 +82,7 @@ namespace Tests
         [Test]
         public void SanitizeHtml_None_Success()
         {
-            IConfigReader config = new Mocks.MockConfigReader(new List<string>() { "p", "l" }, new Dictionary<string, string>());
+            IConfigReader config = new Mocks.MockConfigReader(new List<string>() { "p", "l" }, new Dictionary<string, RedisAction>());
             string html = "there is no html characters here to escape";
             string shtml = Utility.SanitizeHTML(html, ref config);
             Assert.That(shtml == html);

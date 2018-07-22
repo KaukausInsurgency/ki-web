@@ -21,7 +21,7 @@ namespace TAWKI_TCPServer
         private bool _configReadSuccess;
         private List<string> _whitelist;
         private List<string> _supportedHTML;
-        private Dictionary<string, string> _redisActionKeyPair;
+        private Dictionary<string, RedisAction> _redisActionKeyPair;
         private Dictionary<string, long> _actionThrottle;
         private string _redisEnvironmentKey;
         private string _version;
@@ -31,7 +31,7 @@ namespace TAWKI_TCPServer
         {
             _configPath = Directory.GetCurrentDirectory() + "\\config.xml";
             XmlDocument xml = new XmlDocument();
-            _redisActionKeyPair = new Dictionary<string, string>();
+            _redisActionKeyPair = new Dictionary<string, RedisAction>();
             _supportedHTML = new List<string>();
             _actionThrottle = new Dictionary<string, long>();
             try
@@ -87,13 +87,14 @@ namespace TAWKI_TCPServer
                 {
                     foreach (XmlNode x in actionkeysxml)
                     {
-                        if (x.Attributes["Action"] != null && x.Attributes["RedisKey"] != null)
+                        if (x.Attributes["Action"] != null && x.Attributes["RedisKey"] != null && x.Attributes["RedisAction"] != null)
                         {
-                            _redisActionKeyPair.Add(x.Attributes["Action"].Value, x.Attributes["RedisKey"].Value);
+                            _redisActionKeyPair.Add(x.Attributes["Action"].Value, 
+                                new RedisAction(x.Attributes["RedisKey"].Value, x.Attributes["RedisAction"].Value));
                         }
                         else
                         {
-                            throw new Exception("<RedisActionKeys><Pair> - xml malformed (missing attribute 'Action' or 'RedisKey'");
+                            throw new Exception("<RedisActionKeys><Pair> - xml malformed (missing attribute 'Action' or 'RedisKey' or 'RedisAction'");
                         }
                     }
                 }
@@ -140,7 +141,7 @@ namespace TAWKI_TCPServer
         bool IConfigReader.UseWhiteList => _useWhiteList;
         List<string> IConfigReader.WhiteList => _whitelist;
         List<string> IConfigReader.SupportedHTML => _supportedHTML;
-        Dictionary<string, string> IConfigReader.RedisActionKeys => _redisActionKeyPair;
+        Dictionary<string, RedisAction> IConfigReader.RedisActionKeys => _redisActionKeyPair;
         string IConfigReader.RedisEnvironmentKey => _redisEnvironmentKey;
         string IConfigReader.Version => _version;
         string IConfigReader.VersionKey => _versionKey;

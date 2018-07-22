@@ -18,14 +18,14 @@ namespace Tests
     [TestFixture]
     class RedisProcessMessageStrategyTests
     {
-        private ProtocolResponse GenerateMockStrategyResponse(out IConnectionMultiplexer conn, IRedisPublishBehaviour behaviour, JTokenType jtype, string data, bool bulkquery)
+        private ProtocolResponse GenerateMockStrategyResponse(out IConnectionMultiplexer conn, IRedisPublishBehaviour behaviour, JTokenType jtype, string data, bool bulkquery, string redisAction)
         {
             conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour(), behaviour);
             IConfigReader config = new Mocks.MockConfigReader(
                 new List<string>(),
-                new Dictionary<string, string>
+                new Dictionary<string, RedisAction>
                 {
-                    { "SampleCall", "Sample" },
+                    { "SampleCall", new RedisAction("Sample", redisAction) },
                 });
 
             IProcessMessageStrategy strategy = new RedisProcessMessageStrategy(conn, new Mocks.MockLogger(), config);
@@ -44,11 +44,13 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_RedisPublishBulkSingle_Success()
+        [TestCase("RPUSH")]
+        [TestCase("HSET")]
+        public void ProcessMessage_RedisPublishBulk_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(), 
-                JTokenType.Array, "[{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}]", true);
+                JTokenType.Array, "{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}", true, redisaction);
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
@@ -57,11 +59,11 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_RedisPublishBulkMulti_Success()
+        public void ProcessMessage_RedisPublishBulkSSET_Success()
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true);
+                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true, "SET");
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
@@ -69,51 +71,49 @@ namespace Tests
             // should be the last item published
             Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Name\":\"DepotC\"}", "Last published message is incorrect");
             Assert.That(mockdb.MockChannelCount["UT:1:Sample"] == 3, "3 Messages must be published through Redis for this key");
-
-            Assert.That(mockdb.MockListStore["UT:1:Sample"].Count == 3);
-            Assert.That(mockdb.MockListStore["UT:1:Sample"][0] == "{\"Name\":\"DepotA\"}");
-            Assert.That(mockdb.MockListStore["UT:1:Sample"][1] == "{\"Name\":\"DepotB\"}");
-            Assert.That(mockdb.MockListStore["UT:1:Sample"][2] == "{\"Name\":\"DepotC\"}");
+            Assert.That(mockdb.MockStringSetStore["UT:1:Sample"] == "{\"Name\":\"DepotC\"}");
         }
 
 
         [Test]
-        public void ProcessMessage_BulkPublishSingleResponse_Success()
+        [TestCase("RPUSH")]
+        [TestCase("HSET")]
+        public void ProcessMessage_BulkResponse_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Array, "[{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}]", true);
+                JTokenType.Array, "{'1':[{'Name':'DepotA'},{'Name':'DepotB'},{'Name':'DepotC'}]}", true, redisaction);
 
             // Assert that the response object is correct
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
             Assert.That(response.Action == "SampleCall");
-            Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "UT:1:Sample");
+            Assert.That(response.Data.Count == 0);
         }
 
         [Test]
-        public void ProcessMessage_BulkPublishMultiResponse_Success()
+        public void ProcessMessage_BulkSETResponse_Success()
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true);
+                JTokenType.Array, "[{'1':{'Name':'DepotA'}},{'1':{'Name':'DepotB'}},{'1':{'Name':'DepotC'}}]", true, "SET");
 
             // Assert that the response object is correct
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
             Assert.That(response.Action == "SampleCall");
-            Assert.That(response.Data.Count == 3);
-            foreach (List<object> r in response.Data)
-                Assert.That((string)r[0] == "UT:1:Sample");
+            Assert.That(response.Data.Count == 0);
         }
 
         [Test]
-        public void ProcessMessage_RedisPublishSingle_Success()
+        [TestCase("RPUSH")]
+        [TestCase("SET")]
+        [TestCase("HSET")]
+        public void ProcessMessage_RedisPublishSingle_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false, redisaction);
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
@@ -121,11 +121,14 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_RedisPublishSingleNull_Success()
+        [TestCase("RPUSH")]
+        [TestCase("SET")]
+        [TestCase("HSET")]
+        public void ProcessMessage_RedisPublishSingleNull_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Object, "{'1':{'Name':-9999,'ServerID':1}}", false);
+                JTokenType.Object, "{'1':{'Name':-9999,'ServerID':1}}", false, redisaction);
 
             // Confirm that the data stored in the mock redis is correct
             MockRedisDatabase mockdb = (MockRedisDatabase)(conn.GetDatabase());
@@ -138,25 +141,31 @@ namespace Tests
         }
 
         [Test]
-        public void ProcessMessage_SinglePublishResponse_Success()
+        [TestCase("RPUSH")]
+        [TestCase("SET")]
+        [TestCase("HSET")]
+        public void ProcessMessage_SingleResponse_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false, redisaction);
 
             Assert.That(response.Result == true);
             Assert.That(response.Error == "");
             Assert.That(response.Action == "SampleCall");
-            Assert.That(response.Data.Count == 1);
-            Assert.That((string)response.Data[0][0] == "UT:1:Sample");
+            Assert.That(response.Data.Count == 0);
+            //Assert.That((string)response.Data[0][0] == "UT:1:Sample");
         }
 
         [Test]
-        public void ProcessMessage_SampleCallException_Success()
+        [TestCase("RPUSH")]
+        [TestCase("SET")]
+        [TestCase("HSET")]
+        public void ProcessMessage_SampleCallException_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishThrowExceptionBehaviour(),
-                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false);
+                JTokenType.Object, "{'1':{'Name':'CapturePointA','ServerID':1}}", false, redisaction);
 
             Assert.That(response.Result == false);
             Assert.That(!String.IsNullOrWhiteSpace(response.Error));
@@ -193,11 +202,14 @@ namespace Tests
 
 
         [Test]
-        public void ProcessMessage_EmptyData_Success()
+        [TestCase("RPUSH")]
+        [TestCase("SET")]
+        [TestCase("HSET")]
+        public void ProcessMessage_EmptyData_Success(string redisaction)
         {
             IConnectionMultiplexer conn = null;
             ProtocolResponse response = GenerateMockStrategyResponse(out conn, new MockRedisPublishSuccessBehaviour(),
-                JTokenType.Object, "{}", false);
+                JTokenType.Object, "{}", false, redisaction);
 
             Assert.That(response.Result == false);
             Assert.That(!String.IsNullOrWhiteSpace(response.Error));

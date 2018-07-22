@@ -3,10 +3,10 @@
 	<RedisDBConnect>localhost:16379</RedisDBConnect>
 	<RedisEnvironmentKey>KI</RedisEnvironmentKey>
 	<RedisActionKeys>
-		<Pair Action="AddOrUpdateCapturePoint" RedisKey="CP" />
-		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" />
-		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" />
-		<Pair Action="AddOrUpdateChat" RedisKey="Chat" />
+		<Pair Action="AddOrUpdateCapturePoint" RedisKey="CP" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateChat" RedisKey="Chat" RedisAction="RPUSH" />
 	</RedisActionKeys>
 	<Throttle>
 		<xAction Name="AddOrUpdateCapturePoint" MinSeconds="5" />

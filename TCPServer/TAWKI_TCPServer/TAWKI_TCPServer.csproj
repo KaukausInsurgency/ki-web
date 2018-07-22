@@ -73,6 +73,7 @@
     <Compile Include="Implementations\InvalidProcessMessageStrategy.cs" />
     <Compile Include="Implementations\KICallback.cs" />
     <Compile Include="Implementations\MySqlProcessMessageStrategy.cs" />
+    <Compile Include="RedisUtility.cs" />
     <Compile Include="Implementations\RedisProcessMessageStrategy.cs" />
     <Compile Include="Interfaces\IConfigReader.cs" />
     <Compile Include="Interfaces\IIPCCallback.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="IPCSendEventArgs.cs" />
     <Compile Include="ProtocolRequest.cs" />
     <Compile Include="ProtocolResponse.cs" />
+    <Compile Include="RedisAction.cs" />
     <Compile Include="SocketServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

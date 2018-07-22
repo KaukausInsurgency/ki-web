@@ -17,7 +17,7 @@ namespace TAWKI_TCPServer.Interfaces
         bool UseWhiteList { get; }
         List<string> WhiteList { get; }
         List<string> SupportedHTML { get; }
-        Dictionary<string, string> RedisActionKeys { get; }
+        Dictionary<string, RedisAction> RedisActionKeys { get; }
         string RedisEnvironmentKey { get; }
         string Version { get; }
         string VersionKey { get; }
