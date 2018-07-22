@@ -57,7 +57,7 @@ namespace KIWebApp.Classes
 
         List<CapturePointModel> IDAL.GetCapturePoints(int serverID, ref IConnectionMultiplexer conn)
         {
-            return GetModelCollection<int, List<CapturePointModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyCapturePoint);
+            return HashGetAllModelCollection<int, CapturePointModel>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyCapturePoint);
         }
 
         List<DepotModel> IDAL.GetDepots(int serverID)
@@ -77,7 +77,7 @@ namespace KIWebApp.Classes
 
         List<DepotModel> IDAL.GetDepots(int serverID, ref IConnectionMultiplexer conn)
         {
-            return GetModelCollection<int, List<DepotModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyDepot);
+            return HashGetAllModelCollection<int, DepotModel>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeyDepot);
         }
 
         GameModel IDAL.GetGame(int serverID)
@@ -223,7 +223,7 @@ namespace KIWebApp.Classes
 
         List<SideMissionModel> IDAL.GetSideMissions(int serverID, ref IConnectionMultiplexer conn)
         {
-            return GetModelCollection<int, List<SideMissionModel>>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeySideMission);
+            return HashGetAllModelCollection<int, SideMissionModel>(ref conn, serverID, AppSettings.RedisEnvironmentPrefix, AppSettings.RedisKeySideMission);
         }
 
         SearchResultsModel IDAL.GetSearchResults(string query)
@@ -421,18 +421,22 @@ namespace KIWebApp.Classes
 
 
 
-        private ReturnT GetModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
+        private List<ReturnT> HashGetAllModelCollection<T, ReturnT>(ref IConnectionMultiplexer conn, T serverID, string EnvironmentPrefix, string Key) where ReturnT : new()
         {
+            List<ReturnT> model = new List<ReturnT>();
             IDatabase db = conn.GetDatabase();
-            RedisValue v = db.StringGet(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID));
+            HashEntry[] v = db.HashGetAll(RedisUtility.BuildRedisKey(EnvironmentPrefix, Key, serverID));
 
-            if (v.IsNullOrEmpty && !v.HasValue)
+            if (v == null || v.Length == 0)
             {
-                return new ReturnT();
+                return model;
             }
             else
             {
-                ReturnT model = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(v);
+                foreach(HashEntry val in v)
+                {
+                    model.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT>(val.Value));
+                }
 
                 return model;
             }
