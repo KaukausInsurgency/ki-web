@@ -100,6 +100,8 @@
         });
 
         // remove all rows that have not been marked as updated, and are orphaned markers
+        // not used - we only get partial updates from Redis, so this causes markers that are still valid to get deleted
+        /*
         $('[data-marker_id^="SM-"]:not(.js-updated-marker)').each(function (i) {
             var index = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === $(this).data('marker_id'));
             if (index > -1) {
@@ -108,6 +110,7 @@
                 delete removedMarkers[0];  
             }                  
         });
+        */
 
         // remove this class from all rows
         $('[data-marker_id]').removeClass('js-updated-marker');   
