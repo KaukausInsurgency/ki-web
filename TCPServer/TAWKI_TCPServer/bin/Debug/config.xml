@@ -9,11 +9,11 @@
 		<Pair Action="AddOrUpdateChat" RedisKey="Chat" RedisAction="RPUSH" />
 	</RedisActionKeys>
 	<Throttle>
-		<xAction Name="AddOrUpdateCapturePoint" MinSeconds="5" />
-		<xAction Name="AddOrUpdateDepot" MinSeconds="5" />
-		<xAction Name="AddOrUpdateSideMission" MinSeconds="5" />
-		<xAction Name="AddOrUpdateChat" MinSeconds="5" />
-		<Action Name="SendHeartbeat" MinSeconds="2" />
+		<Action Name="AddOrUpdateCapturePoint" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateDepot" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateSideMission" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateChat" AveragePerSecondLimit="5" />
+		<Action Name="SendHeartbeat" AveragePerSecondLimit="1" />
 	</Throttle>
 	<SupportedHTML>p,h1,h2,h3,h4,h5,h6,br,b,strong,i,em,mark,small,del,ins,sub,sup,ul,li</SupportedHTML>
 	<Port>9983</Port>

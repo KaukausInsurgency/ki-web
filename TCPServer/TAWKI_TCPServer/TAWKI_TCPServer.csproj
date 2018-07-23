@@ -87,6 +87,7 @@
     <Compile Include="ProtocolRequest.cs" />
     <Compile Include="ProtocolResponse.cs" />
     <Compile Include="RedisAction.cs" />
+    <Compile Include="RequestInfo.cs" />
     <Compile Include="SocketServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

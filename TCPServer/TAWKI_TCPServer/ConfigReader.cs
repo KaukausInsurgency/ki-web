@@ -103,13 +103,13 @@ namespace TAWKI_TCPServer
                 {
                     foreach (XmlNode x in actionthrottlexml)
                     {
-                        if (x.Attributes["Name"] != null && x.Attributes["MinSeconds"] != null)
+                        if (x.Attributes["Name"] != null && x.Attributes["AveragePerSecondLimit"] != null)
                         {
-                            _actionThrottle.Add(x.Attributes["Name"].Value, Convert.ToInt64(x.Attributes["MinSeconds"].Value));
+                            _actionThrottle.Add(x.Attributes["Name"].Value, Convert.ToInt64(x.Attributes["AveragePerSecondLimit"].Value));
                         }
                         else
                         {
-                            throw new Exception("<Throttle><Action> - xml malformed (missing attribute 'Name' or 'MinSeconds'");
+                            throw new Exception("<Throttle><Action> - xml malformed (missing attribute 'Name' or 'AveragePerSecondLimit'");
                         }
                     }
                 }

@@ -10,32 +10,34 @@ namespace TAWKI_TCPServer
     public class ThrottleMapper
     {
         private ITimer _timer;
-        private Dictionary<string, long> _monitor;
-        private Dictionary<string, long> _config;
+        private Dictionary<string, RequestInfo> _map;
 
         public ThrottleMapper(ITimer t, Dictionary<string, long> config)
         {
             _timer = t;
-            _config = config;
-            _monitor = new Dictionary<string, long>();
+            _map = new Dictionary<string, RequestInfo>();
+            foreach (KeyValuePair<string, long> c in config)
+                _map.Add(c.Key, new RequestInfo() { AverageLimit = c.Value });
         }
 
         public bool ShouldThrottle(string action)
         {
-            if (_config.ContainsKey(action))
+            if (_map.ContainsKey(action))
             {
-                if (!_monitor.ContainsKey(action))
+                RequestInfo ri = _map[action];
+                ri.Count++;
+                if (ri.FirstRequestTimeInSeconds == -1)
                 {
-                    _monitor.Add(action, _timer.NowInSeconds());
+                    ri.FirstRequestTimeInSeconds = _timer.NowInSeconds();
                     return false;
                 }
                 else
                 {
-                    long minTime = _config[action];
-                    long now = _timer.NowInSeconds();
-                    long secondsPassed = now - _monitor[action];
-                    _monitor[action] = now;
-                    if (secondsPassed <= minTime)
+                    long secondsPassed = _timer.NowInSeconds() - ri.FirstRequestTimeInSeconds;
+                    if (secondsPassed <= 0)
+                        secondsPassed = 1;
+
+                    if ((ri.Count / (double)secondsPassed) > ri.AverageLimit)
                         return true;
                     else
                         return false;

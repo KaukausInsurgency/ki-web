@@ -65,9 +65,13 @@ namespace Tests
             Mocks.MockTimer mockTimer = new Mocks.MockTimer();
             ThrottleMapper throttler = new ThrottleMapper(mockTimer, config);
             Assert.That(!throttler.ShouldThrottle("First"));
-            Assert.That(throttler.ShouldThrottle("First"));
-            Assert.That(throttler.ShouldThrottle("First"));
-            Assert.That(throttler.ShouldThrottle("First"));
+            mockTimer.SetCounter(1);
+            Assert.That(!throttler.ShouldThrottle("First"));
+            mockTimer.SetCounter(1);
+            Assert.That(!throttler.ShouldThrottle("First"));
+            mockTimer.SetCounter(1);
+            Assert.That(!throttler.ShouldThrottle("First"));
+            mockTimer.SetCounter(1);
             Assert.That(throttler.ShouldThrottle("First"));
             mockTimer.SetCounter(16);
             Assert.That(!throttler.ShouldThrottle("First"));
