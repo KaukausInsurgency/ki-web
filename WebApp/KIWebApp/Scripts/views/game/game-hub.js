@@ -79,19 +79,30 @@
 
             // delete expired missions after 30 seconds
             if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
+                if (!$($dataSel).hasClass('js-expired-marker'))
+                {
+                    $Missions.add(this.TimeRemaining, 0, "Time has run out for mission '" + this.TaskName + "' (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
 
-                $Missions.add(this.TimeRemaining, 0, "Time has run out for mission '" + this.TaskName + "' (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
-                
-                setTimeout(function () {
-                    // need to get the new index, as its possible the array might have been resized before this call
-                    var removeIndex = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
-                    var removedMarkers = [];
-                    if (removeIndex > -1) {
-                        removedMarkers = LiveMap.SIDEMISSIONS.splice(removeIndex, 1);
-                    }
-                    removedMarkers[0].setMap(null);
-                    delete removedMarkers[0];
-                }, 30000);
+                    // mark this element as expired, so that we don't invoke this multiple times
+                    $($dataSel).addClass('js-expired-marker');
+
+                    setTimeout(function () {
+                        console.log("SMTIMEOUT: Executing timeout function for mission id " + id);
+                        // need to get the new index, as its possible the array might have been resized before this call
+                        var removeIndex = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
+                        var removedMarkers = [];
+                        if (removeIndex > -1) {
+                            console.log("SMTIMEOUT: Found index in SIDEMISSIONS collection - removing id " + id);
+                            removedMarkers = LiveMap.SIDEMISSIONS.splice(removeIndex, 1);
+                            removedMarkers[0].setMap(null);
+                            delete removedMarkers[0];
+                        }
+                        else {
+                            console.log("SMTIMEOUT: Could not find index in SIDEMISSIONS collection with id " + id);
+                        }
+
+                    }, 30000);
+                }    
             }        
 
             LiveMap.updateTooltipContent($dataSel, LiveMap.SMTemplate, this);

@@ -334,9 +334,35 @@ function initGoogleMap() {
 
         $(MODEL.Missions).each(function (i) {
             var $dataSel = LiveMap.createMarkerSelector('SM', this.ID);
+            var timeLeftInSeconds = this.TimeRemaining;
             this.TimeRemaining = LiveMap.convertSecondsToTimeString(this.TimeRemaining);
             KI.tooltipster($dataSel);
             LiveMap.updateTooltipContent($dataSel, LiveMap.SMTemplate, this);
+
+            if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
+                var id = 'SM-' + this.ID;
+                console.log("SMTIMEOUT: Init Page - Found expired mission id " + id)
+
+                // mark this element as expired, so that we don't invoke this multiple times
+                $($dataSel).addClass('js-expired-marker');
+                
+                setTimeout(function () {
+                    console.log("SMTIMEOUT: Executing timeout function for mission id " + id);
+                    // need to get the new index, as its possible the array might have been resized before this call
+                    var removeIndex = LiveMap.SIDEMISSIONS.findIndex(x => x.args.marker_id === id);
+                    var removedMarkers = [];
+                    if (removeIndex > -1) {
+                        console.log("SMTIMEOUT: Found index in SIDEMISSIONS collection - removing id " + id);
+                        removedMarkers = LiveMap.SIDEMISSIONS.splice(removeIndex, 1);
+                        removedMarkers[0].setMap(null);
+                        delete removedMarkers[0];
+                    }
+                    else {
+                        console.log("SMTIMEOUT: Could not find index in SIDEMISSIONS collection with id " + id);
+                    }
+
+                }, 30000);
+            }
         });
         
     }
