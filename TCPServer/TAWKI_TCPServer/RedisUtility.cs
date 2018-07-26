@@ -133,6 +133,47 @@ namespace TAWKI_TCPServer.Implementations
             log.Log("Published data to channel: '" + key + "' - Subscribers listening: " + subs);
         }
 
+        public static void HDEL_Multi(ref IDatabase db, ref ILogger log, string redisEnvironment, string rediskey, string data)
+        {
+            Dictionary<string, List<Dictionary<string, object>>> DataDictionary =
+               Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<Dictionary<string, object>>>>(data);
+
+            KeyValuePair<string, List<Dictionary<string, object>>> objects = DataDictionary.First();
+
+            string ServerID = objects.Key;
+            string hashkey = redisEnvironment + ":" + ServerID + ":" + rediskey;
+            RedisValue[] keys = new RedisValue[objects.Value.Count];
+            int i = 0;
+            foreach (Dictionary<string, object> x in objects.Value)
+            {
+                if (x.ContainsKey("ID"))
+                {
+                    string key = Convert.ToString(x["ID"]);
+                    keys[i] = key;
+                    i++;
+                }
+            }
+
+            db.HashDelete(hashkey, keys);
+            log.Log("HDEL keys (Entries: " + keys.Length + ") from hash " + hashkey);
+        }
+
+        public static void HDEL_Single(ref IDatabase db, ref ILogger log, string redisEnvironment, string rediskey, string data)
+        {
+            Dictionary<string, Dictionary<string, object>> DataDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(data);
+
+            string ServerID = DataDictionary.First().Key;
+            string hashkey = redisEnvironment + ":" + ServerID + ":" + rediskey;
+
+            if (DataDictionary.First().Value.ContainsKey("ID"))
+            {
+                string key = Convert.ToString(DataDictionary.First().Value["ID"]);
+                db.HashDelete(hashkey, key);
+
+                log.Log("HDEL key " + key + " from hash " + hashkey);
+            }     
+        }
+
         public static void PerformOperation(string action, bool isBulk, ref IDatabase db, ref ILogger log, string redisEnvironment, string rediskey, string data)
         {
             switch (action)
@@ -159,6 +200,14 @@ namespace TAWKI_TCPServer.Implementations
                             SSET_Multi(ref db, ref log, redisEnvironment, rediskey, data);
                         else
                             SSET_Single(ref db, ref log, redisEnvironment, rediskey, data);
+                        return;
+                    }
+                case "HDEL":
+                    {
+                        if (isBulk)
+                            HDEL_Multi(ref db, ref log, redisEnvironment, rediskey, data);
+                        else
+                            HDEL_Single(ref db, ref log, redisEnvironment, rediskey, data);
                         return;
                     }
                 default:

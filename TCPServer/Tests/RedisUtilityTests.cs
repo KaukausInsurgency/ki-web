@@ -218,5 +218,44 @@ namespace Tests
             Assert.That(mockdb.MockChannel["UT:1:Sample"] == "{\"Data\":\"string\"}");
             Assert.That(mockdb.MockChannelCount["UT:1:Sample"] == 1);
         }
+
+        [Test]
+        public void HDEL_Single_Success()
+        {
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour(), new MockRedisPublishSuccessBehaviour());
+            ILogger log = new Mocks.MockLogger();
+            IDatabase db = conn.GetDatabase();
+            MockRedisDatabase mockdb = (MockRedisDatabase)(db);
+            mockdb.MockHashStore.Add("UT:1:Sample", new List<HashEntry>()
+                {
+                    new HashEntry("1", "data"),
+                    new HashEntry("2", "data")
+                });
+            string data = "{'1':{'ID':2}}";
+            RedisUtility.HDEL_Single(ref db, ref log, "UT", "Sample", data);
+
+            Assert.That(mockdb.MockHashStore.ContainsKey("UT:1:Sample"), "Redis Hash must exist");
+            Assert.That(mockdb.MockHashStore["UT:1:Sample"].Exists(k => k.Name == 1), "Redis Key 1 must not be deleted");
+            Assert.That(!mockdb.MockHashStore["UT:1:Sample"].Exists(k => k.Name == 2), "Redis Key 2 must be deleted");
+        }
+
+        [Test]
+        public void HDEL_Multi_Success()
+        {
+            IConnectionMultiplexer conn = new Mocks.MockConnectionMultiplexer(new MockRedisSuccessBehaviour(), new MockRedisPublishSuccessBehaviour());
+            ILogger log = new Mocks.MockLogger();
+            IDatabase db = conn.GetDatabase();
+            MockRedisDatabase mockdb = (MockRedisDatabase)(db);
+            mockdb.MockHashStore.Add("UT:1:Sample", new List<HashEntry>()
+                {
+                    new HashEntry("1", "data"),
+                    new HashEntry("2", "data")
+                });
+            string data = "{'1':[{'ID':2},{'ID':1}]}";
+            RedisUtility.HDEL_Multi(ref db, ref log, "UT", "Sample", data);
+
+            Assert.That(mockdb.MockHashStore.ContainsKey("UT:1:Sample"), "Redis Hash must exist");
+            Assert.That(mockdb.MockHashStore["UT:1:Sample"].Count == 0, "All keys must be deleted from hash set");
+        }
     }
 }

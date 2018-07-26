@@ -7,6 +7,7 @@
 		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" RedisAction="HSET" />
 		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" RedisAction="HSET" />
 		<Pair Action="AddOrUpdateChat" RedisKey="Chat" RedisAction="RPUSH" />
+		<Pair Action="RemoveSideMission" RedisKey="SM" RedisAction="HDEL" />
 	</RedisActionKeys>
 	<Throttle>
 		<Action Name="AddOrUpdateCapturePoint" AveragePerSecondLimit="5" />

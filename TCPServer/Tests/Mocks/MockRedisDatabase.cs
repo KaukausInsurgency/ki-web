@@ -109,6 +109,25 @@ namespace Tests.Mocks
             return new Task<long>(() => _redisPublishBehaviour.Execute(channel, message, flags));
         }
 
+        bool IDatabase.HashDelete(RedisKey key, RedisValue hashField, CommandFlags flags)
+        {
+            if (MockHashStore.ContainsKey(key))
+                MockHashStore[key].RemoveAll(k => k.Name == hashField);
+            return true;
+        }
+
+        long IDatabase.HashDelete(RedisKey key, RedisValue[] hashFields, CommandFlags flags)
+        {
+            if (MockHashStore.ContainsKey(key))
+            {
+                foreach (RedisValue v in hashFields)
+                {
+                    MockHashStore[key].RemoveAll(k => k.Name == v);
+                }
+            }
+            return 1;  
+        }
+
         #region UnimplementedMockMethods
 
         ConnectionMultiplexer IRedisAsync.Multiplexer => throw new NotImplementedException();
@@ -279,16 +298,6 @@ namespace Tests.Mocks
         }
 
         Task<double> IDatabaseAsync.HashDecrementAsync(RedisKey key, RedisValue hashField, double value, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IDatabase.HashDelete(RedisKey key, RedisValue hashField, CommandFlags flags)
-        {
-            throw new NotImplementedException();
-        }
-
-        long IDatabase.HashDelete(RedisKey key, RedisValue[] hashFields, CommandFlags flags)
         {
             throw new NotImplementedException();
         }
