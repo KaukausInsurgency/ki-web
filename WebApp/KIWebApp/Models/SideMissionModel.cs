@@ -15,8 +15,9 @@ namespace KIWebApp.Models
         public string IconClass { get; set; }
         public string Status { get; set; }
         public bool StatusChanged { get; set; }
-        public string TimeRemaining { get; set; }
-        public double TimeInactive { get; set; }
+        public int TimeRemaining { get; set; }
+        public double TimeStarted { get; set; }
+        public double TimeEnded { get; set; }
         public string LatLong { get; set; }
         public string MGRS { get; set; }
         public double Latitude { get; set; }
