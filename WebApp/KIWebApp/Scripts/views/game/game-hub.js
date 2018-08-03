@@ -74,14 +74,26 @@
 
                 KI.tooltipster($dataSel);
 
-                $Missions.add(this.TimeRemaining, 0, "New mission '" + this.TaskName + "' available (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
+                var timeStartedString = LiveMap.convertSecondsToTimeString(this.TimeStarted);
+
+                $Missions.add(timeStartedString, 0, "New mission '" + this.TaskName + "' available (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
             }
 
             // delete expired missions after 30 seconds
-            if (timeLeftInSeconds <= 0 || this.Status === "Timeout") {
+            if (timeLeftInSeconds <= 0 || this.Status !== "Active") {
                 if (!$($dataSel).hasClass('js-expired-marker'))
                 {
-                    $Missions.add(this.TimeRemaining, 0, "Time has run out for mission '" + this.TaskName + "' (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")");
+                    var notificationText = "";
+                    if (this.Status === "Timeout")
+                        notificationText = "Time has run out for mission";
+                    else if (this.Status === "Complete")
+                        notificationText = "Successfully completed mission";
+                    else if (this.Status === "Failed")
+                        notificationText = "Failed mission";
+
+                    var missionText = notificationText + " '" + this.TaskName + "' (Lat Long: " + this.LatLong + ", MGRS: " + this.MGRS + ")";
+                    var timeEndString = LiveMap.convertSecondsToTimeString(this.TimeEnded);
+                    $Missions.add(timeEndString, 0, missionText);
 
                     // mark this element as expired, so that we don't invoke this multiple times
                     $($dataSel).addClass('js-expired-marker');
