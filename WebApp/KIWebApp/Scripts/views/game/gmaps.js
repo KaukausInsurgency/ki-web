@@ -68,10 +68,45 @@ function initGoogleMap() {
 
 	customMarker.prototype.getPosition = function () {
 		return this.latlng;
-	};
+    };
+
+    // this sets the default gmaps position somewhere near the middle of caucasus map
+    var defaultLatLong = {
+        lat: 42.332864120611,
+        lng: 41.875537702983
+    }
+
+    if (true) {
+        var c = 0;
+        var avgLat = 0;
+        var avgLong = 0;
+        $(MODEL.Depots).each(function (i) {
+            avgLat += this.Latitude;
+            avgLong += this.Longitude;
+            c += 1;
+        });
+
+        $(MODEL.CapturePoints).each(function (i) {
+            avgLat += this.Latitude;
+            avgLong += this.Longitude;
+            c += 1;
+        });
+
+        if (c > 0) {
+            console.log("Using Calculated Lat Long Position for Google Maps");         
+            defaultLatLong.lat = avgLat / c;
+            defaultLatLong.lng = avgLong / c;
+        }
+        else {
+            console.log("Using Default Lat Long Position for Google Maps");
+        }
+
+        console.log(defaultLatLong);
+    }
+
 	var mapProp = {
 		zoom: 6.5,
-		center: { lat: 42.332864120611, lng: 41.875537702983 },
+        center: defaultLatLong,
 		mapTypeId: 'terrain',
 		styles: [
 			{
