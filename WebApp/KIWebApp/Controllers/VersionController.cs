@@ -30,7 +30,7 @@ namespace KIWebApp.Controllers
             else if (id.ToLower() == "prod")
                 result = GetSpecificVersion(WebAppVersionSettings.VERSION, WebAppVersionSettings.GUID, WebAppVersionSettings.PATH);
             else
-                result = new VersionResponse() { Version = "Bad Version Type", GUID = "", DownloadURL = "Bad Version Type" };
+                result = new VersionResponse() { Version = "", GUID = "0", DownloadURL = "" };
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
