@@ -226,11 +226,13 @@
     <Compile Include="Classes\RedisUtility.cs" />
     <Compile Include="Classes\SqlUtility.cs" />
     <Compile Include="Classes\WebAppSettings.cs" />
+    <Compile Include="Classes\WebAppVersionSettings.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServersController.cs" />
     <Compile Include="Classes\IDAL.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
