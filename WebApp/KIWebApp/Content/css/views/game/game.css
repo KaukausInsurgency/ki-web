@@ -243,6 +243,9 @@ table.online-players > thead > tr {
   display: table-row;
   vertical-align: inherit; }
 
+table.online-players > thead {
+  height: 1%; }
+
 table.online-players > thead > tr > th {
   color: #ebebeb;
   border-collapse: collapse;

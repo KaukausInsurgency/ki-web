@@ -59,6 +59,11 @@ table.online-players>thead>tr {
     vertical-align: inherit;
 }
 
+// Firefox - fixes issue with thead not shrinking to content
+table.online-players > thead {
+    height: 1%;
+}
+
 // table header columns
 table.online-players>thead>tr>th {
     color: $table-header-column-color;
