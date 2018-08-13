@@ -582,7 +582,7 @@ BEGIN
 	SELECT 
 		date AS Date,
         total_game_time AS TotalTime
-    FROM ki.rpt_player_online_activity rpt
+    FROM rpt_player_online_activity rpt
     WHERE rpt.ucid = UCID
 	ORDER BY date ASC;
 END ;;

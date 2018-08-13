@@ -27,6 +27,15 @@ BEGIN
 	EXECUTE stmt;
 END $$
 
+DROP PROCEDURE IF EXISTS INSERT_META $$
+CREATE PROCEDURE INSERT_META(v VARCHAR(45), guid VARCHAR(128))
+BEGIN
+	INSERT INTO meta (meta_id, version, version_guid) 
+    VALUES (1, v, guid) 
+    ON DUPLICATE KEY UPDATE 
+    version=v, version_guid=guid;
+END $$
+
 DROP FUNCTION IF EXISTS GET_KI_DB_VERSION $$
 CREATE FUNCTION GET_KI_DB_VERSION() RETURNS VARCHAR(128)
 BEGIN
@@ -88,8 +97,7 @@ BEGIN
 	);
     
     -- insert data
-    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
-    VALUES (1, "0.78", "0bc9fc46-ea51-4fc4-9c52-d3793c9a4515", NULL);
+    CALL INSERT_META("0.78", "0bc9fc46-ea51-4fc4-9c52-d3793c9a4515");
     
     INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.78");
     SET Version = "0bc9fc46-ea51-4fc4-9c52-d3793c9a4515";
@@ -103,8 +111,7 @@ BEGIN
 	ADD COLUMN `description` VARCHAR(900) NULL COMMENT 'server description displayed on website' AFTER `name`;
   
 	-- insert data
-    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
-    VALUES (1, "0.79", "5762581d943af07f9b4864e30e9070e3305b5b77", NULL);
+    CALL INSERT_META("0.79", "5762581d943af07f9b4864e30e9070e3305b5b77");
     
     INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.79");
 	SET Version = "5762581d943af07f9b4864e30e9070e3305b5b77";
@@ -121,8 +128,6 @@ BEGIN
 	  `menu_name` varchar(30) NOT NULL,
 	  `icon_class` varchar(45) NOT NULL,
 	  `html_content` varchar(300) NOT NULL,
-	  PRIMARY KEY (`custom_menu_item_id`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	  PRIMARY KEY (`custom_menu_item_id`),
 	  KEY `fk_server_id_idx` (`server_id`),
 	  CONSTRAINT `fk_custom_menu_item_server_id` FOREIGN KEY (`server_id`) REFERENCES `server` (`server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -130,14 +135,15 @@ BEGIN
 	  
 	-- Simple Radio support and integration
 	ALTER TABLE server
-	ADD COLUMN `simple_radio_enabled` BIT(1) NULL DEFAULT 0 AFTER `ip_address`,
-	ADD COLUMN `simple_radio_ip_address` VARCHAR(40) NULL AFTER `simple_radio_enabled`,
+	ADD COLUMN `simple_radio_enabled` BIT(1) NOT NULL DEFAULT 0 AFTER `ip_address`,
+	ADD COLUMN `simple_radio_ip_address` VARCHAR(40) NOT NULL DEFAULT '' AFTER `simple_radio_enabled`,
 	ADD COLUMN `map_id` INT(11) NULL AFTER `server_id`;
 	
+    UPDATE server
+    SET description = '';
+    
 	ALTER TABLE server
-	CHANGE COLUMN `description` `description` VARCHAR(900) NOT NULL COMMENT 'server description displayed on website' ,
-	CHANGE COLUMN `simple_radio_enabled` `simple_radio_enabled` BIT(1) NOT NULL DEFAULT b'0' ,
-	CHANGE COLUMN `simple_radio_ip_address` `simple_radio_ip_address` VARCHAR(40) NOT NULL ;
+	CHANGE COLUMN `description` `description` VARCHAR(900) NOT NULL DEFAULT '' COMMENT 'server description displayed on website';
 	
 	-- MapBox support was replaced with google maps - map data is no longer stored in DB
 	DROP TABLE IF EXISTS xref_game_map_server;
@@ -156,10 +162,17 @@ BEGIN
 	  PRIMARY KEY (`map_id`),
 	  UNIQUE KEY `map_id_UNIQUE` (`map_id`)
 	) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+    
+	/*!40000 ALTER TABLE `map` DISABLE KEYS */;
+	INSERT INTO `map` VALUES (1,'Caucasus'),(2,'Nevada'),(3,'Normandy'),(4,'Persian Gulf');
+	/*!40000 ALTER TABLE `map` ENABLE KEYS */;
   
+	-- prior to this version, all maps were run on caucasus
+	UPDATE server
+    SET map_id = 1;
+    
 	-- insert data
-    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
-    VALUES (1, "0.80", "4be0bd54461842c23a1da692ec236a1f736f70cc", NULL);
+    CALL INSERT_META("0.80", "4be0bd54461842c23a1da692ec236a1f736f70cc");
     
     INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.80");
 	SET Version = "4be0bd54461842c23a1da692ec236a1f736f70cc";
@@ -185,11 +198,6 @@ BEGIN
 	SET time = '2018-01-01 12:00:00'
 	WHERE time IS NULL OR time = '0000-00-00 00:00:00';
 	
-	-- Added trigger to auto set the current date/time on new records
-	CREATE TRIGGER `trg_raw_connection_log_current_time` BEFORE INSERT ON  `raw_connection_log` 
-	FOR EACH ROW 
-	SET NEW.time = NOW();
-	
 	-- Added new reporting table for player online activity
 	CREATE TABLE IF NOT EXISTS `rpt_player_online_activity` (
 	  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
@@ -204,11 +212,6 @@ BEGIN
 	
 	ALTER TABLE `backup_gameevents_log` 
 	ADD COLUMN `date` DATE NOT NULL AFTER `ucid`;
-	
-	-- Added trigger to auto insert the current date on new records
-	CREATE TRIGGER `trg_raw_gameevents_log_current_time` BEFORE INSERT ON  `raw_gameevents_log` 
-	FOR EACH ROW 
-	SET NEW.date = CURDATE();
 
 	-- Update all date stamps with a default value of 2018-01-01
 	UPDATE raw_gameevents_log 
@@ -239,12 +242,13 @@ BEGIN
 
 	
 	-- insert data
-    INSERT INTO meta (meta_id, version, version_guid, rpt_last_updated)
-    VALUES (1, "0.90", "--------", NULL);
+    CALL INSERT_META("0.90", "9f53850237cbb9e974bc31363b56d4f80d359511");
     
     INSERT INTO ki_upgrade_log VALUES ("Database Upgraded To Version 0.90");
-	SET Version = ""--------",";
+	SET Version = "9f53850237cbb9e974bc31363b56d4f80d359511";
   END IF;
+  
+  INSERT INTO ki_upgrade_log VALUES ("Database Upgrade Successful");
   
   SELECT * FROM ki_upgrade_log;
 
@@ -253,6 +257,19 @@ END $$
 -- SELECT "Created Upgrade Code - Preparing To Upgrade Database";
 
 CALL UPGRADE_KI_DB(GET_KI_DB_VERSION()) $$
+
+-- Added trigger to auto set the current date/time on new records
+DROP TRIGGER IF EXISTS `trg_raw_connection_log_current_time` $$
+CREATE TRIGGER `trg_raw_connection_log_current_time` BEFORE INSERT ON  `raw_connection_log` 
+FOR EACH ROW 
+SET NEW.time = NOW() $$
+
+-- Added trigger to auto insert the current date on new records
+DROP TRIGGER IF EXISTS `trg_raw_gameevents_log_current_time` $$
+CREATE TRIGGER `trg_raw_gameevents_log_current_time` BEFORE INSERT ON  `raw_gameevents_log` 
+FOR EACH ROW 
+SET NEW.date = CURDATE() $$
+    
 
 DROP PROCEDURE IF EXISTS UPGRADE_KI_DB $$
 DROP FUNCTION IF EXISTS FNC_TABLE_EXIST $$
