@@ -94,7 +94,7 @@
   overflow: hidden; }
 
 .stats-table-layout {
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   height: 100%; }
   .stats-table-layout::-webkit-scrollbar {
