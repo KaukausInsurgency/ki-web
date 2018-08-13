@@ -115,6 +115,10 @@ div.main {
         padding-top: 20px;
         padding-bottom: 20px;
     }
+
+    a {
+        color: #e36209;
+    }
 }
 
 %learn-more-layouts {
@@ -145,5 +149,10 @@ div.main {
 
 #community {
     background-color: $primary-background-color;
+    @extend %learn-more-layouts;
+}
+
+#download {
+    background-color: $secondary-background-color;
     @extend %learn-more-layouts;
 }

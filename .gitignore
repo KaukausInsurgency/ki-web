@@ -32,3 +32,10 @@ TCPClient/KITCPClient/bin/
 TCPClient/KITCPClient/obj/
 *.lock
 *.ide
+WebApp/KIWebApp/Content/css/vendor-extensions/vendor-extensions.min.css
+WebApp/KIWebApp/Content/css/vendor/dynatable/jquery.dynatable.min.css
+WebApp/KIWebApp/Content/css/vendor/tooltipster/tooltipster.bundle.min.css
+WebApp/KIWebApp/Content/css/vendor/tooltipster/tooltipster.main.min.css
+WebApp/KIWebApp/Content/css/views/shared/menu-responsive.min.css
+WebApp/KIWebApp/downloads/ki-updater.zip
+WebApp/KIWebApp/downloads/ki.zip

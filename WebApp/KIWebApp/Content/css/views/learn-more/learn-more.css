@@ -85,17 +85,19 @@ div.main {
   div.main section {
     padding-top: 20px;
     padding-bottom: 20px; }
+  div.main a {
+    color: #e36209; }
 
-#description, #features, #community {
+#description, #features, #community, #download {
   padding-left: 4em;
   padding-right: 4em;
   overflow: hidden; }
   @media screen and (max-width: 1070px) {
-    #description, #features, #community {
+    #description, #features, #community, #download {
       padding-left: 2em;
       padding-right: 2em; } }
   @media screen and (max-width: 520px) {
-    #description, #features, #community {
+    #description, #features, #community, #download {
       padding-left: 1em;
       padding-right: 1em; } }
 
@@ -107,6 +109,9 @@ div.main {
 
 #community {
   background-color: #292929; }
+
+#download {
+  background-color: #494949; }
 
 .thumbnail-layout-3 {
   width: 33.3333333333%;
