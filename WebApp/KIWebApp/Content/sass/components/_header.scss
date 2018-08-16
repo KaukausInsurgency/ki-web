@@ -23,7 +23,7 @@
 }
 
 .header-image-game {
-    background-image: url("/Content/static/bg-header.jpg");
+    background-image: url("/Content/static/bg-game.jpg");
     background-size: cover;
     filter: contrast(.8) grayscale(.8) brightness(.7);
 }
@@ -36,6 +36,18 @@
 
 .header-image-statistics {
     background-image: url("/Content/static/bg-statistics.jpg");
+    background-size: cover;
+    filter: contrast(.8) grayscale(.8) brightness(.7);
+}
+
+.header-image-learn-more {
+    background-image: url("/Content/static/bg-learn-more.jpg");
+    background-size: cover;
+    filter: contrast(.8) grayscale(.8) brightness(.7);
+}
+
+.header-image-error {
+    background-image: url("/Content/static/bg-error.jpg");
     background-size: cover;
     filter: contrast(.8) grayscale(.8) brightness(.7);
 }
