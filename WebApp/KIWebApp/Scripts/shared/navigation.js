@@ -33,6 +33,7 @@ $(function () {
         if (state) {
             $vnavDropdownContent.addClass('vnav-expanded');	// by default the ribbon is expanded
             $('.vnav-btn-expander').children('i').addClass($collapseClass);
+            $('.js-nav-text').show();
             $vnav.addClass('vnav-expanded');
             $vnav.css('width', vnavMaxWidth);
         }

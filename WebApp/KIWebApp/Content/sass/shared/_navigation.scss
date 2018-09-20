@@ -111,3 +111,7 @@ body {
         left: $nav-width-collapsed; /* add a left offset that is outside of the nav-bar width */
     }
 }
+
+.js-nav-text {
+    display: none;
+}

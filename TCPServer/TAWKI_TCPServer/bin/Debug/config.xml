@@ -1,5 +1,5 @@
 <Config>
-	<DBConnect>Server=127.0.0.1; Database=ki; Uid=KITestAcc; Pwd=test;</DBConnect>
+	<DBConnect>Server=127.0.0.1; Database=kialpha_old; Uid=KITestAcc; Pwd=test;</DBConnect>
 	<RedisDBConnect>localhost:16379</RedisDBConnect>
 	<RedisEnvironmentKey>KI</RedisEnvironmentKey>
 	<RedisActionKeys>

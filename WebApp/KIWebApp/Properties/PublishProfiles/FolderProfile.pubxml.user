@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\david\Documents\KIBeta</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/de/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/de/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/de/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.AspNet.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.Core.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.Consumer.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.RelyingParty.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/es/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/es/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/es/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/fr/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/fr/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/fr/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/it/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/it/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/it/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ja/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ja/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ja/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/KIWebApp.dll">
+      <publishTime>09/13/2018 21:56:44</publishTime>
+    </File>
+    <File Include="bin/KIWebApp.pdb">
+      <publishTime>09/13/2018 21:56:44</publishTime>
+    </File>
+    <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ko/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ko/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>03/08/2017 19:26:22</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Core.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.SystemWeb.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Data.Edm.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Data.OData.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Mvc.FixedDisplayModes.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.WebPages.OAuth.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/MySql.Data.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/Owin.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ru/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ru/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/ru/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/StackExchange.Redis.dll">
+      <publishTime>08/01/2017 12:19:14</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Spatial.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.OData.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.Tracing.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.Data.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.WebData.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hant/Microsoft.Data.Edm.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hant/Microsoft.Data.OData.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="bin/zh-Hant/System.Spatial.resources.dll">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/app/app.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/app/dashboard-overall.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/shared/reset.css">
+      <publishTime>06/07/2018 23:00:36</publishTime>
+    </File>
+    <File Include="Content/css/shared/style.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/vendor-extensions/vendor-extensions.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/vendor-extensions/vendor-extensions.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/vendor/dynatable/jquery.dynatable.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-noir.min.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/tooltipster.bundle.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/tooltipster.bundle.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/tooltipster.main.css">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Content/css/vendor/tooltipster/tooltipster.main.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/game/game.css">
+      <publishTime>08/16/2018 00:13:22</publishTime>
+    </File>
+    <File Include="Content/css/views/game/game.css.map">
+      <publishTime>08/16/2018 00:13:22</publishTime>
+    </File>
+    <File Include="Content/css/views/game/game.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/home/home.css">
+      <publishTime>08/16/2018 00:13:20</publishTime>
+    </File>
+    <File Include="Content/css/views/home/home.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/home/home.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/learn-more/learn-more.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/learn-more/learn-more.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/learn-more/learn-more.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/search/search.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/search/search.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/search/search.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/servers/servers.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/servers/servers.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/shared/menu-responsive.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/shared/menu-responsive.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/shared/search-results.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/shared/search-results.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/shared/search-results.min.css">
+      <publishTime>08/16/2018 00:02:45</publishTime>
+    </File>
+    <File Include="Content/css/views/statistics/airframe-statistics.css">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/statistics/airframe-statistics.css.map">
+      <publishTime>08/16/2018 00:13:21</publishTime>
+    </File>
+    <File Include="Content/css/views/statistics/player-statistics.css">
+      <publishTime>08/16/2018 00:13:22</publishTime>
+    </File>
+    <File Include="Content/css/views/statistics/player-statistics.css.map">
+      <publishTime>08/16/2018 00:13:22</publishTime>
+    </File>
+    <File Include="Content/sass/components/_button.scss">
+      <publishTime>06/09/2018 00:02:15</publishTime>
+    </File>
+    <File Include="Content/sass/components/_chat.scss">
+      <publishTime>06/23/2018 15:55:22</publishTime>
+    </File>
+    <File Include="Content/sass/components/_dashboard.scss">
+      <publishTime>06/14/2018 20:57:34</publishTime>
+    </File>
+    <File Include="Content/sass/components/_header.scss">
+      <publishTime>08/16/2018 00:12:56</publishTime>
+    </File>
+    <File Include="Content/sass/components/_input.scss">
+      <publishTime>06/08/2018 22:43:50</publishTime>
+    </File>
+    <File Include="Content/sass/components/_link-button.scss">
+      <publishTime>06/08/2018 23:19:22</publishTime>
+    </File>
+    <File Include="Content/sass/components/_loader.scss">
+      <publishTime>06/09/2018 16:05:43</publishTime>
+    </File>
+    <File Include="Content/sass/components/_menu.scss">
+      <publishTime>06/10/2018 20:47:52</publishTime>
+    </File>
+    <File Include="Content/sass/components/_module.scss">
+      <publishTime>06/13/2018 23:33:28</publishTime>
+    </File>
+    <File Include="Content/sass/components/_progressbar.scss">
+      <publishTime>06/14/2018 21:31:47</publishTime>
+    </File>
+    <File Include="Content/sass/components/_table.scss">
+      <publishTime>06/10/2018 20:28:28</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_effects.scss">
+      <publishTime>06/09/2018 20:00:15</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_footer.scss">
+      <publishTime>06/07/2018 22:42:16</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_global.scss">
+      <publishTime>06/07/2018 22:42:16</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_misc.scss">
+      <publishTime>06/08/2018 21:40:38</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_module.scss">
+      <publishTime>06/07/2018 22:58:39</publishTime>
+    </File>
+    <File Include="Content/sass/shared/_navigation.scss">
+      <publishTime>06/09/2018 00:33:26</publishTime>
+    </File>
+    <File Include="Content/sass/style.scss">
+      <publishTime>06/07/2018 23:02:01</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_extends.scss">
+      <publishTime>06/07/2018 22:42:21</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_functions.scss">
+      <publishTime>06/07/2018 22:42:21</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_mixins.scss">
+      <publishTime>06/09/2018 19:59:41</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_module.scss">
+      <publishTime>06/07/2018 22:58:19</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_palettes.scss">
+      <publishTime>06/16/2018 19:17:14</publishTime>
+    </File>
+    <File Include="Content/sass/utils/_variables.scss">
+      <publishTime>06/23/2018 00:55:07</publishTime>
+    </File>
+    <File Include="Content/sass/vendor-extensions/vendor-extensions.scss">
+      <publishTime>06/17/2018 16:17:56</publishTime>
+    </File>
+    <File Include="Content/sass/vendor-extensions/_dynatable.scss">
+      <publishTime>06/10/2018 20:25:58</publishTime>
+    </File>
+    <File Include="Content/sass/vendor-extensions/_fontawesome.scss">
+      <publishTime>06/07/2018 22:42:38</publishTime>
+    </File>
+    <File Include="Content/sass/vendor-extensions/_googlemaps.scss">
+      <publishTime>06/17/2018 16:17:41</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/game.scss">
+      <publishTime>06/22/2018 19:12:37</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_depot-resources.scss">
+      <publishTime>06/16/2018 23:25:47</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_game-navigation.scss">
+      <publishTime>06/14/2018 22:05:00</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_icons.scss">
+      <publishTime>06/16/2018 19:15:49</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_live-map-footer.scss">
+      <publishTime>06/11/2018 21:25:02</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_live-map.scss">
+      <publishTime>05/28/2018 21:55:05</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_missions.scss">
+      <publishTime>06/23/2018 01:32:07</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_modal.scss">
+      <publishTime>06/22/2018 19:25:06</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_online-players.scss">
+      <publishTime>08/12/2018 22:39:03</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/live-map/_tooltip.scss">
+      <publishTime>06/22/2018 19:34:07</publishTime>
+    </File>
+    <File Include="Content/sass/views/game/_dashboard.scss">
+      <publishTime>06/14/2018 22:10:55</publishTime>
+    </File>
+    <File Include="Content/sass/views/home/home.scss">
+      <publishTime>06/07/2018 22:54:56</publishTime>
+    </File>
+    <File Include="Content/sass/views/home/_form-layout.scss">
+      <publishTime>06/07/2018 22:50:35</publishTime>
+    </File>
+    <File Include="Content/sass/views/home/_ribbon-layout.scss">
+      <publishTime>06/07/2018 22:50:35</publishTime>
+    </File>
+    <File Include="Content/sass/views/home/_video.scss">
+      <publishTime>06/10/2018 21:33:58</publishTime>
+    </File>
+    <File Include="Content/sass/views/learn-more/learn-more.scss">
+      <publishTime>06/10/2018 00:32:20</publishTime>
+    </File>
+    <File Include="Content/sass/views/learn-more/_common.scss">
+      <publishTime>08/12/2018 20:49:11</publishTime>
+    </File>
+    <File Include="Content/sass/views/learn-more/_thumbnail.scss">
+      <publishTime>06/10/2018 00:53:03</publishTime>
+    </File>
+    <File Include="Content/sass/views/search/search.scss">
+      <publishTime>06/10/2018 21:45:23</publishTime>
+    </File>
+    <File Include="Content/sass/views/search/_responsive.scss">
+      <publishTime>06/11/2018 19:59:43</publishTime>
+    </File>
+    <File Include="Content/sass/views/shared/menu-responsive.scss">
+      <publishTime>06/10/2018 21:16:45</publishTime>
+    </File>
+    <File Include="Content/sass/views/shared/search-results.scss">
+      <publishTime>06/11/2018 20:35:44</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/airframe-statistics.scss">
+      <publishTime>06/13/2018 23:33:51</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/airframe/_style.scss">
+      <publishTime>06/07/2018 01:36:04</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/player-statistics.scss">
+      <publishTime>06/13/2018 23:33:53</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/player/_style.scss">
+      <publishTime>06/06/2018 22:06:03</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/_charts.scss">
+      <publishTime>06/07/2018 00:20:49</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/_dashboard.scss">
+      <publishTime>06/13/2018 23:51:11</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/_layout.scss">
+      <publishTime>06/06/2018 22:04:20</publishTime>
+    </File>
+    <File Include="Content/sass/views/statistics/_stats-table.scss">
+      <publishTime>08/12/2018 22:42:42</publishTime>
+    </File>
+    <File Include="Content/static/bg-server-browser.jpg">
+      <publishTime>06/07/2018 23:23:23</publishTime>
+    </File>
+    <File Include="Content/static/bg-statistics.jpg">
+      <publishTime>08/15/2018 23:48:10</publishTime>
+    </File>
+    <File Include="Content/static/dcs_world.mp4">
+      <publishTime>06/07/2018 23:22:57</publishTime>
+    </File>
+    <File Include="Content/static/learn-more/a.jpg">
+      <publishTime>06/09/2018 00:38:32</publishTime>
+    </File>
+    <File Include="Content/static/learn-more/b.jpg">
+      <publishTime>06/09/2018 00:38:32</publishTime>
+    </File>
+    <File Include="Content/static/learn-more/code.jpg">
+      <publishTime>06/09/2018 00:38:32</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>06/08/2018 12:40:55</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/airport-blue-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/airport-contested-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/airport-neutral-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/airport-red-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/depot-blue-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/depot-contested-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/depot-red-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/farp-blue-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/farp-contested-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/farp-neutral-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/farp-red-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/flag-blue-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/flag-contested-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/flag-neutral-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/flag-red-256x256.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/markers/task-camp-200x200.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-a10c-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-f15-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-f5e3-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-gazelle-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-gci-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-ka50-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-m2000c-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-mi8-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-mig21-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-mig29-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-none-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-sample-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-spectator-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-su25-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-su27-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Images/role/role-uh1h-30x30.png">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>04/29/2018 21:09:07</publishTime>
+    </File>
+    <File Include="Scripts/app/dashboard-overall.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/app/gamemap.js">
+      <publishTime>04/29/2018 23:06:53</publishTime>
+    </File>
+    <File Include="Scripts/app/registertable.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/dynatable/jquery.dynatable.js">
+      <publishTime>06/09/2018 20:51:23</publishTime>
+    </File>
+    <File Include="Scripts/jquery.signalR-2.2.2.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.signalR-2.2.2.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/mustache.js/mustache.js">
+      <publishTime>11/08/2016 11:24:16</publishTime>
+    </File>
+    <File Include="Scripts/mustache.js/mustache.min.js">
+      <publishTime>11/08/2016 11:24:16</publishTime>
+    </File>
+    <File Include="Scripts/shared/navigation.js">
+      <publishTime>06/08/2018 21:31:10</publishTime>
+    </File>
+    <File Include="Scripts/shared/shared.js">
+      <publishTime>06/17/2018 20:42:50</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/plugins/tooltipster/SVG/tooltipster-SVG.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/plugins/tooltipster/SVG/tooltipster-SVG.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/tooltipster.bundle.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/tooltipster.bundle.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/tooltipster.main.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/tooltipster/tooltipster.main.min.js">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Scripts/views/game/chat.js">
+      <publishTime>06/23/2018 15:57:09</publishTime>
+    </File>
+    <File Include="Scripts/views/game/game-hub.js">
+      <publishTime>08/03/2018 01:40:49</publishTime>
+    </File>
+    <File Include="Scripts/views/game/game-navigation.js">
+      <publishTime>05/11/2018 21:43:34</publishTime>
+    </File>
+    <File Include="Scripts/views/game/gmaps.js">
+      <publishTime>08/06/2018 21:16:01</publishTime>
+    </File>
+    <File Include="Scripts/views/game/iconBuilder.js">
+      <publishTime>06/16/2018 19:14:51</publishTime>
+    </File>
+    <File Include="Scripts/views/game/live-map.js">
+      <publishTime>06/17/2018 16:37:37</publishTime>
+    </File>
+    <File Include="Scripts/views/game/notification.js">
+      <publishTime>06/15/2018 01:47:32</publishTime>
+    </File>
+    <File Include="Scripts/views/game/shared.js">
+      <publishTime>06/24/2018 00:32:56</publishTime>
+    </File>
+    <File Include="Scripts/views/search/init.js">
+      <publishTime>06/10/2018 21:55:30</publishTime>
+    </File>
+    <File Include="Scripts/views/server/init.js">
+      <publishTime>06/26/2018 01:26:26</publishTime>
+    </File>
+    <File Include="Scripts/views/statistics/airframe/init-charts.js">
+      <publishTime>06/07/2018 01:37:14</publishTime>
+    </File>
+    <File Include="Scripts/views/statistics/charts-themes.js">
+      <publishTime>06/06/2018 22:11:38</publishTime>
+    </File>
+    <File Include="Scripts/views/statistics/player/init-charts.js">
+      <publishTime>06/29/2018 14:10:38</publishTime>
+    </File>
+    <File Include="Scripts/views/statistics/player/init.js">
+      <publishTime>07/06/2018 05:12:46</publishTime>
+    </File>
+    <File Include="Views/Error/Index.cshtml">
+      <publishTime>08/16/2018 00:02:31</publishTime>
+    </File>
+    <File Include="Views/Error/NotFound.cshtml">
+      <publishTime>06/23/2018 22:54:46</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>08/15/2018 23:45:24</publishTime>
+    </File>
+    <File Include="Views/Home/LearnMore.cshtml">
+      <publishTime>08/16/2018 00:13:10</publishTime>
+    </File>
+    <File Include="Views/Home/PlayerLeaderboards.cshtml">
+      <publishTime>06/10/2018 00:26:53</publishTime>
+    </File>
+    <File Include="Views/Home/Search.cshtml">
+      <publishTime>06/26/2018 00:36:01</publishTime>
+    </File>
+    <File Include="Views/Home/_PlayerSearchResults.cshtml">
+      <publishTime>06/26/2018 00:22:37</publishTime>
+    </File>
+    <File Include="Views/Home/_ServerSearchResults.cshtml">
+      <publishTime>06/26/2018 00:22:42</publishTime>
+    </File>
+    <File Include="Views/Servers/Game.cshtml">
+      <publishTime>08/16/2018 00:04:06</publishTime>
+    </File>
+    <File Include="Views/Servers/Index.cshtml">
+      <publishTime>06/26/2018 00:36:10</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_CapturePointInfoWindow.cshtml">
+      <publishTime>06/16/2018 23:48:05</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_ChatMessage.cshtml">
+      <publishTime>06/16/2018 17:19:25</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_DepotInfoWindow.cshtml">
+      <publishTime>06/17/2018 00:16:54</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_OnlinePlayersRow.cshtml">
+      <publishTime>06/17/2018 17:24:10</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_SideMissionInfoWindow.cshtml">
+      <publishTime>06/17/2018 16:08:46</publishTime>
+    </File>
+    <File Include="Views/Servers/Templates/_SideMissionModal.cshtml">
+      <publishTime>06/22/2018 19:25:27</publishTime>
+    </File>
+    <File Include="Views/Servers/_Chat.cshtml">
+      <publishTime>06/24/2018 17:15:45</publishTime>
+    </File>
+    <File Include="Views/Servers/_GameNavigation.cshtml">
+      <publishTime>06/17/2018 16:32:39</publishTime>
+    </File>
+    <File Include="Views/Servers/_Missions.cshtml">
+      <publishTime>07/25/2018 00:36:29</publishTime>
+    </File>
+    <File Include="Views/Servers/_Notifications.cshtml">
+      <publishTime>08/12/2018 20:53:29</publishTime>
+    </File>
+    <File Include="Views/Servers/_OnlinePlayers.cshtml">
+      <publishTime>06/17/2018 16:36:24</publishTime>
+    </File>
+    <File Include="Views/Shared/Error.cshtml">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Views/Shared/_Header.cshtml">
+      <publishTime>06/10/2018 00:22:06</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout.cshtml">
+      <publishTime>08/12/2018 21:12:55</publishTime>
+    </File>
+    <File Include="Views/Shared/_Navigation.cshtml">
+      <publishTime>08/12/2018 21:10:45</publishTime>
+    </File>
+    <File Include="Views/Statistics/AirframeStats.cshtml">
+      <publishTime>07/06/2018 05:21:00</publishTime>
+    </File>
+    <File Include="Views/Statistics/Index.cshtml">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Views/Statistics/PlayerStats.cshtml">
+      <publishTime>07/06/2018 05:10:38</publishTime>
+    </File>
+    <File Include="Views/Statistics/ServerStats.cshtml">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Views/Statistics/_Airframes.cshtml">
+      <publishTime>07/06/2018 05:08:09</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>06/29/2018 12:07:05</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>03/23/2018 02:08:30</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>09/13/2018 21:56:45</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
