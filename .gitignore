@@ -6,3 +6,15 @@ RESTAPI/Logs/
 TCPServer/TAWKI_TCPServer/obj
 TCPServer/.vs/
 TCPServer/TAWKI_TCPServer/bin/
+TCPServer/Tests/bin
+TCPServer/Tests/obj
+WebApp/.vs/
+WebApp/Logs
+WebApp/Tests/bin
+WebApp/Tests/obj
+WebApp/KIWebApp/obj
+WebApp/KIWebApp/Bin
+WebApp/KIWebApp/Content/css
+WebApp/KIWebApp/Content/static/dcs_world.mp4
+WebApp/KIWebApp/downloads/ki-updater.zip
+WebApp/KIWebApp/downloads/ki.zip
