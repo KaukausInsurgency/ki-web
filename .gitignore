@@ -30,6 +30,7 @@ WebApp/KIWebApp/Content/css/views/game/game.min.css
 TCPClient/KITCPClient/.vs/KITCPClient/v15/.suo
 TCPClient/KITCPClient/bin/
 TCPClient/KITCPClient/obj/
+TCPClient/.vs/
 *.lock
 *.ide
 WebApp/KIWebApp/Content/css/vendor-extensions/vendor-extensions.min.css
