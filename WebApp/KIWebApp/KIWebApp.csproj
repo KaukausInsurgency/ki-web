@@ -277,17 +277,12 @@
     <Content Include="Content\css\vendor-extensions\vendor-extensions.css" />
     <Content Include="Content\css\vendor\dynatable\jquery.dynatable.css" />
     <Content Include="Content\css\views\game\game.css" />
-    <Content Include="Content\css\views\game\game.min.css" />
     <Content Include="Content\css\views\home\home.css" />
-    <Content Include="Content\css\views\home\home.min.css" />
     <Content Include="Content\css\views\learn-more\learn-more.css" />
-    <Content Include="Content\css\views\learn-more\learn-more.min.css" />
     <Content Include="Content\css\views\search\search.css" />
-    <Content Include="Content\css\views\search\search.min.css" />
     <Content Include="Content\css\views\servers\servers.css" />
     <Content Include="Content\css\views\shared\menu-responsive.css" />
     <Content Include="Content\css\views\shared\search-results.css" />
-    <Content Include="Content\css\views\shared\search-results.min.css" />
     <Content Include="Content\css\views\statistics\airframe-statistics.css" />
     <Content Include="Content\css\views\statistics\player-statistics.css" />
     <Content Include="Content\sass\vendor-extensions\_dynatable.scss" />
@@ -324,7 +319,6 @@
     <None Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
-    <Content Include="Content\static\dcs_world.mp4" />
     <Content Include="Content\static\learn-more\a.jpg" />
     <Content Include="Content\static\learn-more\b.jpg" />
     <Content Include="Content\static\learn-more\code.jpg" />
@@ -526,6 +520,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.                                                                                      
        Other similar extension points exist, see Microsoft.Common.targets.                                                                                                                
   <Target Name="BeforeBuild">                                                                                                                                                             
