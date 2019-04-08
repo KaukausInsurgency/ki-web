@@ -277,7 +277,6 @@
     <Content Include="Content\css\vendor\dynatable\jquery.dynatable.css" />
     <Content Include="Content\sass\vendor-extensions\_dynatable.scss" />
     <Content Include="Content\sass\vendor-extensions\vendor-extensions.scss" />
-    <Content Include="Content\css\vendor-extensions\vendor-extensions.css.map" />
     <Content Include="Content\sass\views\learn-more\_thumbnail.scss" />
     <Content Include="Content\sass\views\learn-more\learn-more.scss" />
     <Content Include="Content\sass\views\search\search.scss" />
