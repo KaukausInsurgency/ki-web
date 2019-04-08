@@ -273,32 +273,18 @@
     <Content Include="Content\app\app.css" />
     <Content Include="Content\app\dashboard-overall.css" />
     <Content Include="Content\css\shared\reset.css" />
-    <Content Include="Content\css\shared\style.css" />
     <Content Include="Content\css\vendor-extensions\vendor-extensions.css" />
     <Content Include="Content\css\vendor\dynatable\jquery.dynatable.css" />
-    <Content Include="Content\css\views\game\game.css" />
-    <Content Include="Content\css\views\home\home.css" />
-    <Content Include="Content\css\views\learn-more\learn-more.css" />
-    <Content Include="Content\css\views\search\search.css" />
-    <Content Include="Content\css\views\servers\servers.css" />
-    <Content Include="Content\css\views\shared\menu-responsive.css" />
-    <Content Include="Content\css\views\shared\search-results.css" />
-    <Content Include="Content\css\views\statistics\airframe-statistics.css" />
-    <Content Include="Content\css\views\statistics\player-statistics.css" />
     <Content Include="Content\sass\vendor-extensions\_dynatable.scss" />
-    <Content Include="Content\css\views\servers\servers.css.map" />
     <Content Include="Content\sass\vendor-extensions\vendor-extensions.scss" />
     <Content Include="Content\css\vendor-extensions\vendor-extensions.css.map" />
     <Content Include="Content\sass\views\learn-more\_thumbnail.scss" />
     <Content Include="Content\sass\views\learn-more\learn-more.scss" />
-    <Content Include="Content\css\views\learn-more\learn-more.css.map" />
     <Content Include="Content\sass\views\search\search.scss" />
     <Content Include="Content\sass\shared\components\_loader.scss" />
     <Content Include="Content\sass\views\learn-more\_common.scss" />
     <Content Include="Content\sass\views\search\_responsive.scss" />
     <Content Include="Content\sass\shared\components\_menu.scss" />
-    <Content Include="Content\css\views\shared\menu-responsive.css.map" />
-    <Content Include="Content\css\views\shared\search-results.css.map" />
     <Content Include="Content\sass\views\game\live-map\_game-navigation.scss" />
     <Content Include="Content\sass\views\game\live-map\_icons.scss" />
     <Content Include="Content\sass\views\game\live-map\_live-map-footer.scss" />
@@ -306,11 +292,6 @@
     <Content Include="Content\sass\views\game\live-map\_missions.scss" />
     <Content Include="Content\sass\views\game\live-map\_online-players.scss" />
     <Content Include="Content\sass\views\game\game.scss" />
-    <Content Include="Content\css\views\game\game.css.map" />
-    <Content Include="Content\css\views\statistics\airframe-statistics.css.map" />
-    <Content Include="Content\css\views\statistics\player-statistics.css.map" />
-    <Content Include="Content\css\views\search\search.css.map" />
-    <Content Include="Content\css\views\home\home.css.map" />
     <Content Include="Content\sass\views\game\_dashboard.scss" />
     <Content Include="Content\sass\views\game\live-map\_tooltip.scss" />
     <Content Include="Content\sass\views\game\live-map\_depot-resources.scss" />
@@ -490,6 +471,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\css\views\game\" />
+    <Folder Include="Content\css\views\home\" />
+    <Folder Include="Content\css\views\learn-more\" />
+    <Folder Include="Content\css\views\search\" />
+    <Folder Include="Content\css\views\servers\" />
+    <Folder Include="Content\css\views\shared\" />
+    <Folder Include="Content\css\views\statistics\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
