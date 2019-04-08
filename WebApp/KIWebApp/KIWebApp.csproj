@@ -293,10 +293,10 @@
     <Content Include="Content\sass\views\learn-more\learn-more.scss" />
     <Content Include="Content\css\views\learn-more\learn-more.css.map" />
     <Content Include="Content\sass\views\search\search.scss" />
-    <Content Include="Content\sass\components\_loader.scss" />
+    <Content Include="Content\sass\shared\components\_loader.scss" />
     <Content Include="Content\sass\views\learn-more\_common.scss" />
     <Content Include="Content\sass\views\search\_responsive.scss" />
-    <Content Include="Content\sass\components\_menu.scss" />
+    <Content Include="Content\sass\shared\components\_menu.scss" />
     <Content Include="Content\css\views\shared\menu-responsive.css.map" />
     <Content Include="Content\css\views\shared\search-results.css.map" />
     <Content Include="Content\sass\views\game\live-map\_game-navigation.scss" />
@@ -317,6 +317,9 @@
     <Content Include="Content\sass\vendor-extensions\_googlemaps.scss" />
     <Content Include="Content\sass\views\game\live-map\_modal.scss" />
     <None Include="Content\sass\views\servers\servers.scss" />
+    <Content Include="Content\static\bg-error.jpg" />
+    <Content Include="Content\static\bg-game.jpg" />
+    <Content Include="Content\static\bg-learn-more.jpg" />
     <Content Include="Content\static\bg-server-browser.jpg" />
     <Content Include="Content\static\bg-statistics.jpg" />
     <Content Include="Content\static\learn-more\a.jpg" />
@@ -360,33 +363,33 @@
     <Content Include="Scripts\app\registertable.js" />
     <Content Include="Scripts\app\gamemap.js" />
     <Content Include="Scripts\dynatable\jquery.dynatable.js" />
-    <Content Include="Content\sass\components\_button.scss" />
-    <Content Include="Content\sass\components\_chat.scss" />
-    <Content Include="Content\sass\components\_dashboard.scss" />
-    <Content Include="Content\sass\components\_header.scss" />
-    <Content Include="Content\sass\components\_input.scss" />
-    <Content Include="Content\sass\components\_link-button.scss" />
-    <Content Include="Content\sass\components\_module.scss" />
-    <Content Include="Content\sass\components\_progressbar.scss" />
-    <Content Include="Content\sass\shared\_effects.scss" />
-    <Content Include="Content\sass\shared\_footer.scss" />
-    <Content Include="Content\sass\shared\_global.scss" />
-    <Content Include="Content\sass\shared\_misc.scss" />
-    <Content Include="Content\sass\shared\_module.scss" />
-    <Content Include="Content\sass\shared\_navigation.scss" />
-    <Content Include="Content\sass\utils\_extends.scss" />
-    <Content Include="Content\sass\utils\_functions.scss" />
-    <Content Include="Content\sass\utils\_mixins.scss" />
-    <Content Include="Content\sass\utils\_module.scss" />
-    <Content Include="Content\sass\utils\_palettes.scss" />
-    <Content Include="Content\sass\utils\_variables.scss" />
+    <Content Include="Content\sass\shared\components\_button.scss" />
+    <Content Include="Content\sass\shared\components\_chat.scss" />
+    <Content Include="Content\sass\shared\components\_dashboard.scss" />
+    <Content Include="Content\sass\shared\components\_header.scss" />
+    <Content Include="Content\sass\shared\components\_input.scss" />
+    <Content Include="Content\sass\shared\components\_link-button.scss" />
+    <Content Include="Content\sass\shared\components\_module.scss" />
+    <Content Include="Content\sass\shared\components\_progressbar.scss" />
+    <Content Include="Content\sass\shared\shared\_effects.scss" />
+    <Content Include="Content\sass\shared\shared\_footer.scss" />
+    <Content Include="Content\sass\shared\shared\_global.scss" />
+    <Content Include="Content\sass\shared\shared\_misc.scss" />
+    <Content Include="Content\sass\shared\shared\_module.scss" />
+    <Content Include="Content\sass\shared\shared\_navigation.scss" />
+    <Content Include="Content\sass\shared\utils\_extends.scss" />
+    <Content Include="Content\sass\shared\utils\_functions.scss" />
+    <Content Include="Content\sass\shared\utils\_mixins.scss" />
+    <Content Include="Content\sass\shared\utils\_module.scss" />
+    <Content Include="Content\sass\shared\utils\_palettes.scss" />
+    <Content Include="Content\sass\shared\utils\_variables.scss" />
     <Content Include="Content\sass\vendor-extensions\_fontawesome.scss" />
     <Content Include="Content\sass\views\home\_form-layout.scss" />
     <Content Include="Content\sass\views\home\_ribbon-layout.scss" />
     <Content Include="Content\sass\views\home\_video.scss" />
     <Content Include="Content\sass\views\home\home.scss" />
-    <Content Include="Content\sass\style.scss" />
-    <Content Include="Content\sass\components\_table.scss" />
+    <Content Include="Content\sass\shared\style.scss" />
+    <Content Include="Content\sass\shared\components\_table.scss" />
     <Content Include="Content\sass\views\shared\search-results.scss" />
     <Content Include="Content\sass\views\shared\menu-responsive.scss" />
     <Content Include="Content\sass\views\statistics\airframe\_style.scss" />
@@ -448,6 +451,7 @@
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
