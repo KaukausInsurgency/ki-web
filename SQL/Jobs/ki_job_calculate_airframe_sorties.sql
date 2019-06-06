@@ -12,7 +12,7 @@ SELECT server_id, session_id, ucid, role, sortie_id,
 		SUM(CASE WHEN event = "SLING_HOOK" THEN 1 ELSE 0 END) AS SlingHooks,
         SUM(CASE WHEN event = "SLING_UNHOOK" THEN 1 ELSE 0 END) AS SlingUnhooks,
 		(
-			SELECT COUNT (sortie_id)
+			SELECT COUNT(sortie_id)
 			FROM tmp_gameevents 
 			WHERE sortie_id = l.sortie_id AND server_id = l.server_id AND session_id = l.session_id AND target_player_ucid = l.ucid AND event = "HIT"
 		) AS HitsReceived,

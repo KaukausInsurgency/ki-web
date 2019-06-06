@@ -151,15 +151,15 @@ DROP TEMPORARY TABLE IF EXISTS temp_date_activity;
 -- Backup the data then purge the raw table
 
 -- backing up all connection events
-INSERT INTO backup_connection_log (id, server_id, session_id, type, player_ucid, player_name, player_id, ip_address, game_time, real_time)
-SELECT rcl.id, rcl.server_id, rcl.session_id, rcl.type, rcl.player_ucid, rcl.player_name, rcl.player_id, rcl.ip_address, rcl.game_time, rcl.real_time 
+INSERT INTO backup_connection_log (id, server_id, session_id, type, player_ucid, player_name, player_id, ip_address, game_time, real_time, time)
+SELECT rcl.id, rcl.server_id, rcl.session_id, rcl.type, rcl.player_ucid, rcl.player_name, rcl.player_id, rcl.ip_address, rcl.game_time, rcl.real_time, rcl.time
 FROM raw_connection_log rcl
 INNER JOIN temp_connect_pairs tcp
 	ON rcl.id = tcp.ci_id;
     
 -- backing up all disconnect events
-INSERT INTO backup_connection_log (id, server_id, session_id, type, player_ucid, player_name, player_id, ip_address, game_time, real_time)
-SELECT rcl.id, rcl.server_id, rcl.session_id, rcl.type, rcl.player_ucid, rcl.player_name, rcl.player_id, rcl.ip_address, rcl.game_time, rcl.real_time 
+INSERT INTO backup_connection_log (id, server_id, session_id, type, player_ucid, player_name, player_id, ip_address, game_time, real_time, time)
+SELECT rcl.id, rcl.server_id, rcl.session_id, rcl.type, rcl.player_ucid, rcl.player_name, rcl.player_id, rcl.ip_address, rcl.game_time, rcl.real_time, rcl.time 
 FROM raw_connection_log rcl
 INNER JOIN temp_connect_pairs tcp
 	ON rcl.id = tcp.co_id;

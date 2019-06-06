@@ -53,7 +53,7 @@ SELECT
 	) AS deaths,
 	SUM(CASE WHEN event = "SLING_UNHOOK" THEN 1 ELSE 0 END) AS slingloads,
 	SUM(CASE WHEN event = "TRANSPORT_DISMOUNT" THEN 1 ELSE 0 END) AS transport,
-	SUM(CASE WHEN event = "DEPOT_RESUPPLY" THEN 1 ELSE 0 END) AS resupplies,
+	SUM(CASE WHEN event = "DEPOT_RESUPPLY" THEN 1 ELSE 0 END) AS resupplies
 FROM tmp_gameevents t
 WHERE t.ucid IS NOT NULL
 GROUP BY t.ucid, t.date, t.role;
