@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TAWKI_TCPServer.Implementations;
+using TAWKI_TCPServer.Interfaces;
 
 namespace TAWKI_TCPServer
 {
@@ -30,6 +32,7 @@ namespace TAWKI_TCPServer
         private ManualResetEvent signal_read;
         // signal object used to signal a write event to thread(s)
         private ManualResetEvent signal_write;
+        private IIPCCallback _callbacks;
 
         public event ConnectedEventEventHandler ConnectedEvent;
         public delegate void ConnectedEventEventHandler(object sender, IPCConnectedEventArgs e);
@@ -56,10 +59,14 @@ namespace TAWKI_TCPServer
                 log = Directory.GetCurrentDirectory();
             }
             this._logPath = log + "\\" + DateTime.Now.ToString("yyyyMMdd") + "_client_" + _address.Replace('.','_').Replace(":","_") + ".log";
-            this.ConnectedEvent += KIDB.OnConnect;
-            this.DisconnectedEvent += KIDB.OnDisconnect;
-            this.SendEvent += KIDB.OnSend;
-            this.ReceivedEvent += KIDB.OnReceived;
+
+            ILogger logger = new FileLogger(_logPath);
+            _callbacks = new KICallback(logger);
+
+            this.ConnectedEvent += _callbacks.OnConnect;
+            this.DisconnectedEvent += _callbacks.OnDisconnect;
+            this.SendEvent += _callbacks.OnSend;
+            this.ReceivedEvent += _callbacks.OnReceive;
             // raise the connected event
             ConnectedEvent(_clientsock, new IPCConnectedEventArgs(_clientsock, _address, _logPath));
         }
@@ -135,8 +142,7 @@ namespace TAWKI_TCPServer
             {
                 try
                 {
-                    SocketError errorCode = 0;
-                    IAsyncResult readResult = _clientsock.BeginReceive(_req_buffer.BufferByte, 0, _req_buffer.Size, SocketFlags.None, out errorCode, this.HandleReceive, null);
+                    IAsyncResult readResult = _clientsock.BeginReceive(_req_buffer.BufferByte, 0, _req_buffer.Size, SocketFlags.None, out SocketError errorCode, this.HandleReceive, null);
 
                     // if signal is from index 1 (signal_close) then close stream and cancel connection
                     if (WaitHandle.WaitAny(new WaitHandle[] { signal_read, signal_close }) == 1)
@@ -234,19 +240,13 @@ namespace TAWKI_TCPServer
             if (_ex != null)
             {
                 Console.WriteLine("Error encountered during reading client data: " + _ex.Message);
-                if (DisconnectedEvent != null)
-                {
-                    DisconnectedEvent(this, new IPCConnectedEventArgs(_clientsock, _address, _logPath));
-                }
+                DisconnectedEvent?.Invoke(this, new IPCConnectedEventArgs(_clientsock, _address, _logPath));
                 // raise disconnected event
                 _connected = false;
             }
             else if (_buffer != null)
             {
-                if (ReceivedEvent != null)
-                {
-                    ReceivedEvent(this, new IPCReceivedEventArgs(_clientsock, _buffer.Decode(_buffer.Size)));
-                }
+                ReceivedEvent?.Invoke(this, new IPCReceivedEventArgs(_clientsock, _buffer.Decode(_buffer.Size)));
                 // raise received event
             }
             signal_read.Set();
@@ -259,10 +259,7 @@ namespace TAWKI_TCPServer
             try
             {
                 _clientsock.EndSend(ar);
-                if (SendEvent != null)
-                {
-                    SendEvent(this, new IPCSendEventArgs(_clientsock, _buffer.OriginalData));
-                }
+                SendEvent?.Invoke(this, new IPCSendEventArgs(_clientsock, _buffer.OriginalData));
             }
             catch (Exception ex)
             {

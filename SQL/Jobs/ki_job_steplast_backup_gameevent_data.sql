@@ -10,5 +10,5 @@ INNER JOIN tmp_gameevents tcp
 
 DROP TABLE IF EXISTS tmp_gameevents;
 
-UPDATE rpt_updated
-SET last_updated = NOW();
+UPDATE meta
+SET rpt_last_updated = NOW();

@@ -1,0 +1,47 @@
+.ribbon-bg {
+    position: absolute;
+    bottom: 0%;
+    background-color: rgba(57, 57, 57, 0.80);
+    width: 100%;
+
+    // turn vertical
+    /* @media screen and (max-width: 600px) {
+        width: 50px;
+        height: 100%;
+        right: 0%;
+    } */
+
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+}
+
+.ribbon-bg.ribbon-mobile {
+    display: none;
+    position: relative;
+    bottom: auto;
+    background-color: none;
+
+    @media screen and (max-width: 600px) {
+        display: block;
+    }
+}
+
+.ribbon-layout {
+    position: relative;
+    bottom: 10%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+    // turn vertical
+    /*@media screen and (max-width: 600px) {
+        height: 80%;
+        bottom: auto;
+        top: 0%;
+        left: auto;
+        margin-top: 2em;
+        text-align: left;
+    }*/
+}

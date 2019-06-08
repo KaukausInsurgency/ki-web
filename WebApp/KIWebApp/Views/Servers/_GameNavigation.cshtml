@@ -1,0 +1,35 @@
+﻿@model KIWebApp.Models.GameModel
+@{ Layout = null; }
+
+<div>
+    <span class="prop-game-nav" />
+</div>
+<div class="game-nav">
+    <div class="game-dropdown">
+        <span>
+            <i class="fas fa-address-book game-navicon"></i>
+        </span>
+        <div class="game-dropdown-content">
+            <span>
+                <i class="fas fa-address-book game-navicon"></i>Players
+            </span>
+        </div>
+        @Html.Partial("_OnlinePlayers", Model.OnlinePlayers)
+    </div>
+    @foreach (var item in @Model.CustomMenuItems)
+    {
+        <div class="game-dropdown">
+            <span>
+                <i class="@item.IconClass game-navicon"></i>
+            </span>
+            <div class="game-dropdown-content">
+                <span>
+                    <i class="@item.IconClass game-navicon"></i>@item.MenuName
+                </span>
+            </div>
+            <div class="game-flyout-content">
+                @Html.Raw(item.Content.HtmlContent)
+            </div>
+        </div>
+    }
+</div>

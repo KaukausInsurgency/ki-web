@@ -1,0 +1,166 @@
+﻿@section styles {
+    <link href="~/Content/css/views/learn-more/learn-more.css" rel="stylesheet" type="text/css" />
+}
+
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-learn-more",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
+<div class="main">
+    <section id="description">
+        <h1>Cloud Based Dynamic Campaign Framework</h1>
+        <p>
+            Kaukasus Insurgency is an online dynamic campaign framework that opens up tons of new challenges and excitement
+            within the DCS community.
+        </p>
+        <p>
+            Fly your favorite aircraft among different battlefields like never before. Experience a living and breathing world 
+            where your actions matter. Defend against fighters in the sky, or support the war effort on the ground - there's something for everyone to do!
+        </p>
+        <p>
+            Keep up with the action using our intuitive live map. Stay up to date on the latest news and events at home and on mobile. Our website was 
+            made to work on all screens and sizes, so you can easily access the information you need - anywhere, anytime.
+        </p>
+        <p>
+            Track your progress in real-time with our insightful and intuitive statistics. Your progress is shared across all KI servers 
+            in an easy to read dashboard. See your kills, deaths, flight time, top airframes, weapons, score, sorties, daily progress and so much more!
+        </p>
+    </section>
+    <section id="features">
+        <h1>Features</h1>
+        <div class="thumbnail-layout-2">
+            <div class="thumbnail thumbnail-short">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/code.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Persistant Data</h3>
+                    <p>
+                        Campaign data is persisted across server restarts, and player stats are recorded and tracked live
+                        on our site.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail-layout-2">
+            <div class="thumbnail thumbnail-short">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/a.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Dynamic Battlefields</h3>
+                    <p>No two campaigns will play the same!</p>
+                    <p>
+                        Tasks, Enemies, and Content are dynamically generated on the fly, to provide a fresh and surprising challenge.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail-layout-3">
+            <div class="thumbnail thumbnail-short">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/code.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Tons of Content</h3>
+                    <p>Everyone has a key role to play - fight off bandits at your 1 oClock, or haul important cargo to support the war effort.</p>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail-layout-3">
+            <div class="thumbnail thumbnail-short">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/code.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Call in the Heavies</h3>
+                    <p>When the going gets tough, call in the support you need like Artillery, Air Drops, JTACS and more.</p>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail-layout-3">
+            <div class="thumbnail thumbnail-short">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/b.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Live Map</h3>
+                    <p>Stay up to date with the game anywhere - at home and on mobile</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="thumbnail-layout-2">
+            <div class="thumbnail thumbnail-tall">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/code.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Design it your way</h3>
+                    <p>Customize and design your very own dynamic campaign with our powerful and flexible framework.</p>
+                    <p>Our framework allows you to customize:</p>
+                    <ul style="float: left; width: 50%;">
+                        <li>Objectives</li>
+                        <li>Side Missions</li>
+                        <li>JTACs</li>
+                        <li>Air Drops</li>
+                    </ul>
+                    <ul style="float: left; width: 50%;">
+                        <li>AI Commander</li>
+                        <li>Depot Contents</li>
+                        <li>Logistics</li>
+                        <li>
+                            And
+                            <b>Much</b> More!
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail-layout-2">
+            <div class="thumbnail thumbnail-tall">
+                <div class="thumbnail-img-crop">
+                    <img src="~/Content/static/learn-more/b.jpg">
+                </div>
+                <div class="caption">
+                    <h3>Cloud Hosting</h3>
+
+                    <p>Want to make your server more accessible to the world, but don't have a dedicated website? KI hosts your server on our site, providing the ability to customize the content users will see when visiting. Integrate awesome features like:</p>
+                    <ul style="float: left; width: 50%;">
+                        <li>Live-Map</li>
+                        <li>Simple Radio</li>
+                        <li>Discord</li>
+                    </ul>
+                    <ul style="float: left; width: 50%;">
+                        <li>Team Speak</li>
+                        <li>In Game Chat</li>
+                        <li>And More!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="community">
+        <h1>Building a Community</h1>
+        <p>
+            We are building a community of players, server admins, and scripters to join us in building a better DCS experience. Talk with other members of the community about ideas, tips and tricks, or get involved in the development of KI.
+        </p>
+        <p>
+            We appreciate your patronage and donations - they help us remember how much this community cares about something like this, and makes us strive to go further than DCS has ever gone before!
+        </p>
+    </section>
+    <section id="download">
+        <h1>Download</h1>
+        <p>
+            You can download our client <a href="/downloads/ki-updater.zip" download>here</a> - running this will install KI in the folder the client is run in.
+        </p>
+    </section>
+</div>
+
+
+@section scripts {
+
+}

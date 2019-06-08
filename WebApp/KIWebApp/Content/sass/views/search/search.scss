@@ -1,0 +1,35 @@
+﻿@import '../../shared/utils/module';
+@import 'responsive';
+
+.search-menu {
+    margin-top: 30px;
+    padding-right: 20px;
+    float: left;
+    width: 25%;
+}
+
+.search-results {
+    float: left;
+    width: 75%;
+    padding-top: 20px;
+}
+
+.search-loader-layout {
+    position: absolute;
+    @include calc(left, 42%, '50% - 40px');
+    top: 50%;
+}
+
+@media screen and (max-width: 720px) {
+    .search-menu {
+        float: none;
+        width: 100%;
+        padding-right: 0px;
+    }
+
+    .search-results {
+        float: none;
+        width: 100%;
+    }
+}
+

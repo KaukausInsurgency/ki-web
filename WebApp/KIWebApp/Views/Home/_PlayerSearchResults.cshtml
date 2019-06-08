@@ -1,0 +1,29 @@
+﻿@model List<KIWebApp.Models.PlayerModel>
+
+
+<div class="sr-layout fade-in">
+    <table id="search-table" class="table players">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Time</th>
+                <th>Sorties</th>
+                <th>Kills</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model)
+            {
+                <tr class="js-clickable">
+                    <td>
+                        <div class="UCID" style="display:none;">@item.UCID</div>
+                        <b>@item.Name</b>
+                    </td>
+                    <td>@item.GameTime</td>
+                    <td>@item.Sorties</td>
+                    <td>@item.Kills</td>
+                </tr>
+             }
+        </tbody>
+    </table>
+</div>

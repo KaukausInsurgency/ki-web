@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace TAWKI_TCPServer
 {
-    struct ProtocolResponseMultiData
+    public struct ProtocolResponse
     {
         public string Action;
         public bool Result;
         public string Error;
         public List<List<object>> Data;
-    }
 
-    struct ProtocolResponseSingleData
-    {
-        public string Action;
-        public bool Result;
-        public string Error;
-        public List<object> Data;
+        public ProtocolResponse(string Action)
+        {
+            this.Action = Action;
+            Error = "";
+            Data = new List<List<object>>();
+            Result = false;
+        }
     }
 }

@@ -1,0 +1,57 @@
+﻿@section styles {
+    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/search/search.css" rel="stylesheet" type="text/css" />
+}
+
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-browser",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
+<div class="main">
+    <p class="error" data-bind="text: error"></p>
+    <div data-url-search-players-ajax="@Url.Action("SearchPlayers", "Home")"
+         data-url-search-servers-ajax="@Url.Action("SearchServers", "Home")"
+         data-url-game="@Url.Action("Game", "Servers")"></div>
+
+    <div class="search-menu">
+        <nav class="menu">
+            <a id="js-overall-search" href="javascript:;" class="menu-item">
+                Overall
+            </a>
+            <hr class="menu-line">
+            <a id="js-sorties-search" href="javascript:;" class="menu-item">
+                Sorties
+            </a>
+            <hr class="menu-line">
+            <a id="js-kills-search" href="javascript:;" class="menu-item">
+                Kills
+            </a>
+            <hr class="menu-line">
+            <a id="js-slingloads-search" href="javascript:;" class="menu-item">
+                Slingloads
+            </a>
+            <hr class="menu-line">
+            <a id="js-resupplies-search" href="javascript:;" class="menu-item">
+                Resupplies
+            </a>
+        </nav>
+    </div>
+
+    <div class="search-loader-layout">
+        <div class="loader"></div>
+    </div>
+
+    <div class="search-results">
+        <!--Handled in Ajax Calls-->
+    </div>
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/dynatable")
+    @Scripts.Render("~/bundles/tooltipster")
+}

@@ -102,4 +102,36 @@ ON rpt.ucid = t.target_player_ucid AND rpt.airframe = t.target_model AND rpt.nam
 SET deaths = deaths + t.deathcount;
 
 
--- TODO - Update kill and death counts for types and categories
+-- Update kill and death counts for types and categories
+DROP TEMPORARY TABLE IF EXISTS temp_stats_targets;
+CREATE TEMPORARY TABLE temp_stats_targets 
+(
+	ucid varchar(128), 
+	airframe varchar(45),
+    name varchar(25), 
+    is_category BIT,
+    kills INT,
+	deaths INT
+); 
+
+INSERT INTO temp_stats_targets (ucid, airframe, name, is_category, kills, deaths)
+SELECT r.ucid, r.airframe, t.category, 1, SUM(r.kills), SUM(r.deaths)
+FROM rpt_airframe_kd r
+INNER JOIN target t
+ON t.model = r.name
+GROUP BY r.ucid, r.airframe, t.category;
+
+INSERT INTO temp_stats_targets (ucid, airframe, name, is_category, kills, deaths)
+SELECT r.ucid, r.airframe, t.type, 0, SUM(r.kills), SUM(r.deaths)
+FROM rpt_airframe_kd r
+INNER JOIN target t
+ON t.model = r.name
+GROUP BY r.ucid, r.airframe, t.type;
+
+UPDATE rpt_airframe_kd rpt 
+INNER JOIN temp_stats_targets t 
+ON t.name = rpt.name AND t.ucid = rpt.ucid AND t.airframe = rpt.airframe
+SET rpt.kills = t.kills,
+	rpt.deaths = t.deaths;
+
+DROP TEMPORARY TABLE IF EXISTS temp_stats_targets;

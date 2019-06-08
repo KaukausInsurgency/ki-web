@@ -1,0 +1,36 @@
+﻿table.table.servers {
+    // hide the restart column
+    @media screen and (max-width: 788px) {
+        & > tbody > tr > td:nth-child(4),
+        & > thead > tr > th:nth-child(4) {
+            display: none;
+        }
+    }
+    // hide the Status column
+    @media screen and (max-width: 600px) {
+        & > tbody > tr > td:nth-child(3),
+        & > thead > tr > th:nth-child(3) {
+            display: none;
+        }
+    }
+    // hide the IP address column
+    @media screen and (max-width: 450px) {
+        & > tbody > tr > td:nth-child(2),
+        & > thead > tr > th:nth-child(2) {
+            display: none;
+        }
+    }
+}
+
+
+
+table.table.players {
+    // hide the Game Time column
+    @media screen and (max-width: 450px) {
+        & > tbody > tr > td:nth-child(2),
+        & > thead > tr > th:nth-child(2) {
+            display: none;
+        }
+    }
+}
+
