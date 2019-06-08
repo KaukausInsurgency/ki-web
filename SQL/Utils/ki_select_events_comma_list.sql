@@ -1,1 +1,0 @@
-SELECT GROUP_CONCAT(DISTINCT event) FROM ki.backup_gameevents_log
