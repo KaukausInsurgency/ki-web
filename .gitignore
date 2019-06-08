@@ -18,3 +18,7 @@ WebApp/KIWebApp/Content/css
 WebApp/KIWebApp/Content/static/dcs_world.mp4
 WebApp/KIWebApp/downloads/ki-updater.zip
 WebApp/KIWebApp/downloads/ki.zip
+*.lock
+*.ide
+*.cache
+TCPClient/KITCPClient/obj
