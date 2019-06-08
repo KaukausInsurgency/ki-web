@@ -1,0 +1,74 @@
+﻿@model List<KIWebApp.Models.ServerModel>
+
+@section styles {
+    <link href="~/Content/css/views/shared/search-results.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/servers/servers.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+}
+
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-server-browser",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
+<div class="main">
+    <p class="error" data-bind="text: error"></p>
+    <div data-url-game="@Url.Action("Game", "Servers")" 
+         data-url-player-statistics="@Url.Action("PlayerStats", "Statistics")"
+         data-url-server-statistics="@Url.Action("ServerStats", "Statistics")"></div>
+    <div class="sr-layout">
+        <h2 class="sr-title">Game Servers</h2>
+        <p class="sr-subtitle">This lists the status of all KI Game Servers</p>
+        <table id="search-table" class="table">
+            <thead>
+                <tr>
+                    <th>Server Name</th>
+                    <th>IP Address</th>
+                    <th>Status</th>
+                    <th>Restart</th>
+                    <th>Online</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model)
+                {
+                    <tr class="js-clickable">
+                        <td>
+                            <div class="ServerID" style="display:none;">@item.ServerID</div>
+                            <b>@item.ServerName</b>
+                            <div class="sr-graph-icon js-clickable-img" title="View Server Statistics">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                        </td>
+                        <td>@item.IPAddress</td>
+                        <td>
+                            @{
+                                string statusIcon = "sr-status-restart-icon";
+                                if (item.Status == "Online")
+                                {
+                                    statusIcon = "sr-status-online-icon";
+                                }
+                                else if (item.Status == "Offline")
+                                {
+                                    statusIcon = "sr-status-offline-icon";
+                                }
+                            }
+                            <i class="fas fa-circle @statusIcon"></i>@item.Status
+                        </td>
+                        <td>@item.RestartTime</td>
+                        <td>@item.OnlinePlayers</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/dynatable")
+    @Scripts.Render("~/bundles/tooltipster")
+    <script src="~/scripts/views/server/init.js"></script>
+}

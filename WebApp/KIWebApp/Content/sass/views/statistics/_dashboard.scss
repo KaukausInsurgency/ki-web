@@ -1,0 +1,100 @@
+﻿.dash-columns-eight {
+    // break into floating 4 items per line
+    @media screen and (max-width: 880px) {
+        width: 25%;
+
+        &:nth-child(4)::after {
+            clear: left;
+        }
+    }
+    // break into floating 4 items per line
+    @media screen and (max-width: 570px) {
+        width: 50%;
+
+        &:nth-child(2)::after,
+        &:nth-child(4)::after,
+        &:nth-child(6)::after,
+        &:nth-child(8)::after {
+            clear: left;
+        }
+    }
+}
+
+.dash-columns-four {
+    // break into floating 2 items per line
+    @media screen and (max-width: 450px) {
+        width: 50%;
+
+        &:nth-child(2)::after {
+            clear: left;
+        }
+    }
+}
+
+.dash-columns-three {
+    // break into floating 2 items per line
+    @media screen and (max-width: 450px) {
+        width: 50%;
+
+        &:nth-child(2)::after {
+            clear: left;
+        }
+    }
+}
+
+.dashboard-row {
+    // reduce margin size
+    @media screen and (max-width: 880px) {
+        margin-left: 1.8em;
+        margin-right: 1.8em;
+    }
+    // reduce margin size
+    @media screen and (max-width: 570px) {
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
+}
+
+.dashboard-background-columns-2 {
+    // break the flow into 2 seperate rows
+    @media screen and (max-width: 724px) {
+        width: 100%;
+        float: none;
+
+        &:nth-child(1) {
+            margin-right: 0%;
+        }
+
+        &:nth-child(2) {
+            margin-left: 0%;
+        }
+    }
+}
+
+.dash-header-large-font {
+    @media screen and (max-width: 1018px) {
+        font-size: 1.2em;
+    }
+}
+
+.dash-header-medium-font {
+    @media screen and (max-width: 1018px) {
+        font-size: 0.9em;
+    }
+}
+
+.dash-header-small-font {
+    @media screen and (max-width: 1018px) {
+        font-size: 0.55em;
+    }
+}
+
+.dash-background-color {
+    margin-left: -4em;
+    margin-right: -4em;
+}
+
+.dashboard-layout {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

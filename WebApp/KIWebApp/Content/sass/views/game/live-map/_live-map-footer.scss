@@ -1,0 +1,53 @@
+
+$live-map-footer-height: 30px;
+$footer-font-color: $primary-font-color;
+$footer-font-hover: $primary-font-color-hover;
+
+/* footer on the live map */
+.live-map-layout-footer {
+	position:absolute; 
+	left:0px; 
+	bottom:0px; 
+    height:$live-map-footer-height; 
+    @include calc( width, 80%, '100% - #{$live-map-nav-width}');
+
+	// only show in-game chat events menu item
+	@media screen and (max-width: 450px) {
+		& > div:nth-child(2),
+		& > div:nth-child(3) {
+			display: none;
+		}
+	}
+
+	& > div {
+		font-size: 1em;
+
+		@media screen and (max-width: 650px) {
+			font-size: 0.8em;
+		}
+	}
+}
+
+// columns that form the 3 nav items on the footer
+.live-map-footer-column {
+	@extend %block-float;
+	width: 33.333333%; 
+	height: 100%; 
+	position:relative;
+    text-align:center;
+    cursor: context-menu;
+    @include property-regular-hover(color, $footer-font-color, $footer-font-hover);
+}
+
+// Span navigation item on the footer
+.live-map-footer-span {
+    top: 20%;
+    position: relative;
+    pointer-events: none;
+}
+
+.live-map-footer-content {
+	display: none;
+    position: absolute;		/* make the positioning absolute relative to the parent */
+	bottom: $live-map-footer-height;	/* offset to be on top of the notifications div */	
+}

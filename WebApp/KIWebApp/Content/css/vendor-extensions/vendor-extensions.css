@@ -1,0 +1,24 @@
+@media screen and (max-width: 450px) {
+  .dynatable-per-page {
+    display: none; } }
+
+.fa-rotate-45 {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+.marker {
+  cursor: pointer;
+  border-radius: 32px;
+  -webkit-transition: border 0.25s linear, box-shadow;
+  -moz-transition: border 0.25s linear, box-shadow;
+  transition: border 0.25s linear, box-shadow; }
+  .marker:hover {
+    border-color: #fff;
+    -webkit-box-shadow: 0 0 10px #fff;
+    -moz-box-shadow: 0 0 10px #fff;
+    box-shadow: 0 0 10px #fff; }
+
+/*# sourceMappingURL=vendor-extensions.css.map */

@@ -1,0 +1,161 @@
+.chart-columns-2 {
+
+    // stop floating and stack vertically
+    @media screen and (max-width: 716px) {
+        width: 100%;
+        float: none;
+    }
+}
+
+#hc-last-session, 
+#hc-last-5-sessions {
+    width: 50%;
+    float: left;
+    position: relative;
+    height: 300px;
+    margin: 0 auto;
+}
+
+#hc-last-session {
+    padding-right: 10px;
+}
+
+#hc-last-5-sessions {
+    padding-left: 10px;
+}
+
+@media screen and (max-width: 930px) {
+    #hc-last-session, 
+    #hc-last-5-sessions {
+        width: 100%;
+        float: none;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    #hc-last-session {
+        padding-bottom: 10px;
+    }
+    
+    #hc-last-5-sessions {
+        padding-top: 10px;
+    }
+}
+
+#hc-airframes-pie,
+#hc-score-pie,
+ {
+    width: 50%;
+    float: left;
+    position: relative;
+    height: 220px;
+    margin: 0 auto;
+    padding-top: 6px;
+
+    @media screen and (max-width: 450px) {
+        width: 100%;
+        float: none;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+}
+
+#hc-sortie-success,
+#hc-sling-success,
+#hc-transport-success {
+    float: left;
+    width: 33.33333333%;
+    position: relative;
+    height: 200px;
+}
+
+.chart-layout-piecharts {
+    width: 50%; 
+    float: left; 
+    position: relative;
+    padding-right: 10px;
+
+    @media screen and (max-width: 740px) {
+        width: 100%;
+        float: none;
+        padding-right: 0px;
+        padding-bottom: 10px;
+    }
+}
+
+.chart-layout-gauges {
+    width: 50%; 
+    float:left; 
+    position:relative;
+    padding-left: 10px;
+
+    @media screen and (max-width: 740px) {
+        width: 100%;
+        float: none;
+        padding-left: 0px;
+        padding-top: 10px;
+    }
+}
+
+// remove the margins as the content is being stacked and not floated
+@media screen and (max-width: 716px) {
+    .stats-table-title.left-margin-inner,
+    .stats-table-layout.left-margin-inner {
+        margin-left: 0px;
+    }
+
+    .stats-table-title.right-margin-inner,
+    .stats-table-layout.right-margin-inner {
+        margin-right: 0px;
+    }
+}
+
+
+// OVERRIDE THE MEDIA QUERIES HERE
+// hide the restart column 
+@media screen and (max-width: 650px) {
+    table.sr-table>tbody>tr>td:nth-child(4),
+    table.sr-table>thead>tr>th:nth-child(4) {
+        display: table-cell;
+    }
+}
+
+// hide the Status column
+@media screen and (max-width: 580px) {
+    table.sr-table>tbody>tr>td:nth-child(3),
+    table.sr-table>thead>tr>th:nth-child(3) {
+        display: table-cell;
+    }
+}
+
+// hide the IP address column
+@media screen and (max-width: 480px) {
+    table.sr-table>tbody>tr>td:nth-child(2),
+    table.sr-table>thead>tr>th:nth-child(2) {
+        display: table-cell;
+    }
+}
+
+// on the airframe table, hide the 'Top' leaderboard percentage column
+@media screen and (max-width: 490px) {
+    #airframe-table.sr-table>tbody>tr>td:nth-child(2),
+    #airframe-table.sr-table>thead>tr>th:nth-child(2) {
+        display: none;
+    }
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(67, 67, 72, 0.75), rgba(0, 0, 0, 0));
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: #333;
+}
+
+h3 {
+    font-size: 19px;
+    text-align: center;
+}

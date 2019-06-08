@@ -1,0 +1,132 @@
+$(function () {
+	var vnavMaxWidth = $('.prop-vnav').css('--max-width').trim();
+	var vnavMinWidth = $('.prop-vnav').css('--min-width').trim();
+	var $expandClass = $('.prop-vnav').css('--font-arrow-expand').trim();
+	var $collapseClass = $('.prop-vnav').css('--font-arrow-collapse').trim();
+
+	var $vnav = $('.vnav');
+	var $vnavDropdownContent = $('.vnav-dropdown-content');
+	var width = $(window).width();
+
+	var fncAnimate = function ($el, width, animComplete) {
+		$el.stop(true).animate({
+			width: width
+		}, 200, animComplete);
+	}
+
+	var toggleNavExpand = function(shouldExpand) {
+		if (shouldExpand) {
+			$vnavDropdownContent.removeClass('vnav-collapsed');
+			$vnavDropdownContent.addClass('vnav-expanded');
+			$vnav.removeClass('vnav-collapsed');
+			$vnav.addClass('vnav-expanded');
+		}
+		else {
+			$vnavDropdownContent.removeClass('vnav-expanded');
+			$vnavDropdownContent.addClass('vnav-collapsed');
+			$vnav.removeClass('vnav-expanded');
+			$vnav.addClass('vnav-collapsed');
+		}
+    }
+
+    var initNavState = function (state) {
+        if (state) {
+            $vnavDropdownContent.addClass('vnav-expanded');	// by default the ribbon is expanded
+            $('.vnav-btn-expander').children('i').addClass($collapseClass);
+            $('.js-nav-text').show();
+            $vnav.addClass('vnav-expanded');
+            $vnav.css('width', vnavMaxWidth);
+        }
+        else {
+            $vnavDropdownContent.addClass('vnav-collapsed');	// by default the ribbon is collapsed
+            $('.vnav-btn-expander').children('i').addClass($expandClass);
+            $('.js-nav-text').hide();
+            $vnav.addClass('vnav-collapsed');
+        } 
+    }
+
+    var sessionNavExpand = $('[data-should-expand]').data('should-expand');
+
+    // in session - apply the state of nav based on session state
+    if (sessionNavExpand != null && sessionNavExpand.length !== 0) {
+        initNavState(sessionNavExpand.toLowerCase() == "true");
+    }
+    else {
+        // first time visiting the site and nothing in session - use browser width to determine initial state
+        if (width > 450)
+            initNavState(true);
+	    else {
+            initNavState(false);
+        }
+    }
+
+   
+
+	$('.vnav-btn-expander').click(function () {
+        var expander_icon = $(this).children('i');
+        var shouldExpand = false;
+		if (expander_icon.hasClass($expandClass))	// expand the nav ribbon
+		{
+			expander_icon.removeClass($expandClass);
+			expander_icon.addClass($collapseClass);
+			fncAnimate($vnav, vnavMaxWidth,
+				function() {
+					$('.js-nav-text').show();
+				});
+            toggleNavExpand(true);
+            shouldExpand = true;
+		}
+		else  // collapse the nav ribbon
+		{
+			expander_icon.removeClass($collapseClass);
+			expander_icon.addClass($expandClass);
+			$('.js-nav-text').hide();
+			fncAnimate($vnav, vnavMinWidth);
+            toggleNavExpand(false);
+            shouldExpand = false;
+        }
+
+        $.ajax({
+            url: $('[data-url-nav-ajax]').data('url-nav-ajax'),
+            type: "POST",
+            data: {
+                state: shouldExpand
+            }  
+        });
+	});
+
+	// when hovering over a elements on the vnav, animate the widths to look smooth, but only if the nav is collapsed
+	$('.vnav a').hover(function(e) {
+		// only animate if the nav bar is collapsed
+		if ($vnav.hasClass('vnav-collapsed')) {
+			fncAnimate($(this), vnavMaxWidth, function() {
+				$(this).children('.js-nav-text').show();
+			});
+		}
+	}, function(e) {
+		// only animate if the nav bar is collapsed
+		if ($vnav.hasClass('vnav-collapsed')) {
+			$(this).children('.js-nav-text').hide();
+			fncAnimate($(this), '100%');
+		}
+	});
+
+	$('.vnav-dropdown').hover(function(e) {
+		var $dropdownContent = $(this).children('.vnav-dropdown-content');
+		var $dropdownText = $dropdownContent.children('a').children('.js-dropdown-text');
+		// hide the text first, other wise the text tries to display in the 0 width box and it makes the transition look janky
+		$dropdownText.hide();	
+		$dropdownContent.css('display', 'block');
+		fncAnimate($dropdownContent, vnavMaxWidth, function() {
+			$dropdownText.show();
+		});
+	}, function(e) {
+		var $dropdownContent = $(this).children('.vnav-dropdown-content');	
+		var $dropdownText = $dropdownContent.children('a').children('.js-dropdown-text');
+		// hide the text first, other wise the text tries to display in the 0 width box and it makes the transition look janky
+		$dropdownText.hide();
+		fncAnimate($dropdownContent, '0px', function() {
+			$dropdownContent.css('display', 'none');
+		});
+	});
+});

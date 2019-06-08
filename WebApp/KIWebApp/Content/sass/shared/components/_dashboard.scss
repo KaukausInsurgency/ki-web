@@ -1,0 +1,135 @@
+%dashboard-line-after {
+    content: "";
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    height: 73%;
+    width: 4px;
+    background: palette(dark, 'light-mine-shaft');
+}
+
+.dashboard-layout {
+    background-color: palette(dark, 'tundora');
+    border-radius: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.dashboard-main-title {
+    margin-bottom: 5px;
+    font-size: 1.4em;
+    padding-left: 1em;
+    padding-top: 25px;
+}
+
+.dashboard-section-heading {
+    font-size: 1.2em;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: block;
+
+    &:after {
+        border-bottom: 1px solid palette(dark, 'dark');
+        content: '';
+        display: block;
+        padding-bottom: 10px;
+        width: 95%;
+    }
+}
+
+.dash-columns-eight {
+    float: left;
+    width: 12.5%;
+    position: relative;
+
+    &:after {
+        @extend %dashboard-line-after;
+    }
+}
+
+.dash-columns-four {
+    float: left;
+    width: 25%;
+    position: relative;
+
+    &:after {
+        @extend %dashboard-line-after;
+    }
+}
+
+.dash-columns-three {
+    float: left;
+    width: 33.33333333%;
+    position: relative;
+
+    &:after {
+        @extend %dashboard-line-after;
+    }
+}
+
+.dash-columns-two {
+    float: left;
+    width: 50%;
+    position: relative;
+
+    &:after {
+        @extend %dashboard-line-after;
+    }
+}
+
+
+.dashboard-row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 2em;
+    margin-right: 2em;
+    justify-content: flex-start;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+.dashboard-background-columns-2 {
+    width: 49%;
+    float: left;
+    position: relative;
+
+    &:nth-child(1) {
+        margin-right: 1%;
+    }
+
+    &:nth-child(2) {
+        margin-left: 1%;
+    }
+}
+
+.dash-header {
+    line-height: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.dash-header-large-font {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: $secondary-font-color;
+}
+
+.dash-header-medium-font {
+    font-size: 1em;
+    font-weight: bold;
+    color: $secondary-font-color;
+}
+
+.dash-header-small-font {
+    font-size: 0.65em;
+    color: $primary-font-color;
+}
+
+.dash-background-color {
+    background-color: palette(dark, 'tundora');
+}

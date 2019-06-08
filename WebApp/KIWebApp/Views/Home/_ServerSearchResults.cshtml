@@ -1,0 +1,46 @@
+﻿@model List<KIWebApp.Models.ServerModel>
+
+<div class="sr-layout fade-in">
+    <table id="search-table" class="table servers">
+        <thead>
+            <tr>
+                <th>Server Name</th>
+                <th>IP Address</th>
+                <th>Status</th>
+                <th>Restart</th>
+                <th>Online</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model)
+            {
+                <tr class="js-clickable">
+                    <td>
+                        <div class="ServerID" style="display:none;">@item.ServerID</div>
+                        <b>@item.ServerName</b>
+                        <div class="sr-graph-icon js-clickable-img" title="View Server Statistics">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                    </td>
+                    <td>@item.IPAddress</td>
+                    <td>
+                        @{
+                            string statusIcon = "sr-status-restart-icon";
+                            if (item.Status == "Online")
+                            {
+                                statusIcon = "sr-status-online-icon";
+                            }
+                            else if (item.Status == "Offline")
+                            {
+                                statusIcon = "sr-status-offline-icon";
+                            }
+                        }
+                        <i class="fas fa-circle @statusIcon"></i>@item.Status
+                    </td>
+                    <td>@item.RestartTime</td>
+                    <td>@item.OnlinePlayers</td>
+                </tr>
+             }
+        </tbody>
+    </table>
+</div>

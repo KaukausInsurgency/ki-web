@@ -1,0 +1,158 @@
+div.main {
+    // override the paddings on main for this page as we need the section background colors to take the full width
+    padding-left: 0;
+    padding-right: 0;
+
+    h1 {
+        font-size: 2em;
+        font-weight: 900;
+        padding-top: 10px;
+        padding-bottom: 30px;
+        text-align: center;
+
+        @media screen and (max-width: 1000px) {
+            font-size: 1.8em;
+        }
+
+        @media screen and (max-width: 750px) {
+            font-size: 1.5em;
+        }
+    }
+
+    h2 {
+        font-size: 1.8em;
+        font-weight: 800;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 1.6em;
+        font-weight: 700;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        @media screen and (max-width: 1089px) {
+            font-size: 1.4em;
+        }
+
+        @media screen and (max-width: 855px) {
+            font-size: 1.3em;
+        }
+        // make the font big again as the cards are now being stacked vertically
+        @media screen and (max-width: 755px) {
+            font-size: 1.3em;
+        }
+        // now reduce them again as we are getting closer to mobile
+        @media screen and (max-width: 655px) {
+            font-size: 1.3em;
+        }
+
+        @media screen and (max-width: 555px) {
+            font-size: 1.2em;
+        }
+    }
+
+    h4 {
+        font-size: 1.4em;
+        font-weight: 700;
+    }
+
+    h5 {
+        font-size: 1.2em;
+        font-weight: 600;
+    }
+
+    h6 {
+        font-size: 1em;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 1em;
+        line-height: 1.5em;
+        padding-bottom: 10px;
+
+        @media screen and (max-width: 1000px) {
+            font-size: 0.9em;
+        }
+
+        @media screen and (max-width: 750px) {
+            font-size: 0.8em;
+        }
+    }
+
+    ul {
+        list-style-type: disc;
+        list-style-position: inside;
+        padding-left: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    ul > li {
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        @media screen and (max-width: 1000px) {
+            font-size: 0.9em;
+        }
+
+        @media screen and (max-width: 750px) {
+            font-size: 0.8em;
+        }
+
+        @media screen and (max-width: 390px) {
+            font-size: 0.7em;
+        }
+    }
+
+    b {
+        font-weight: 700;
+    }
+
+    section {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    a {
+        color: #e36209;
+    }
+}
+
+%learn-more-layouts {
+    padding-left: 4em;
+    padding-right: 4em;
+    overflow: hidden;
+
+    @media screen and (max-width: 1070px) {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    @media screen and (max-width: 520px) {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+}
+
+#description {
+    background-color: $primary-background-color;
+    @extend %learn-more-layouts;
+}
+
+#features {
+    background-color: $secondary-background-color;
+    @extend %learn-more-layouts;
+}
+
+#community {
+    background-color: $primary-background-color;
+    @extend %learn-more-layouts;
+}
+
+#download {
+    background-color: $secondary-background-color;
+    @extend %learn-more-layouts;
+}

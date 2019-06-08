@@ -1,0 +1,151 @@
+$table-font-color: palette(dark-font, 'gray-nickel');
+$table-background-color: palette(dark, 'cod-gray');
+$table-header-column-color: palette(dark-font, 'gallery');
+$table-data-row-color-odd: palette(dark, 'mine-shaft');
+$table-data-row-color-even: palette(dark, 'tundora');
+
+.online-players-redfor {
+    color: palette(game-font, 'redfor');
+}
+
+.online-players-blufor {
+    color: palette(game-font, 'blufor');
+}
+
+.online-players-neutral {
+    color: palette(game-font, 'neutral');
+}
+
+.online-players-layout {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+    width:600px;
+    height:300px;
+    padding: 0.5em;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: #cdcdcd;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+}
+
+.online-players {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color:$table-font-color;
+    background-color: $table-background-color;
+    opacity: 0.85;
+    line-height: 1em;
+    width: 100%;
+    height: 100%; 
+}
+
+table.online-players>caption {
+    text-align:center; 
+    font-weight:900;
+}
+
+// table header row
+table.online-players>thead>tr {
+    display: table-row;
+    vertical-align: inherit;
+}
+
+// Firefox - fixes issue with thead not shrinking to content
+table.online-players > thead {
+    height: 1%;
+}
+
+// table header columns
+table.online-players>thead>tr>th {
+    color: $table-header-column-color;
+    border-collapse: collapse;
+    vertical-align: bottom;
+    text-align: left;
+    padding: 8px;
+    box-sizing: border-box;
+    display: table-cell;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+// table data columns
+table.online-players>tbody>tr>td {
+    font-weight: 500;
+    font-size: 0.85em;
+    padding: 2px 5px;
+}
+
+table.online-players>tbody>tr:nth-child(odd) td{
+    background-color:$table-data-row-color-odd;
+}
+table.online-players>tbody>tr:nth-child(even) td{
+    background-color:$table-data-row-color-even;
+}
+
+// hide side and ping columns if the screen is less than 760px
+@media screen and (max-width: 760px) {
+    table.online-players>tbody>tr>td:nth-child(3),
+    table.online-players>tbody>tr>td:nth-child(5),
+    table.online-players>thead>tr>th:nth-child(3),
+    table.online-players>thead>tr>th:nth-child(5){
+        display:none;
+    }
+ 
+    // reduce the size of the table
+    .online-players-layout {
+        width: 450px;
+    }
+}
+
+// next level - hide the lives column
+@media screen and (max-width: 613px) {
+    table.online-players>tbody>tr>td:nth-child(4),
+    table.online-players>thead>tr>th:nth-child(4){
+        display:none;
+    }
+
+    // reduce table size further
+    .online-players-layout {
+        width: 300px;
+    }
+
+    // reduce the font sizes
+    table.online-players>tbody>tr>td {
+        font-size: 0.6em;
+    }
+
+    table.online-players>thead>tr>th {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 427px) {
+    // hide the airframe column
+    table.online-players>tbody>tr>td:nth-child(1),
+    table.online-players>thead>tr>th:nth-child(1){
+        display:none;
+    }
+
+    // reduce the size even further
+    .online-players-layout {
+        width: 200px;
+    }
+
+    // reduce the font size further
+    table.online-players>thead>tr>th {
+        font-size: 0.7em;
+    }
+
+    table.online-players>caption {
+        font-size: 0.8em;
+    }
+}

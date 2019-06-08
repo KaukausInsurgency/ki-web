@@ -1,0 +1,147 @@
+﻿@model KIWebApp.Models.GameModel
+
+@section styles {
+    <link href="~/Content/css/vendor-extensions/vendor-extensions.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/views/game/game.css" rel="stylesheet" type="text/css" />
+}
+
+@Html.Partial("_Header", new KIWebApp.Models.HtmlHeaderModel
+{
+    HeaderImage = "header-image-game",
+    Title = "Kaukasus Insurgency",
+    InputValue = ""
+})
+
+<div class="main">
+    <div class="server-description">
+        <h1>@Model.ServerName</h1>
+        <h4>Description</h4>
+        @Html.Raw(@Model.ServerDescription)
+    </div>
+
+    <section class="game-section">
+        <div class="info-layout dashboard-layout">
+            <h2>Server</h2>
+            <div class="progress-bar-layout">
+                <div id="RestartTimeString" class="progress-bar-title">Time Remaining: @Model.RestartTimeString</div>
+                <div class="progress-bar">
+                    <span id="RestartTimeProgress" style="width: @(((14400 - Model.RestartTime) / 14400.0) * 100)%"></span>
+                </div>
+            </div>
+
+            <div class="dashboard-row">
+                <div class="dash-columns-two">
+                    <div id="Status" class="dash-header dash-header-large-font">@Model.Status</div>
+                    <div class="dash-header dash-header-small-font">Status</div>
+                </div>
+                <div class="dash-columns-two">
+                    <div id="Map" class="dash-header dash-header-medium-font">@Model.Map</div>
+                    <div class="dash-header dash-header-small-font">Map</div>
+                </div>
+            </div>
+            <div class="dashboard-row">
+                <div class="dash-columns-two">
+                    <div class="dash-header dash-header-medium-font">@Model.IPAddress</div>
+                    <div class="dash-header dash-header-small-font">Address</div>
+                </div>
+                @if (Model.SimpleRadioEnabled)
+                {
+                    <div class="dash-columns-two">
+                        <div class="dash-header dash-header-medium-font">@Model.SimpleRadioIPAddress</div>
+                        <div class="dash-header dash-header-small-font">Simple Radio</div>
+                    </div>
+                }           
+            </div>
+            <div class="dashboard-row">
+                <div class="dash-columns-four">
+                    <div id="OnlinePlayersCount" class="dash-header dash-header-large-font">@Model.OnlinePlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Online</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div id="RedforPlayersCount" class="dash-header dash-header-large-font">@Model.RedforPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Red</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div id="BlueforPlayersCount" class="dash-header dash-header-large-font">@Model.BluforPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Blue</div>
+                </div>
+                <div class="dash-columns-four">
+                    <div id="NeutralPlayersCount" class="dash-header dash-header-large-font">@Model.NeutralPlayersCount</div>
+                    <div class="dash-header dash-header-small-font">Spectators</div>
+                </div>
+            </div>
+            <div class="dashboard-row">
+                <div class="dash-columns-three">
+                    <div class="dash-header dash-header-large-font">5</div>
+                    <div class="dash-header dash-header-small-font">Lives Configured</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div id="Depots" class="dash-header dash-header-large-font">@Model.Depots.Count</div>
+                    <div class="dash-header dash-header-small-font">Depots</div>
+                </div>
+                <div class="dash-columns-three">
+                    <div id="CapturePoints" class="dash-header dash-header-large-font">@Model.CapturePoints.Count</div>
+                    <div class="dash-header dash-header-small-font">Capture Points</div>
+                </div>
+            </div>
+        </div>
+        <div class="live-map-layout">
+            <div class="live-map">
+                <div id="googleMap"></div>
+            </div>
+            <div class="live-map-layout-footer">
+                <div id="ingame-chat" class="live-map-footer-column glass-black">
+                    <i class="fas fa-comments game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">Chat</span>
+                    @Html.Partial("_Chat", Model)
+                </div>
+                <div id="ingame-notifications" class="live-map-footer-column glass-black">
+                    <i class="fas fa-exclamation game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">Notifications</span>
+                    @Html.Partial("_Notifications", Model)
+                </div>
+                <div id="ingame-missions" class="live-map-footer-column glass-black">
+                    <i class="fas fa-tasks game-navicon live-map-footer-span"></i>
+                    <span class="live-map-footer-span">Missions</span>
+                    @Html.Partial("_Missions", Model)
+                </div>
+            </div>
+            @Html.Partial("_GameNavigation", Model)
+        </div>
+    </section>
+
+    <div style="display: none">
+        <div id="modal"></div>
+        <div id="error-modal"></div>
+        @Html.Partial("~/Views/Servers/Templates/_CapturePointInfoWindow.cshtml")
+        @Html.Partial("~/Views/Servers/Templates/_DepotInfoWindow.cshtml")
+        @Html.Partial("~/Views/Servers/Templates/_ChatMessage.cshtml")
+        @Html.Partial("~/Views/Servers/Templates/_SideMissionInfoWindow.cshtml")
+        @Html.Partial("~/Views/Servers/Templates/_SideMissionModal.cshtml")
+        @Html.Partial("~/Views/Servers/Templates/_OnlinePlayersRow.cshtml")
+    </div>
+</div>
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/signalr")
+    @Scripts.Render("~/bundles/mustachejs")
+    @Scripts.Render("~/bundles/tooltipster")
+    <script src="~/signalr/hubs"></script>
+
+    <script type="text/javascript">
+        var MODEL = @Html.Raw(Json.Encode(Model));
+    </script>      
+}
+
+@section postscripts {
+    <script src="~/Scripts/views/game/shared.js"></script>
+    <script src="~/Scripts/views/game/game-navigation.js"></script>
+    <script src="~/Scripts/views/game/chat.js"></script>
+    <script src="~/Scripts/views/game/live-map.js"></script>
+    <script src="~/Scripts/views/game/iconBuilder.js"></script>
+    <script src="~/Scripts/views/game/gmaps.js"></script>    
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYmQlCOtX05GriYZDAfgnTUL5mY4kjyYQ&callback=initGoogleMap"></script>
+    <script src="~/Scripts/views/game/game-hub.js"></script>
+}

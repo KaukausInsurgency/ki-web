@@ -1,0 +1,121 @@
+.chart-columns-2 {
+    @extend %clear-float;  
+
+    // stop floating and stack vertically
+    @media screen and (max-width: 716px) {
+        width: 100%;
+        float: none;
+    }    
+}
+
+#hc-kills-by-category-pie,
+#hc-score-pie {
+    width: 50%;
+    float: left;
+    position: relative;
+    height: 300px;
+    margin: 0 auto;
+
+    @extend %clear-float;    
+}
+
+#hc-last-sortie, 
+#hc-last-5-sorties {
+    width: 50%;
+    float: left;
+    position: relative;
+    height: 300px;
+    margin: 0 auto;
+
+    @extend %clear-float; 
+
+    @media screen and (max-width: 740px) {
+        width: 100%;
+        float: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+#hc-last-sortie {
+    padding-right: 10px;
+
+    @media screen and (max-width: 740px) {
+        padding-right: 0px;
+    }
+}
+
+#hc-last-5-sorties {
+    padding-left: 10px;
+
+    @media screen and (max-width: 740px) {
+        padding-left: 0px;
+    }
+}
+
+#hc-kills-by-type-bar,
+#hc-deaths-by-type-bar {
+    height: 300px;
+}
+
+#hc-missile-accuracy,
+#hc-rocket-accuracy,
+#hc-bomb-accuracy,
+#hc-gun-accuracy {
+    float: left;
+    width: 25%;
+    position: relative;
+    height: 200px;
+}
+
+// split into two gauges per row
+@media screen and (max-width: 550px) {
+    #hc-missile-accuracy,
+    #hc-rocket-accuracy,
+    #hc-bomb-accuracy,
+    #hc-gun-accuracy {
+        width: 50%;
+    }
+
+    #hc-bomb-accuracy {
+        clear: left;
+    }
+}
+
+
+
+.chart-layout-graphs {
+    width: 50%; 
+    float: left; 
+    position: relative;
+
+    &:nth-child(1) {
+        padding-right: 10px;
+    }
+
+    &:nth-child(2) {
+        padding-left: 10px;
+    }
+
+    @extend %clear-float;      
+
+    @media screen and (max-width: 740px) {
+        width: 100%;
+        float: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &:nth-child(1) {
+            padding-right: 0px;
+        }
+
+        &:nth-child(2) {
+            padding-left: 0px;
+        }
+    }
+}
+
+h3 {
+    font-size: 19px;
+    text-align: center;
+}

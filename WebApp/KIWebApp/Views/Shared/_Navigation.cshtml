@@ -1,0 +1,53 @@
+﻿<div class="prop-vnav prop-icons">
+</div>
+<div class="vnav">
+    <div class="vnav-btn-expander" 
+         data-url-nav-ajax="@Url.Action("NavigationExpanded", "Home")" 
+         data-should-expand="@Session["NavExpanded"]">
+        <i class="vnav-icon"></i>
+    </div>
+    <a href="@Url.Action("Index", "Home")">
+        <i class="fas fa-home fa-fw vnav-icon"></i>
+        <span class="js-nav-text">KI</span>
+    </a>
+    <a href="@Url.Action("Index", "Servers")">
+        <i class="fas fa-server fa-fw vnav-icon"></i>
+        <span class="js-nav-text">Servers</span>
+    </a>
+    <div class="vnav-dropdown">
+        <a href="#">
+            <i class="fas fa-signal fa-fw vnav-icon"></i>
+            <span class="js-nav-text">Stats</span>
+        </a>
+        <div class="vnav-dropdown-content">
+            <a href="@Url.Action("PlayerLeaderboards", "Home")">
+                <i class="fas fa-portrait fa-fw vnav-icon"></i>
+                <span class="js-dropdown-text">Player Stats</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-server fa-fw vnav-icon"></i>
+                <span class="js-dropdown-text">Server Stats</span>
+            </a>
+        </div>
+    </div>
+    <a href="/downloads/ki-updater.zip" download>
+        <i class="fas fa-download fa-fw vnav-icon"></i>
+        <span class="js-nav-text">Download</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-wpforms fa-fw vnav-icon"></i>
+        <span class="js-nav-text">Forums</span>
+    </a>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XQVGJE76C87Z6" target="_blank">
+        <i class="fas fa-donate fa-fw vnav-icon"></i>
+        <span class="js-nav-text">Donate</span>
+    </a>
+    <a href="https://github.com/KaukausInsurgency" target="_blank">
+        <i class="fab fa-github fa-fw vnav-icon"></i>
+        <span class="js-nav-text">GitHub</span>
+    </a>
+    <a href="https://forums.eagle.ru/showthread.php?t=199695" target="_blank">
+        <i class="fas fa-newspaper fa-fw vnav-icon"></i>
+        <span class="js-nav-text">DCS Post</span>
+    </a>
+</div>

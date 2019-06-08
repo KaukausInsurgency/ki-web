@@ -1,0 +1,79 @@
+﻿.dashboard-row {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.dash-columns-two {
+    min-width: 42px;
+}
+
+@media screen and (max-width: 1220px) {
+    .dash-columns-two {
+        float: none;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .dash-columns-four,
+    .dash-columns-three {
+        width: 50%;
+
+        &:nth-child(2)::after {
+            clear: left;
+        }
+    }
+
+    .dashboard-row {
+        padding-top: 0px;
+        padding-bottom: 0px;
+
+        &:first-of-type {
+            padding-top: 5px;
+        }
+
+        &:last-of-type {
+            padding-bottom: 5px;
+        }
+    }
+}
+
+@media screen and (max-width: 1096px) {
+
+    .dash-columns-two {
+        float: left;
+        width: 50%;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .dash-columns-four {
+        width: 25%;
+
+        &:nth-child(2)::after {
+            clear: none;
+        }
+    }
+
+    .dash-columns-three {
+        width: 33.33333333%;
+
+        &:nth-child(2)::after {
+            clear: none;
+        }
+    } 
+    
+    .dashboard-row {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .live-map-layout {
+        margin-top: 2em;
+        max-width: 1000px;
+    }
+
+    .live-map {
+        max-width: 950px;
+    }
+}

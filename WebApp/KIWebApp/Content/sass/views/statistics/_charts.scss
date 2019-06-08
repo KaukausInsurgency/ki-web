@@ -1,0 +1,22 @@
+$chart-bg-grad1-color: rgb(56, 56, 56);
+$chart-bg-grad2-color: rgb(78, 78, 78);
+
+.chart-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.chart-columns-2 {
+    width: 50%;
+    float: left;
+    height: 200px;
+}
+
+.chart-background {
+    @include linear-gradient(background, #{$chart-bg-grad2-color}, #{$chart-bg-grad1-color});
+    border-width: 0px;
+    border-radius: 15px;
+    overflow: hidden;
+}
