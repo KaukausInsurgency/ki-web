@@ -38,5 +38,13 @@ WebApp/KIWebApp/Content/css/vendor/dynatable/jquery.dynatable.min.css
 WebApp/KIWebApp/Content/css/vendor/tooltipster/tooltipster.bundle.min.css
 WebApp/KIWebApp/Content/css/vendor/tooltipster/tooltipster.main.min.css
 WebApp/KIWebApp/Content/css/views/shared/menu-responsive.min.css
-WebApp/KIWebApp/downloads/ki-updater.zip
-WebApp/KIWebApp/downloads/ki.zip
+TCPServer/Tests/bin
+TCPServer/Tests/obj
+WebApp/.vs/
+WebApp/Logs
+WebApp/Tests/bin
+WebApp/Tests/obj
+WebApp/KIWebApp/obj
+WebApp/KIWebApp/Bin
+WebApp/KIWebApp/Content/css
+WebApp/KIWebApp/Content/static/dcs_world.mp4

@@ -11,7 +11,7 @@ namespace TAWKI_TCPServer
 {
     public class ConfigReader : IConfigReader
     {
-        private string _configPath;
+        private string _configPath; //test
         private string _MySQLDBConnect;
         private string _RedisDBConnect;
         private int _portNumber;
