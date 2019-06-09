@@ -218,15 +218,17 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Asyncs\GameThreadWorker.cs" />
+    <Compile Include="Classes\DAL_Meta.cs" />
     <Compile Include="Classes\DAL.cs" />
     <Compile Include="Classes\DAL_Rpt.cs" />
     <Compile Include="Classes\DateTimeJavaScript.cs" />
     <Compile Include="Classes\IAppSettings.cs" />
+    <Compile Include="Classes\IDAL_Meta.cs" />
     <Compile Include="Classes\IDAL_Rpt.cs" />
     <Compile Include="Classes\RedisUtility.cs" />
     <Compile Include="Classes\SqlUtility.cs" />
     <Compile Include="Classes\WebAppSettings.cs" />
-    <Compile Include="Classes\WebAppVersionSettings.cs" />
+    <Compile Include="Classes\WebUtility.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServersController.cs" />
@@ -266,6 +268,7 @@
     <Compile Include="Models\ServerModel.cs" />
     <Compile Include="Models\ServerViewModel.cs" />
     <Compile Include="Models\SideMissionModel.cs" />
+    <Compile Include="Models\VersionInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singletons\GLOBAL.cs" />
   </ItemGroup>

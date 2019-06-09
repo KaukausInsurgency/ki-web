@@ -12,5 +12,10 @@ namespace KIWebApp.Classes
         string RedisKeySideMission { get; }
         string RedisKeyChat { get; }
         string RedisEnvironmentPrefix { get; }
+        string MySqlConnectionString { get; }
+        string RedisConnectionString { get; }
+        string Version { get; }
+        string DCSClientDownload { get; }
+        string DCSModDownload { get; }
     }
 }

@@ -8,6 +8,14 @@ namespace KIWebApp.Classes
 {
     public class SqlUtility
     {
+        public static IDbCommand CreateCommand(IDbConnection conn, string sp)
+        {
+            IDbCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sp;
+            cmd.CommandType = CommandType.StoredProcedure;
+            return cmd;
+        }
+
         public static IDbCommand CreateCommand(IDbConnection conn, string sp, Dictionary<string,object> parameters)
         {
             IDbCommand cmd = conn.CreateCommand();

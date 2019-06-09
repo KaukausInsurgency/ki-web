@@ -22,17 +22,17 @@ namespace KIWebApp.Classes
         private const string SP_GET_CUSTOM_MENU_ITEMS = "websp_GetCustomMenuItems";
         private string _DBMySQLConnectionString;
         private string _DBRedisConnectionString;
-
-        
+    
         public IAppSettings AppSettings { get; set; }
 
         public DAL()
-        {
-            _DBMySQLConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBMySqlConnect"].ConnectionString;
-            _DBRedisConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBRedisConnect"].ConnectionString;
+        {        
             AppSettings = new WebAppSettings();
+            _DBMySQLConnectionString = AppSettings.MySqlConnectionString;
+            _DBRedisConnectionString = AppSettings.RedisConnectionString;
         }
 
+        // unused constructor
         public DAL(string mySQLConnect, string redisConnect, IAppSettings AppSettings)
         {
             _DBMySQLConnectionString = mySQLConnect;

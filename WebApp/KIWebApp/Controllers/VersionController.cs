@@ -1,6 +1,7 @@
 ﻿using KIWebApp.Classes;
+using KIWebApp.Models;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,48 +11,61 @@ namespace KIWebApp.Controllers
 {
     public class VersionController : ApiController
     {
+        readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IAppSettings AppSettings;
+        private IDAL_Meta DAL;
+
+        public VersionController()
+        {
+            AppSettings = new WebAppSettings();
+            DAL = new DAL_Meta();
+        }
+
         // GET api/version
         [HttpGet]       
         public HttpResponseMessage Get()
         {
-            VersionResponse result = GetSpecificVersion(WebAppVersionSettings.VERSION,
-                                                        WebAppVersionSettings.GUID,
-                                                        WebAppVersionSettings.PATH);    
-            return Request.CreateResponse(HttpStatusCode.OK, result);
-        }
-
-        // GET api/version/type
-        [HttpGet]   
-        public HttpResponseMessage Get(string id)
-        {
-            VersionResponse result;
-            if (id.ToLower() == "test")
-                result = GetSpecificVersion(WebAppVersionSettings.VERSION, WebAppVersionSettings.GUID, WebAppVersionSettings.PATH);
-            else if (id.ToLower() == "prod")
-                result = GetSpecificVersion(WebAppVersionSettings.VERSION, WebAppVersionSettings.GUID, WebAppVersionSettings.PATH);
+            Logger.Info("GetVersionInfo requested");
+            VersionResponse result = GetVersionInfo();
+            if (result != null)
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             else
-                result = new VersionResponse() { Version = "", GUID = "0", DownloadURL = "" };
-
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error obtaining version information");
         }
 
-        private VersionResponse GetSpecificVersion(string version, string guid, string path)
+        private VersionResponse GetVersionInfo()
         {
-            string appPath = string.Format("{0}://{1}{2}{3}",
-              System.Web.HttpContext.Current.Request.Url.Scheme,
-              System.Web.HttpContext.Current.Request.Url.Host,
-              System.Web.HttpContext.Current.Request.Url.Port == 80 ? string.Empty : ":" + System.Web.HttpContext.Current.Request.Url.Port,
-              System.Web.HttpContext.Current.Request.ApplicationPath);
-            string downloadURI = appPath + path;
+            VersionInfoModel model = DAL.GetVersionInfo();
+            if (model == null)
+                return null;
 
-            return new VersionResponse(){ Version = version, GUID = guid, DownloadURL = downloadURI };
+            string appPath = Classes.WebUtility.GetApplicationPath(System.Web.HttpContext.Current);
+            string downloadURIClient = $"{appPath}{AppSettings.DCSClientDownload}";
+            string downloadURIMod = $"{appPath}{AppSettings.DCSModDownload}";
+
+            return new VersionResponse(model)
+            {
+                DownloadURLClient = downloadURIClient,
+                DownloadURLMod = downloadURIMod
+            };
         }
 
         private class VersionResponse
         {
-            public string Version { get; set; }
-            public string GUID { get; set; }
-            public string DownloadURL { get; set; }
+            public string DCSClientVersion { get; set; }
+            public string DCSClientGUID { get; set; }
+            public string DCSModVersion { get; set; }
+            public string DCSModGUID { get; set; }
+            public string DownloadURLMod { get; set; }
+            public string DownloadURLClient { get; set; }
+
+            public VersionResponse(VersionInfoModel model)
+            {
+                DCSClientGUID = model.DCSClientGUID;
+                DCSClientVersion = model.DCSClientVersion;
+                DCSModGUID = model.DCSModGUID;
+                DCSModVersion = model.DCSModVersion;
+            }
         }
     }
 }
