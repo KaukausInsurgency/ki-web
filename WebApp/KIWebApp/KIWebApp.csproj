@@ -296,7 +296,7 @@
     <Content Include="Content\sass\views\game\live-map\_depot-resources.scss" />
     <Content Include="Content\sass\vendor-extensions\_googlemaps.scss" />
     <Content Include="Content\sass\views\game\live-map\_modal.scss" />
-    <None Include="Content\sass\views\servers\servers.scss" />
+    <Content Include="Content\sass\views\servers\servers.scss" />
     <Content Include="Content\static\bg-error.jpg" />
     <Content Include="Content\static\bg-game.jpg" />
     <Content Include="Content\static\bg-learn-more.jpg" />
