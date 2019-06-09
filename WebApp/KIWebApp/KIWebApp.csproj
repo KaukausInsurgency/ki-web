@@ -235,6 +235,7 @@
     <Compile Include="Classes\IDAL.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
+    <Compile Include="Filters\InitViewBagFilterProperty.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KIWebApp.Classes;
+using KIWebApp.Filters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,11 +35,11 @@ namespace KIWebApp
         {
             AreaRegistration.RegisterAllAreas();
 
+            GlobalFilters.Filters.Add(new InitViewBagFilterProperty(new WebAppSettings()), 0);
             WebApiConfig.Register(GlobalConfiguration.Configuration);
-            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = true;
             //AuthConfig.RegisterAuth();
 
             log4net.Config.XmlConfigurator.Configure(new FileInfo(Server.MapPath("~/Log4net.config")));

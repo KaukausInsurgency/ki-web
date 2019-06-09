@@ -17,5 +17,6 @@ namespace KIWebApp.Classes
         string Version { get; }
         string DCSClientDownload { get; }
         string DCSModDownload { get; }
+        string UpdaterDownload { get; }
     }
 }

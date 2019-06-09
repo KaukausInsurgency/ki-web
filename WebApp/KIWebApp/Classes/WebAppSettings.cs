@@ -17,5 +17,6 @@ namespace KIWebApp.Classes
         string IAppSettings.Version => System.Configuration.ConfigurationManager.AppSettings["Version"];
         string IAppSettings.DCSClientDownload => System.Configuration.ConfigurationManager.AppSettings["DCSClientDownload"];
         string IAppSettings.DCSModDownload => System.Configuration.ConfigurationManager.AppSettings["DCSModDownload"];
+        string IAppSettings.UpdaterDownload => System.Configuration.ConfigurationManager.AppSettings["UpdaterDownload"];
     }
 }
